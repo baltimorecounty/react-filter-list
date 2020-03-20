@@ -9,7 +9,11 @@ export default [
     output: [{ file: pkg.demo, format: "cjs" }],
     external: ["react", "react-dom"],
     plugins: [
+      commonjs({
+        include: /node_modules/
+      }),
       resolve({
+        preferBuiltins: true,
         extensions: [".mjs", ".js", ".jsx", ".json", ".node"]
       }),
       babel({
