@@ -33,7 +33,7 @@ const FilterList = ({
         <div className="col-md-9 col-xs-12">
           <ApiList
             endpoint={apiEndpoint}
-            title="Newsroom"
+            title={title}
             renderItem={renderItem}
           />
         </div>
