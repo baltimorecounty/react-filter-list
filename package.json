@@ -9,7 +9,8 @@
     "build": "rollup --config",
     "demo": "parcel public/index.html",
     "start": "rollup --config -w",
-    "test": "jest"
+    "test": "jest",
+    "prepublish": "npm run build"
   },
   "author": "",
   "license": "ISC",
