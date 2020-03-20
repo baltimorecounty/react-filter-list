@@ -1,8 +1,9 @@
 import React from "react";
 import axios from "axios";
+import fetch from "node-fetch";
 import { useQuery } from "react-query";
 
-const fetch = (key, { endpoint }) => axios.get(endpoint);
+const fetch = (key, { endpoint }) => fetch(endpoint);
 
 const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
   const { data: response, error } = useQuery(["apiGET", { endpoint }], fetch);
