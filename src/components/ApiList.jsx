@@ -3,10 +3,13 @@ import axios from "axios";
 import fetch from "node-fetch";
 import { useQuery } from "react-query";
 
-const fetch = (key, { endpoint }) => fetch(endpoint);
+const fetchList = (key, { endpoint }) => fetch(endpoint);
 
 const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
-  const { data: response, error } = useQuery(["apiGET", { endpoint }], fetch);
+  const { data: response, error } = useQuery(
+    ["apiGET", { endpoint }],
+    fetchList
+  );
 
   if (!response) {
     return <p>Loading {title}...</p>;
