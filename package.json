@@ -37,6 +37,8 @@
     "dist"
   ],
   "dependencies": {
-    "node-fetch": "^2.6.0"
+    "@baltimorecounty/dotgov-components": "^0.1.80",
+    "node-fetch": "^2.6.0",
+    "react-query": "^1.0.30"
   }
 }
