@@ -31,6 +31,7 @@ export default [
     external: ["react", "react-dom"],
     plugins: [
       resolve({
+        preferBuiltins: true,
         extensions: [".mjs", ".js", ".jsx", ".json", ".node"]
       }),
       babel({
