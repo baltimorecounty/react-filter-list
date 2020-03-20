@@ -1,4 +1,5 @@
 import babel from "rollup-plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
 import pkg from "./package.json";
 import resolve from "@rollup/plugin-node-resolve";
 
@@ -30,6 +31,9 @@ export default [
     ],
     external: ["react", "react-dom"],
     plugins: [
+      commonjs({
+        include: /node_modules/
+      }),
       resolve({
         preferBuiltins: true,
         extensions: [".mjs", ".js", ".jsx", ".json", ".node"]
