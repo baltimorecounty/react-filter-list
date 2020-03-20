@@ -6,7 +6,8 @@
  * @param {string} obj.filter.name - Name attribute of the filter
  * @param {string} obj.filter.value - Value attribute of the filter
  * @param {string} obj.filter.queryString - Querystring to update
- * @returns {string} Updated queryString based on whether the filter is applied or removed
+ * @returns {string} Updated queryString based on whether the filter is applied or removed.
+ * "?" is included in the querystring
  */
 const UpdateQueryString = ({
   filter: { checked, name, value },
