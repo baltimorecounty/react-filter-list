@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import fetch from "node-fetch";
 import { useQuery } from "react-query";
 
