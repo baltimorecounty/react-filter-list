@@ -2,6 +2,7 @@ import "promise-polyfill/src/polyfill";
 import "whatwg-fetch";
 
 import React from "react";
+import RecordsMessage from "./RecordsMessage";
 import { useQuery } from "react-query";
 
 const fetchList = (key, { endpoint }) =>
@@ -9,8 +10,6 @@ const fetchList = (key, { endpoint }) =>
 
 const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
   const { data, error } = useQuery(["apiGET", { endpoint }], fetchList);
-
-  console.log("d", data);
 
   if (!data) {
     return <p>Loading {title}...</p>;
@@ -20,13 +19,13 @@ const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
     return <p>Something went wrong loading {title}.</p>;
   }
 
-  console.log(data);
-
-  const { records = [], metaData = {} } = data;
+  const { records = [], metaData: { totalRecords = 0 } = {} } = data;
 
   return (
     <>
+      <RecordsMessage count={totalRecords} />
       <div className="items">{records.map(renderItem)}</div>
+      <RecordsMessage count={totalRecords} />
     </>
   );
 };
