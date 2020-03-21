@@ -20,7 +20,18 @@ const Demo = props => {
         title="Baltimore County News"
         filters={filters}
         apiEndpoint="https://structuredcontentdev.bcg.ad.bcgov.us/api/news"
-        renderItem={({ title }) => <div>{title}</div>}
+        renderItem={({ title, articleSummary }) => (
+          <div
+            style={{
+              border: "1px solid #e0e0e0",
+              padding: "10px",
+              marginBottom: "10px"
+            }}
+          >
+            <h2>{title}</h2>
+            <p>{articleSummary}</p>
+          </div>
+        )}
       />
     </div>
   );
