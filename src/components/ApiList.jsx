@@ -1,16 +1,18 @@
+import "promise-polyfill/src/polyfill";
+import "whatwg-fetch";
+
 import React from "react";
-import fetch from "node-fetch";
 import { useQuery } from "react-query";
 
-const fetchList = (key, { endpoint }) => fetch(endpoint);
+const fetchList = (key, { endpoint }) =>
+  fetch(endpoint).then(res => res.json());
 
 const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
-  const { data: response, error } = useQuery(
-    ["apiGET", { endpoint }],
-    fetchList
-  );
+  const { data, error } = useQuery(["apiGET", { endpoint }], fetchList);
 
-  if (!response) {
+  console.log("d", data);
+
+  if (!data) {
     return <p>Loading {title}...</p>;
   }
 
@@ -18,7 +20,9 @@ const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
     return <p>Something went wrong loading {title}.</p>;
   }
 
-  const { records = [], metaData = {} } = response.data;
+  console.log(data);
+
+  const { records = [], metaData = {} } = data;
 
   return (
     <>
