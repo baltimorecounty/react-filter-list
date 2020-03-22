@@ -29,11 +29,6 @@ const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
     return <p>Something went wrong loading {title}.</p>;
   }
 
-  const {
-    records = [],
-    metaData: { totalRecords = 0, links: { next } = {} } = {}
-  } = data;
-
   return (
     <>
       <RecordsMessage count={totalRecords} />
