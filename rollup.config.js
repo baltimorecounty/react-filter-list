@@ -3,23 +3,25 @@ import commonjs from "@rollup/plugin-commonjs";
 import pkg from "./package.json";
 import resolve from "@rollup/plugin-node-resolve";
 
+const plugins = [
+  commonjs({
+    include: /node_modules/
+  }),
+  resolve({
+    preferBuiltins: true,
+    extensions: [".mjs", ".js", ".jsx", ".json", ".node"]
+  }),
+  babel({
+    exclude: "node_modules/**"
+  })
+];
+
 export default [
   {
     input: "demo/index.js",
     output: [{ file: pkg.demo, format: "cjs" }],
     external: ["react", "react-dom"],
-    plugins: [
-      commonjs({
-        include: /node_modules/
-      }),
-      resolve({
-        preferBuiltins: true,
-        extensions: [".mjs", ".js", ".jsx", ".json", ".node"]
-      }),
-      babel({
-        exclude: "node_modules/**"
-      })
-    ]
+    plugins
   },
   // CommonJS (for Node) and ES module (for bundlers) build.
   // (We could have three entries in the configuration array
@@ -34,17 +36,6 @@ export default [
       { file: pkg.module, format: "es" }
     ],
     external: ["react", "react-dom"],
-    plugins: [
-      commonjs({
-        include: /node_modules/
-      }),
-      resolve({
-        preferBuiltins: true,
-        extensions: [".mjs", ".js", ".jsx", ".json", ".node"]
-      }),
-      babel({
-        exclude: "node_modules/**"
-      })
-    ]
+    plugins
   }
 ];
