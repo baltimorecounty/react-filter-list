@@ -37,7 +37,10 @@ const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
 
   return (
     <>
-      <RecordsMessage count={totalRecords} />
+      <RecordsMessage
+        count={totalRecords}
+        renderMessage={({ count }) => `${count} results`}
+      />
       <div className="items">
         {data.map((group, i) => (
           <React.Fragment key={i}>
@@ -47,7 +50,6 @@ const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
           </React.Fragment>
         ))}
       </div>
-      <RecordsMessage count={totalRecords} />
       {canFetchMore && (
         <button
           type="button"
