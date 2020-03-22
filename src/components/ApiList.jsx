@@ -3,13 +3,23 @@ import "whatwg-fetch";
 
 import React from "react";
 import RecordsMessage from "./RecordsMessage";
-import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
 
 const fetchList = (key, { endpoint }) =>
   fetch(endpoint).then(res => res.json());
 
 const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
-  const { data, error } = useQuery(["apiGET", { endpoint }], fetchList);
+  const {
+    status,
+    data,
+    error,
+    isFetching,
+    isFetchingMore,
+    fetchMore,
+    canFetchMor
+  } = useInfiniteQuery(["apiGET", { endpoint }], fetchList, {
+    getFetchMore: ({ metaData: { links = {} } = {} }, allGroups) => links.next
+  });
 
   if (!data) {
     return <p>Loading {title}...</p>;
@@ -19,13 +29,29 @@ const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
     return <p>Something went wrong loading {title}.</p>;
   }
 
-  const { records = [], metaData: { totalRecords = 0 } = {} } = data;
+  const {
+    records = [],
+    metaData: { totalRecords = 0, links: { next } = {} } = {}
+  } = data;
 
   return (
     <>
       <RecordsMessage count={totalRecords} />
-      <div className="items">{records.map(renderItem)}</div>
+      <div className="items">
+        {data.map((group, i) => (
+          <React.Fragment key={i}>
+            {group.records.map(record => (
+              <div key={record.id}>{renderItem(record)}</div>
+            ))}
+          </React.Fragment>
+        ))}
+      </div>
       <RecordsMessage count={totalRecords} />
+      {next && (
+        <button type="button" type="button" disabled={isFetching}>
+          Load More
+        </button>
+      )}
     </>
   );
 };
