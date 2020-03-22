@@ -5,8 +5,8 @@ import React from "react";
 import RecordsMessage from "./RecordsMessage";
 import { useInfiniteQuery } from "react-query";
 
-const fetchList = (key, { endpoint }) =>
-  fetch(endpoint).then(res => res.json());
+const fetchList = (key, { endpoint }, loadMoreEndpoint) =>
+  fetch(loadMoreEndpoint || endpoint).then(res => res.json());
 
 const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
   const {
@@ -16,7 +16,7 @@ const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
     isFetching,
     isFetchingMore,
     fetchMore,
-    canFetchMor
+    canFetchMore
   } = useInfiniteQuery(["apiGET", { endpoint }], fetchList, {
     getFetchMore: ({ metaData: { links = {} } = {} }, allGroups) => links.next
   });
@@ -28,6 +28,12 @@ const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
   if (error) {
     return <p>Something went wrong loading {title}.</p>;
   }
+
+  const { metaData: { totalRecords = 0 } = {} } = data[0] || {};
+
+  const handleLoadMoreClick = () => {
+    fetchMore();
+  };
 
   return (
     <>
@@ -42,9 +48,13 @@ const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
         ))}
       </div>
       <RecordsMessage count={totalRecords} />
-      {next && (
-        <button type="button" type="button" disabled={isFetching}>
-          Load More
+      {canFetchMore && (
+        <button
+          type="button"
+          disabled={isFetching}
+          onClick={handleLoadMoreClick}
+        >
+          {isFetchingMore ? "Loading more..." : "Load More"}
         </button>
       )}
     </>
