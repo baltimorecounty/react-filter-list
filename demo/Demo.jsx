@@ -16,9 +16,9 @@ const Demo = props => {
   return (
     <div className="demo">
       <FilterList
-        title="Baltimore County News"
+        title="News"
         filters={filters}
-        apiEndpoint="https://structuredcontentdev.bcg.ad.bcgov.us/api/news"
+        apiEndpoint="{yourDemoEndpointGoesHere}"
         renderItem={({ title, articleSummary }) => (
           <div
             style={{
