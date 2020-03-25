@@ -10,7 +10,6 @@ const fetchList = (key, { endpoint }, loadMoreEndpoint) =>
 
 const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
   const {
-    status,
     data,
     error,
     isFetching,
