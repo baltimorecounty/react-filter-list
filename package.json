@@ -1,14 +1,14 @@
 {
   "name": "@baltimorecounty/react-filter-list",
   "version": "0.1.0",
-  "description": "A standard way to show and filter lists.",
+  "description": "A react component that provides standard way to show and filter lists",
   "main": "dist/index.js",
   "module": "dist/index.em.js",
   "demo": "public/demo.js",
   "scripts": {
     "build": "rollup --config",
-    "demo": "parcel public/index.html",
-    "start": "rollup --config -w",
+    "start": "parcel public/index.html",
+    "watch-build": "rollup --config -w",
     "test": "jest",
     "prepublish": "npm run build"
   },
@@ -16,12 +16,14 @@
   "license": "ISC",
   "peerDependencies": {
     "react": "^16.x",
-    "react-dom": "^16.x"
+    "react-dom": "^16.x",
+    "@baltimorecounty/dotgov-components": "^1.x"
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
     "@babel/preset-react": "^7.8.3",
+    "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
     "babel-core": "^6.26.3",
     "babel-jest": "^25.1.0",
@@ -35,5 +37,12 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "@baltimorecounty/dotgov-components": "^1.0.0",
+    "promise-polyfill": "8.1.3",
+    "prop-types": "^15.7.2",
+    "react-query": "^1.0.30",
+    "whatwg-fetch": "^3.0.0"
+  }
 }

@@ -1,3 +1,1 @@
-import P from "./components/P";
-
-export default P;
+export { default as FilterList } from "./components/FilterList";
