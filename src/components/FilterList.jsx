@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import ApiList from "./ApiList.jsx";
+import DefaultFilter from "./DefaultFilter.jsx";
 import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
 import { UpdateQueryString } from "../common/Filters";
@@ -8,7 +9,9 @@ import { UpdateQueryString } from "../common/Filters";
 const FilterList = ({
   title = "",
   renderItem = () => <p>You must specify a renderItem function.</p>,
-  renderFilter = () => <p>You must specify a renderFilter function.</p>,
+  renderFilter = (filter, onChange) => (
+    <DefaultFilter filter={filter} onChange={onChange} />
+  ),
   filters = [],
   apiEndpoint: defaultApiEndpoint,
   ...props
@@ -60,7 +63,7 @@ FilterList.propTypes = {
    * Function to display a single filter with options.
    * The function is provided  all available information about that filter, and the change event.
    */
-  renderFilter: PropTypes.func.isRequired,
+  renderFilter: PropTypes.func,
   /** List of filters. A filter contains `targetApiField`, `displayName`, and list of options { label, value } */
   filters: PropTypes.array.isRequired,
   /** Fully qualified api url plus endpoint targeting for the list. Ex. https://mycoolsite/api/news  */
