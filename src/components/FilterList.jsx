@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import ApiList from "./ApiList.jsx";
-import { Button } from "@baltimorecounty/dotgov-components";
 import DefaultFilter from "./DefaultFilter.jsx";
 import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
@@ -12,14 +11,6 @@ const FilterList = ({
   renderItem = () => <p>You must specify a renderItem function.</p>,
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
-  ),
-  renderLoadMoreButton = ({ isFetching, onClick, isFetchingMore }) => (
-    <Button
-      type="button"
-      disabled={isFetching}
-      text={isFetchingMore ? "Loading more..." : "Load More"}
-      onClick={onClick}
-    />
   ),
   filters = [],
   apiEndpoint: defaultApiEndpoint,
@@ -53,7 +44,6 @@ const FilterList = ({
             endpoint={apiEndpoint}
             title={title}
             renderItem={renderItem}
-            renderLoadMoreButton={renderLoadMoreButton}
           />
         </div>
       </div>
