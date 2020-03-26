@@ -7,7 +7,8 @@ import { UpdateQueryString } from "../common/Filters";
 
 const FilterList = ({
   title = "",
-  renderItem = props => <div {...props} />,
+  renderItem = () => <p>You must specify a renderItem function.</p>,
+  renderFilter = () => <p>You must specify a renderFilter function.</p>,
   filters = [],
   apiEndpoint: defaultApiEndpoint,
   ...props
@@ -29,7 +30,11 @@ const FilterList = ({
     <div {...props}>
       <div className="row">
         <div className="col-md-3 col-xs-12">
-          <Filters handleFilterChange={handleFilterChange} filters={filters} />
+          <Filters
+            renderFilter={renderFilter}
+            handleFilterChange={handleFilterChange}
+            filters={filters}
+          />
         </div>
         <div className="col-md-9 col-xs-12">
           <ApiList
@@ -51,6 +56,11 @@ FilterList.propTypes = {
    * The function is provided  all available information about that item.
    */
   renderItem: PropTypes.func.isRequired,
+  /**
+   * Function to display a single filter with options.
+   * The function is provided  all available information about that filter, and the change event.
+   */
+  renderFilter: PropTypes.func.isRequired,
   /** List of filters. A filter contains `targetApiField`, `displayName`, and list of options { label, value } */
   filters: PropTypes.array.isRequired,
   /** Fully qualified api url plus endpoint targeting for the list. Ex. https://mycoolsite/api/news  */
