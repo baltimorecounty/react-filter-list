@@ -17,7 +17,12 @@ import { useInfiniteQuery } from "react-query";
 const fetchList = (key, { endpoint }, loadMoreEndpoint) =>
   fetch(loadMoreEndpoint || endpoint).then(res => res.json());
 
-const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
+const ApiList = ({
+  title,
+  endpoint,
+  renderItem = () => {},
+  renderLoadMoreButton = () => {}
+}) => {
   const {
     data,
     error,
@@ -58,15 +63,12 @@ const ApiList = ({ title, endpoint, renderItem = () => {} }) => {
           </React.Fragment>
         ))}
       </div>
-      {canFetchMore && (
-        <button
-          type="button"
-          disabled={isFetching}
-          onClick={handleLoadMoreClick}
-        >
-          {isFetchingMore ? "Loading more..." : "Load More"}
-        </button>
-      )}
+      {canFetchMore &&
+        renderLoadMoreButton({
+          isFetching,
+          isFetchingMore,
+          onClick: handleLoadMoreClick
+        })}
     </>
   );
 };
