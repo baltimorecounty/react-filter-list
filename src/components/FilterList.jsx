@@ -1,13 +1,22 @@
 import React, { useState } from "react";
 
 import ApiList from "./ApiList.jsx";
+import { Button } from "@baltimorecounty/dotgov-components";
 import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
 import { UpdateQueryString } from "../common/Filters";
 
 const FilterList = ({
   title = "",
-  renderItem = props => <div {...props} />,
+  renderItem = () => <p>You must specify a renderItem function.</p>,
+  renderLoadMoreButton = ({ isFetching, onClick, isFetchingMore }) => (
+    <Button
+      type="button"
+      disabled={isFetching}
+      text={isFetchingMore ? "Loading more..." : "Load More"}
+      onClick={onClick}
+    />
+  ),
   filters = [],
   apiEndpoint: defaultApiEndpoint,
   ...props
@@ -36,6 +45,7 @@ const FilterList = ({
             endpoint={apiEndpoint}
             title={title}
             renderItem={renderItem}
+            renderLoadMoreButton={renderLoadMoreButton}
           />
         </div>
       </div>
@@ -51,6 +61,11 @@ FilterList.propTypes = {
    * The function is provided  all available information about that item.
    */
   renderItem: PropTypes.func.isRequired,
+  /**
+   * Function to control the display of the load more button
+   * The function is provided isFetching, onClick, isFetchingMore props
+   */
+  renderLoadMoreButton: PropTypes.func,
   /** List of filters. A filter contains `targetApiField`, `displayName`, and list of options { label, value } */
   filters: PropTypes.array.isRequired,
   /** Fully qualified api url plus endpoint targeting for the list. Ex. https://mycoolsite/api/news  */
