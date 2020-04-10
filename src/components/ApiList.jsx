@@ -30,9 +30,17 @@ const ApiList = ({
     isFetchingMore,
     fetchMore,
     canFetchMore,
-  } = useInfiniteQuery(["apiGET", { endpoint }], fetchList, {
-    getFetchMore: ({ metaData: { links = {} } = {} }, allGroups) => links.next,
-  });
+  } = useInfiniteQuery(
+    ["apiGET", { endpoint }],
+    fetchList,
+    {
+      getFetchMore: ({ metaData: { links = {} } = {} }, allGroups) =>
+        links.next,
+    },
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 
   if (isFetching) {
     return <p>Loading {title}...</p>;
