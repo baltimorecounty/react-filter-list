@@ -29,6 +29,7 @@ const ApiList = ({
     isFetchingMore,
     fetchMore,
     canFetchMore,
+    status,
   } = useInfiniteQuery(
     ["apiGET", { endpoint }],
     fetchList,
