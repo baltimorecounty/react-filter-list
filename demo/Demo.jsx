@@ -1,4 +1,5 @@
-import FilterList from "../src/components/FilterList";
+import ApiList from "../src/components/ApiList";
+import { Button } from "@baltimorecounty/dotgov-components";
 import React from "react";
 
 const filters = [
@@ -15,11 +16,18 @@ const filters = [
 const Demo = (props) => {
   return (
     <div className="demo">
-      <FilterList
-        title="News"
-        filters={filters}
-        apiEndpoint="http://localhost:54727/api/hub/structuredContent/news"
-        renderItem={({ title, articleSummary }) => (
+      <ApiList
+        endpoint="http://localhost:54727/api/hub/structuredContent/news?recordsPerPage=5"
+        title="Sample News"
+        renderLoadMoreButton={({ isFetching, onClick, isFetchingMore }) => (
+          <Button
+            type="button"
+            disabled={isFetching}
+            text={isFetchingMore ? "Loading more..." : "Load More"}
+            onClick={onClick}
+          />
+        )}
+        renderItem={({ title, articleSummary }, index) => (
           <div
             style={{
               border: "1px solid #e0e0e0",
@@ -27,7 +35,9 @@ const Demo = (props) => {
               marginBottom: "10px",
             }}
           >
-            <h2>{title}</h2>
+            <h2>
+              {index} - {title}
+            </h2>
             <p>{articleSummary}</p>
           </div>
         )}
