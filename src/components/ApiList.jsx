@@ -25,7 +25,6 @@ const ApiList = ({
 }) => {
   const {
     data,
-    error,
     isFetching,
     isFetchingMore,
     fetchMore,
