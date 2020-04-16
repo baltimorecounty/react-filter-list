@@ -18,7 +18,7 @@ After cloning the project, all that is needed to install is running `npm i` or
 <FilterList
   title="News"
   filters={filters}
-  apiEndpoint="{yourNewsEndpointGoesHere}"
+  apiEndpoint="/api/news"
   renderItem={({ title, articleSummary }) => (
     <div
       style={{
