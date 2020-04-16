@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 import ApiList from "./ApiList.jsx";
-import { Button } from "@baltimorecounty/dotgov-components";
 import DefaultFilter from "./DefaultFilter.jsx";
+import DefaultLoadMoreButton from "./DefaultLoadMoreButton";
 import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
 import { UpdateQueryString } from "../common/Filters";
@@ -13,26 +13,19 @@ const FilterList = ({
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
   ),
-  renderLoadMoreButton = ({ isFetching, onClick, isFetchingMore }) => (
-    <Button
-      type="button"
-      disabled={isFetching}
-      text={isFetchingMore ? "Loading more..." : "Load More"}
-      onClick={onClick}
-    />
-  ),
+  renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
   filters = [],
   apiEndpoint: defaultApiEndpoint,
   ...props
 }) => {
   const [apiEndpoint, setApiEndpoint] = useState(defaultApiEndpoint);
 
-  const handleFilterChange = changeEvent => {
+  const handleFilterChange = (changeEvent) => {
     const { name, value, checked } = changeEvent.target;
     const [baseApiEndpoint, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter: { name, value, checked },
-      queryString: currentQueryString
+      queryString: currentQueryString,
     });
 
     setApiEndpoint(`${baseApiEndpoint}${queryString}`);
@@ -81,7 +74,7 @@ FilterList.propTypes = {
   /** List of filters. A filter contains `targetApiField`, `displayName`, and list of options { label, value } */
   filters: PropTypes.array.isRequired,
   /** Fully qualified api url plus endpoint targeting for the list. Ex. https://mycoolsite/api/news  */
-  apiEndpoint: PropTypes.string.isRequired
+  apiEndpoint: PropTypes.string.isRequired,
 };
 
 export default FilterList;
