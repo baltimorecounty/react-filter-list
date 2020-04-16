@@ -1,3 +1,22 @@
+const CreateQueryString = (filters = []) =>
+  filters.reduce((prev, filter) => {
+    const { targetApiField: name, options = [] } = filter;
+    const checkedOptions = options.filter((x) => x.checked);
+
+    return checkedOptions.reduce(
+      (queryString, { value, checked }) =>
+        UpdateQueryString({
+          filter: {
+            name,
+            value,
+            checked,
+          },
+          queryString,
+        }),
+      ""
+    );
+  }, "");
+
 /**
  * Updates an existing query string based on given filter information.
  * @param {Object} obj
@@ -11,7 +30,7 @@
  */
 const UpdateQueryString = ({
   filter: { checked, name, value },
-  queryString
+  queryString,
 }) => {
   const searchParams = new URLSearchParams(queryString || "");
   const existingValues = searchParams.has(name)
@@ -48,4 +67,4 @@ const UpdateQueryString = ({
   return [...searchParams].length > 0 ? `?${searchParams.toString()}` : "";
 };
 
-export { UpdateQueryString };
+export { CreateQueryString, UpdateQueryString };

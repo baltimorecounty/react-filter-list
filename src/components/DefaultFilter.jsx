@@ -4,10 +4,10 @@ import React from "react";
 
 const DefaultFilter = ({
   filter: { targetApiField, displayName, options },
-  onChange
+  onChange,
 }) => (
   <Collapse id={targetApiField} header={displayName}>
-    {options.map(({ label, value }) => {
+    {options.map(({ label, value, checked }) => {
       return (
         <Checkbox
           key={`${displayName}-${value}`}
@@ -16,6 +16,7 @@ const DefaultFilter = ({
           onClick={onChange}
           label={label}
           value={value}
+          checked={checked}
         />
       );
     })}
