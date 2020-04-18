@@ -17,19 +17,17 @@ const UpdateFilters = (filters = [], queryString = "") => {
     if (matchingFilter) {
       const urlValues = queryStringFilters[key].toLowerCase().split(",");
 
-      matchingFilter.options
-        .filter(({ value = "" }) =>
-          urlValues.some(
-            (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
-          )
-        )
-        .map((x) => {
-          x.checked = true;
-        });
+      matchingFilter.options.map((x) => {
+        const { value = "" } = x;
+        x.checked = urlValues.some(
+          (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
+        );
+        return x;
+      });
     }
   });
 
-  return filters;
+  return [...filters];
 };
 
 /**
