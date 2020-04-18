@@ -1,12 +1,11 @@
-import { CreateQueryString, UpdateQueryString } from "../common/Filters";
 import React, { useState } from "react";
+import { UpdateFilters, UpdateQueryString } from "../common/Filters";
 
 import ApiList from "./ApiList.jsx";
 import DefaultFilter from "./DefaultFilter.jsx";
 import DefaultLoadMoreButton from "./DefaultLoadMoreButton";
 import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
-import queryString from "query-string";
 
 const FilterList = ({
   title = "",
@@ -15,34 +14,17 @@ const FilterList = ({
     <DefaultFilter filter={filter} onChange={onChange} />
   ),
   renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
-  filters = [],
+  filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
   ...props
 }) => {
-  const queryStringFilters = queryString.parse(location.search);
+  const queryString = location.search;
 
-  Object.keys(queryStringFilters).forEach((key) => {
-    const matchingFilter = filters.find(
-      ({ targetApiField = "" }) =>
-        targetApiField.toLowerCase() == key.toLowerCase()
-    );
+  const filters = UpdateFilters(filtersFromProps, queryString);
 
-    if (matchingFilter) {
-      const matchingOption = matchingFilter.options.find(
-        ({ value = "" }) =>
-          value.toLowerCase() === queryStringFilters[key].toLowerCase()
-      );
-
-      if (matchingOption) {
-        matchingOption.checked = true;
-      }
-    }
-  });
-
-  const [apiEndpoint, setApiEndpoint] = useState(() => {
-    console.log(filters);
-    return defaultApiEndpoint + CreateQueryString(filters);
-  });
+  const [apiEndpoint, setApiEndpoint] = useState(
+    () => defaultApiEndpoint + queryString
+  );
 
   const handleFilterChange = (changeEvent) => {
     const { name, value, checked } = changeEvent.target;

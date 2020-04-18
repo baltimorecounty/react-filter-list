@@ -1,21 +1,36 @@
-const CreateQueryString = (filters = []) =>
-  filters.reduce((prev, filter) => {
-    const { targetApiField: name, options = [] } = filter;
-    const checkedOptions = options.filter((x) => x.checked);
+import { parse } from "query-string";
 
-    return checkedOptions.reduce(
-      (queryString, { value, checked }) =>
-        UpdateQueryString({
-          filter: {
-            name,
-            value,
-            checked,
-          },
-          queryString,
-        }),
-      ""
+/**
+ * Update filters based on a given querystring
+ * @param {array} filters list of filters in the standard format for this app
+ * @param {string} queryString querystring to be parsed
+ */
+const UpdateFilters = (filters = [], queryString = "") => {
+  const queryStringFilters = parse(queryString);
+
+  Object.keys(queryStringFilters).forEach((key) => {
+    const matchingFilter = filters.find(
+      ({ targetApiField = "" }) =>
+        targetApiField.toLowerCase() == key.toLowerCase()
     );
-  }, "");
+
+    if (matchingFilter) {
+      const urlValues = queryStringFilters[key].toLowerCase().split(",");
+
+      matchingFilter.options
+        .filter(({ value = "" }) =>
+          urlValues.some(
+            (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
+          )
+        )
+        .map((x) => {
+          x.checked = true;
+        });
+    }
+  });
+
+  return filters;
+};
 
 /**
  * Updates an existing query string based on given filter information.
@@ -67,4 +82,4 @@ const UpdateQueryString = ({
   return [...searchParams].length > 0 ? `?${searchParams.toString()}` : "";
 };
 
-export { CreateQueryString, UpdateQueryString };
+export { UpdateFilters, UpdateQueryString };

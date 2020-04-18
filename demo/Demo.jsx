@@ -18,7 +18,7 @@ const Demo = (props) => {
       <FilterList
         title="News"
         filters={filters}
-        apiEndpoint="{yourNewsEndpointGoesHere}"
+        apiEndpoint="http://localhost:54727/api/hub/structuredContent/news"
         renderItem={({ title, articleSummary }) => (
           <div
             style={{
