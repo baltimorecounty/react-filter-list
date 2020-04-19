@@ -6,6 +6,16 @@ import { parse } from "query-string";
  * @param {string} queryString querystring to be parsed
  */
 const UpdateFilters = (filters = [], queryString = "") => {
+  if (!queryString) {
+    return filters.map((x) => {
+      x.options.map((y) => {
+        y.checked = false;
+        return y;
+      });
+      return x;
+    });
+  }
+
   const queryStringFilters = parse(queryString);
 
   Object.keys(queryStringFilters).forEach((key) => {
