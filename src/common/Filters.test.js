@@ -106,68 +106,68 @@ describe("UpdateQueryString", () => {
 });
 
 describe("UpdateFilters", () => {
-  //   test("should update filter from query string (single value)", () => {
-  //     const actual = UpdateFilters(
-  //       [
-  //         {
-  //           targetApiField: "category",
-  //           options: [
-  //             {
-  //               value: "fun",
-  //             },
-  //           ],
-  //         },
-  //       ],
-  //       "?category=fun"
-  //     );
+  test("should update filter from query string (single value)", () => {
+    const actual = UpdateFilters(
+      [
+        {
+          targetApiField: "category",
+          options: [
+            {
+              value: "fun",
+            },
+          ],
+        },
+      ],
+      "?category=fun"
+    );
 
-  //     expect(actual).toEqual([
-  //       {
-  //         targetApiField: "category",
-  //         options: [
-  //           {
-  //             value: "fun",
-  //             checked: true,
-  //           },
-  //         ],
-  //       },
-  //     ]);
-  //   });
+    expect(actual).toEqual([
+      {
+        targetApiField: "category",
+        options: [
+          {
+            value: "fun",
+            checked: true,
+          },
+        ],
+      },
+    ]);
+  });
 
-  //test("should update filter from query string (single value)", () => {
-  //     const actual = UpdateFilters(
-  //       [
-  //         {
-  //           targetApiField: "category",
-  //           options: [
-  //             {
-  //               value: "fun",
-  //             },
-  //             {
-  //               value: "not-fun",
-  //             },
-  //           ],
-  //         },
-  //       ],
-  //       "?category=fun,not-fun"
-  //     );
+  test("should update filter from query string (single value)", () => {
+    const actual = UpdateFilters(
+      [
+        {
+          targetApiField: "category",
+          options: [
+            {
+              value: "fun",
+            },
+            {
+              value: "not-fun",
+            },
+          ],
+        },
+      ],
+      "?category=fun,not-fun"
+    );
 
-  //     expect(actual).toEqual([
-  //       {
-  //         targetApiField: "category",
-  //         options: [
-  //           {
-  //             value: "fun",
-  //             checked: true,
-  //           },
-  //           {
-  //             value: "not-fun",
-  //             checked: true,
-  //           },
-  //         ],
-  //       },
-  //     ]);
-  //   });
+    expect(actual).toEqual([
+      {
+        targetApiField: "category",
+        options: [
+          {
+            value: "fun",
+            checked: true,
+          },
+          {
+            value: "not-fun",
+            checked: true,
+          },
+        ],
+      },
+    ]);
+  });
 
   test("should clear querystring if querystring is empty", () => {
     const actual = UpdateFilters(
