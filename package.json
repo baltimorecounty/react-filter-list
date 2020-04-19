@@ -39,7 +39,7 @@
     "dist"
   ],
   "dependencies": {
-    "@baltimorecounty/dotgov-components": "^1.0.0",
+    "@baltimorecounty/dotgov-components": "^1.0.3",
     "promise-polyfill": "8.1.3",
     "prop-types": "^15.7.2",
     "query-string": "^6.12.1",
