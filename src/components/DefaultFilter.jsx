@@ -10,10 +10,10 @@ const DefaultFilter = ({
     {options.map(({ label, value, checked }) => {
       return (
         <Checkbox
-          key={`${displayName}-${value}`}
+          key={`${displayName}-${value}-${checked}`}
           id={`${displayName}-${value}`}
           name={targetApiField}
-          onClick={onChange}
+          onChange={onChange}
           label={label}
           value={value}
           checked={checked}
