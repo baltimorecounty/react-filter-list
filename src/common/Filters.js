@@ -1,5 +1,13 @@
 import { parse } from "query-string";
 
+const clearFilter = (x) => {
+  x.options.map((y) => {
+    y.checked = false;
+    return y;
+  });
+  return x;
+};
+
 /**
  * Update filters based on a given querystring
  * @param {array} filters list of filters in the standard format for this app
@@ -7,16 +15,18 @@ import { parse } from "query-string";
  */
 const UpdateFilters = (filters = [], queryString = "") => {
   if (!queryString) {
-    return filters.map((x) => {
-      x.options.map((y) => {
-        y.checked = false;
-        return y;
-      });
-      return x;
-    });
+    return filters.map(clearFilter);
   }
 
   const queryStringFilters = parse(queryString);
+
+  filters
+    .filter(({ targetApiField = "" }) =>
+      Object.keys(queryStringFilters).some(
+        (key = "") => key.toLowerCase() !== targetApiField.toLowerCase()
+      )
+    )
+    .forEach(clearFilter);
 
   Object.keys(queryStringFilters).forEach((key) => {
     const matchingFilter = filters.find(

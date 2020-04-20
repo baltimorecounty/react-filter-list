@@ -206,4 +206,67 @@ describe("UpdateFilters", () => {
       },
     ]);
   });
+
+  test("should handle value with spaces", () => {
+    const actual = UpdateFilters(
+      [
+        {
+          targetApiField: "category.value",
+          options: [
+            {
+              value: "releases",
+              checked: true,
+            },
+            {
+              value: "stories",
+              checked: false,
+            },
+          ],
+        },
+        {
+          targetApiField: "author",
+          options: [
+            {
+              value: "jane",
+              checked: false,
+            },
+            {
+              value: "jane doe",
+              checked: true,
+            },
+          ],
+        },
+      ],
+      "?category.value=releases%2Cstories"
+    );
+
+    expect(actual).toEqual([
+      {
+        targetApiField: "category.value",
+        options: [
+          {
+            value: "releases",
+            checked: true,
+          },
+          {
+            value: "stories",
+            checked: true,
+          },
+        ],
+      },
+      {
+        targetApiField: "author",
+        options: [
+          {
+            value: "jane",
+            checked: false,
+          },
+          {
+            value: "jane doe",
+            checked: false,
+          },
+        ],
+      },
+    ]);
+  });
 });
