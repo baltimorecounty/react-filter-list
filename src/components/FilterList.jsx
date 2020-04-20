@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, withRouter } from "react-router-dom";
 import { UpdateFilters, UpdateQueryString } from "../common/Filters";
 
 import ApiList from "./ApiList.jsx";
@@ -7,64 +6,63 @@ import DefaultFilter from "./DefaultFilter.jsx";
 import DefaultLoadMoreButton from "./DefaultLoadMoreButton";
 import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 
-const FilterList = withRouter(
-  ({
-    title = "",
-    renderItem = () => <p>You must specify a renderItem function.</p>,
-    renderFilter = (filter, onChange) => (
-      <DefaultFilter filter={filter} onChange={onChange} />
-    ),
-    renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
-    filters: filtersFromProps = [],
-    apiEndpoint: defaultApiEndpoint,
-    history,
-    staticContext,
-    ...props
-  }) => {
-    const [filters, setFilters] = useState(() =>
-      UpdateFilters(filtersFromProps, location.search)
-    );
-    const [apiEndpoint, setApiEndpoint] = useState(() => defaultApiEndpoint);
+const FilterList = ({
+  title = "",
+  renderItem = () => <p>You must specify a renderItem function.</p>,
+  renderFilter = (filter, onChange) => (
+    <DefaultFilter filter={filter} onChange={onChange} />
+  ),
+  renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
+  filters: filtersFromProps = [],
+  apiEndpoint: defaultApiEndpoint,
+  history,
+  staticContext,
+  ...props
+}) => {
+  const [filters, setFilters] = useState(() =>
+    UpdateFilters(filtersFromProps, location.search)
+  );
+  const [apiEndpoint, setApiEndpoint] = useState(() => defaultApiEndpoint);
 
-    useEffect(() => {
-      setFilters((filters) => UpdateFilters([...filters], location.search));
-      setApiEndpoint(defaultApiEndpoint + location.search);
-    }, [location.search]);
+  useEffect(() => {
+    setFilters((filters) => UpdateFilters([...filters], location.search));
+    setApiEndpoint(defaultApiEndpoint + location.search);
+  }, [location.search]);
 
-    const handleFilterChange = (changeEvent) => {
-      const { name, value, checked } = changeEvent;
-      const [base, currentQueryString] = apiEndpoint.split("?");
-      const queryString = UpdateQueryString({
-        filter: { name, value, checked },
-        queryString: currentQueryString,
-      });
-      history.push(queryString);
-    };
+  const handleFilterChange = (changeEvent) => {
+    const { name, value, checked } = changeEvent;
+    const [base, currentQueryString] = apiEndpoint.split("?");
+    const queryString = UpdateQueryString({
+      filter: { name, value, checked },
+      queryString: currentQueryString,
+    });
+    history.push(queryString);
+  };
 
-    return (
-      <div {...props}>
-        <div className="row">
-          <div className="col-md-3 col-xs-12">
-            <Filters
-              renderFilter={renderFilter}
-              handleFilterChange={handleFilterChange}
-              filters={filters}
-            />
-          </div>
-          <div className="col-md-9 col-xs-12">
-            <ApiList
-              endpoint={apiEndpoint}
-              title={title}
-              renderItem={renderItem}
-              renderLoadMoreButton={renderLoadMoreButton}
-            />
-          </div>
+  return (
+    <div {...props}>
+      <div className="row">
+        <div className="col-md-3 col-xs-12">
+          <Filters
+            renderFilter={renderFilter}
+            handleFilterChange={handleFilterChange}
+            filters={filters}
+          />
+        </div>
+        <div className="col-md-9 col-xs-12">
+          <ApiList
+            endpoint={apiEndpoint}
+            title={title}
+            renderItem={renderItem}
+            renderLoadMoreButton={renderLoadMoreButton}
+          />
         </div>
       </div>
-    );
-  }
-);
+    </div>
+  );
+};
 
 FilterList.propTypes = {
   /** Name of the collection of data, Ex. Baltimore County News */
@@ -89,10 +87,4 @@ FilterList.propTypes = {
   apiEndpoint: PropTypes.string.isRequired,
 };
 
-const FilterListWrapper = (props) => (
-  <Router>
-    <FilterList {...props} />
-  </Router>
-);
-
-export default FilterListWrapper;
+export default withRouter(FilterList);

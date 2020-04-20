@@ -1,1 +1,1 @@
-export { default as FilterList } from "./components/FilterList";
+export { default as FilterList } from "./components/FilterListWrapper";
