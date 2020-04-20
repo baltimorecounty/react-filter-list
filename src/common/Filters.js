@@ -9,6 +9,45 @@ const resetFilter = (filter) => {
   return filter;
 };
 
+/** Reset any filters that do not exist in the query string. */
+const resetEmptyFilters = (filters = [], queryStringFilters = {}) => {
+  filters
+    .filter(({ targetApiField = "" }) =>
+      Object.keys(queryStringFilters).some(
+        (key = "") => key.toLowerCase() !== targetApiField.toLowerCase()
+      )
+    )
+    .forEach(resetFilter);
+};
+
+/**
+ * Update filters based on a given querystring (parsed to an object)
+ */
+const updateFilters = (filters = [], queryStringFilters = {}) => {
+  // Reset any filters that do not exist in the current querystring
+  resetEmptyFilters(filters, queryStringFilters);
+
+  // Update active filters based on querystring
+  Object.keys(queryStringFilters).forEach((key) => {
+    const matchingFilter = filters.find(
+      ({ targetApiField = "" }) =>
+        targetApiField.toLowerCase() == key.toLowerCase()
+    );
+
+    if (matchingFilter) {
+      const urlValues = queryStringFilters[key].toLowerCase().split(",");
+
+      matchingFilter.options.map((option) => {
+        const { value = "" } = option;
+        option.checked = urlValues.some(
+          (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
+        );
+        return option;
+      });
+    }
+  });
+};
+
 /**
  * Update filters based on a given querystring
  * @param {array} filters list of filters in the standard format for this app
@@ -21,32 +60,7 @@ const UpdateFilters = (filters = [], queryString = "") => {
 
   const queryStringFilters = parse(queryString);
 
-  filters
-    .filter(({ targetApiField = "" }) =>
-      Object.keys(queryStringFilters).some(
-        (key = "") => key.toLowerCase() !== targetApiField.toLowerCase()
-      )
-    )
-    .forEach(resetFilter);
-
-  Object.keys(queryStringFilters).forEach((key) => {
-    const matchingFilter = filters.find(
-      ({ targetApiField = "" }) =>
-        targetApiField.toLowerCase() == key.toLowerCase()
-    );
-
-    if (matchingFilter) {
-      const urlValues = queryStringFilters[key].toLowerCase().split(",");
-
-      matchingFilter.options.map((x) => {
-        const { value = "" } = x;
-        x.checked = urlValues.some(
-          (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
-        );
-        return x;
-      });
-    }
-  });
+  updateFilters(filters, queryStringFilters);
 
   return [...filters];
 };
