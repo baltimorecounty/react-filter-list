@@ -1,11 +1,12 @@
 import { parse } from "query-string";
 
-const clearFilter = (x) => {
-  x.options.map((y) => {
-    y.checked = false;
-    return y;
+/** Resets filter to default state. All options are unchecked */
+const resetFilter = (filter) => {
+  filter.options.map((option) => {
+    option.checked = false;
+    return option;
   });
-  return x;
+  return filter;
 };
 
 /**
@@ -15,7 +16,7 @@ const clearFilter = (x) => {
  */
 const UpdateFilters = (filters = [], queryString = "") => {
   if (!queryString) {
-    return filters.map(clearFilter);
+    return filters.map(resetFilter);
   }
 
   const queryStringFilters = parse(queryString);
@@ -26,7 +27,7 @@ const UpdateFilters = (filters = [], queryString = "") => {
         (key = "") => key.toLowerCase() !== targetApiField.toLowerCase()
       )
     )
-    .forEach(clearFilter);
+    .forEach(resetFilter);
 
   Object.keys(queryStringFilters).forEach((key) => {
     const matchingFilter = filters.find(
