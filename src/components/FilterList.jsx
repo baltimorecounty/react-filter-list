@@ -27,7 +27,7 @@ const FilterList = ({
   const [apiEndpoint, setApiEndpoint] = useState(() => defaultApiEndpoint);
 
   useEffect(() => {
-    setFilters((filters) => UpdateFilters([...filters], location.search));
+    setFilters((filters) => UpdateFilters(filters, location.search));
     setApiEndpoint(defaultApiEndpoint + location.search);
   }, [location.search]);
 
