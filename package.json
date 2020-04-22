@@ -39,10 +39,12 @@
     "dist"
   ],
   "dependencies": {
-    "@baltimorecounty/dotgov-components": "^1.0.0",
+    "@baltimorecounty/dotgov-components": "^1.0.3",
     "promise-polyfill": "8.1.3",
     "prop-types": "^15.7.2",
+    "query-string": "^6.12.1",
     "react-query": "^1.0.30",
+    "react-router-dom": "^5.1.2",
     "whatwg-fetch": "^3.0.0"
   }
 }

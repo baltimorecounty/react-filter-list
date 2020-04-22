@@ -1,4 +1,4 @@
-import FilterList from "../src/components/FilterList";
+import { FilterList } from "../src/index";
 import React from "react";
 
 const filters = [

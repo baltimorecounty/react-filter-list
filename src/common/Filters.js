@@ -1,3 +1,70 @@
+import { parse } from "query-string";
+
+/** Resets filter to default state. All options are unchecked */
+const resetFilter = (filter) => {
+  filter.options.map((option) => {
+    option.checked = false;
+    return option;
+  });
+  return filter;
+};
+
+/** Reset any filters that do not exist in the query string. */
+const resetEmptyFilters = (filters = [], queryStringFilters = {}) => {
+  filters
+    .filter(({ targetApiField = "" }) =>
+      Object.keys(queryStringFilters).some(
+        (key = "") => key.toLowerCase() !== targetApiField.toLowerCase()
+      )
+    )
+    .forEach(resetFilter);
+};
+
+/**
+ * Update filters based on a given querystring (parsed to an object)
+ */
+const updateFilters = (filters = [], queryStringFilters = {}) => {
+  // Reset any filters that do not exist in the current querystring
+  resetEmptyFilters(filters, queryStringFilters);
+
+  // Update active filters based on querystring
+  Object.keys(queryStringFilters).forEach((key) => {
+    const matchingFilter = filters.find(
+      ({ targetApiField = "" }) =>
+        targetApiField.toLowerCase() == key.toLowerCase()
+    );
+
+    if (matchingFilter) {
+      const urlValues = queryStringFilters[key].toLowerCase().split(",");
+
+      matchingFilter.options.map((option) => {
+        const { value = "" } = option;
+        option.checked = urlValues.some(
+          (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
+        );
+        return option;
+      });
+    }
+  });
+};
+
+/**
+ * Update filters based on a given querystring
+ * @param {array} filters list of filters in the standard format for this app
+ * @param {string} queryString querystring to be parsed
+ */
+const UpdateFilters = (filters = [], queryString = "") => {
+  if (!queryString) {
+    return filters.map(resetFilter);
+  }
+
+  const queryStringFilters = parse(queryString);
+
+  updateFilters(filters, queryStringFilters);
+
+  return [...filters];
+};
+
 /**
  * Updates an existing query string based on given filter information.
  * @param {Object} obj
@@ -11,7 +78,7 @@
  */
 const UpdateQueryString = ({
   filter: { checked, name, value },
-  queryString
+  queryString,
 }) => {
   const searchParams = new URLSearchParams(queryString || "");
   const existingValues = searchParams.has(name)
@@ -48,4 +115,4 @@ const UpdateQueryString = ({
   return [...searchParams].length > 0 ? `?${searchParams.toString()}` : "";
 };
 
-export { UpdateQueryString };
+export { UpdateFilters, UpdateQueryString };
