@@ -8,12 +8,13 @@ const DefaultFilter = ({
 }) => (
   <Collapse id={targetApiField} header={displayName}>
     {options.map(({ label, value, checked }) => {
+      const id = `${targetApiField}-${value.split(" ").join("-")}`;
       return (
         <Checkbox
-          key={`${displayName}-${value}`}
-          id={`${displayName}-${value}`}
+          key={`${id}-${checked}`}
+          id={id}
           name={targetApiField}
-          onClick={onChange}
+          onChange={onChange}
           label={label}
           value={value}
           checked={checked}

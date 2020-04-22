@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UpdateFilters, UpdateQueryString } from "../common/Filters";
 
 import ApiList from "./ApiList.jsx";
@@ -6,6 +6,7 @@ import DefaultFilter from "./DefaultFilter.jsx";
 import DefaultLoadMoreButton from "./DefaultLoadMoreButton";
 import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 
 const FilterList = ({
   title = "",
@@ -16,25 +17,28 @@ const FilterList = ({
   renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
   filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
+  history,
+  staticContext,
   ...props
 }) => {
-  const queryString = location.search;
-
-  const filters = UpdateFilters(filtersFromProps, queryString);
-
-  const [apiEndpoint, setApiEndpoint] = useState(
-    () => defaultApiEndpoint + queryString
+  const [filters, setFilters] = useState(() =>
+    UpdateFilters(filtersFromProps, location.search)
   );
+  const [apiEndpoint, setApiEndpoint] = useState(() => defaultApiEndpoint);
+
+  useEffect(() => {
+    setFilters((filters) => UpdateFilters(filters, location.search));
+    setApiEndpoint(defaultApiEndpoint + location.search);
+  }, [location.search]);
 
   const handleFilterChange = (changeEvent) => {
-    const { name, value, checked } = changeEvent.target;
-    const [baseApiEndpoint, currentQueryString] = apiEndpoint.split("?");
+    const { name, value, checked } = changeEvent;
+    const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter: { name, value, checked },
       queryString: currentQueryString,
     });
-
-    setApiEndpoint(`${baseApiEndpoint}${queryString}`);
+    history.push(queryString);
   };
 
   return (
@@ -83,4 +87,4 @@ FilterList.propTypes = {
   apiEndpoint: PropTypes.string.isRequired,
 };
 
-export default FilterList;
+export default withRouter(FilterList);

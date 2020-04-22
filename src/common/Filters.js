@@ -1,13 +1,33 @@
 import { parse } from "query-string";
 
-/**
- * Update filters based on a given querystring
- * @param {array} filters list of filters in the standard format for this app
- * @param {string} queryString querystring to be parsed
- */
-const UpdateFilters = (filters = [], queryString = "") => {
-  const queryStringFilters = parse(queryString);
+/** Resets filter to default state. All options are unchecked */
+const resetFilter = (filter) => {
+  filter.options.map((option) => {
+    option.checked = false;
+    return option;
+  });
+  return filter;
+};
 
+/** Reset any filters that do not exist in the query string. */
+const resetEmptyFilters = (filters = [], queryStringFilters = {}) => {
+  filters
+    .filter(({ targetApiField = "" }) =>
+      Object.keys(queryStringFilters).some(
+        (key = "") => key.toLowerCase() !== targetApiField.toLowerCase()
+      )
+    )
+    .forEach(resetFilter);
+};
+
+/**
+ * Update filters based on a given querystring (parsed to an object)
+ */
+const updateFilters = (filters = [], queryStringFilters = {}) => {
+  // Reset any filters that do not exist in the current querystring
+  resetEmptyFilters(filters, queryStringFilters);
+
+  // Update active filters based on querystring
   Object.keys(queryStringFilters).forEach((key) => {
     const matchingFilter = filters.find(
       ({ targetApiField = "" }) =>
@@ -17,19 +37,32 @@ const UpdateFilters = (filters = [], queryString = "") => {
     if (matchingFilter) {
       const urlValues = queryStringFilters[key].toLowerCase().split(",");
 
-      matchingFilter.options
-        .filter(({ value = "" }) =>
-          urlValues.some(
-            (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
-          )
-        )
-        .map((x) => {
-          x.checked = true;
-        });
+      matchingFilter.options.map((option) => {
+        const { value = "" } = option;
+        option.checked = urlValues.some(
+          (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
+        );
+        return option;
+      });
     }
   });
+};
 
-  return filters;
+/**
+ * Update filters based on a given querystring
+ * @param {array} filters list of filters in the standard format for this app
+ * @param {string} queryString querystring to be parsed
+ */
+const UpdateFilters = (filters = [], queryString = "") => {
+  if (!queryString) {
+    return filters.map(resetFilter);
+  }
+
+  const queryStringFilters = parse(queryString);
+
+  updateFilters(filters, queryStringFilters);
+
+  return [...filters];
 };
 
 /**

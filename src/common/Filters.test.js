@@ -168,4 +168,105 @@ describe("UpdateFilters", () => {
       },
     ]);
   });
+
+  test("should clear querystring if querystring is empty", () => {
+    const actual = UpdateFilters(
+      [
+        {
+          targetApiField: "category",
+          options: [
+            {
+              value: "fun",
+              checked: true,
+            },
+            {
+              value: "not-fun",
+              checked: true,
+            },
+          ],
+        },
+      ],
+      ""
+    );
+
+    expect(actual).toEqual([
+      {
+        targetApiField: "category",
+        options: [
+          {
+            value: "fun",
+            checked: false,
+          },
+
+          {
+            value: "not-fun",
+            checked: false,
+          },
+        ],
+      },
+    ]);
+  });
+
+  test("should handle value with spaces", () => {
+    const actual = UpdateFilters(
+      [
+        {
+          targetApiField: "category.value",
+          options: [
+            {
+              value: "releases",
+              checked: true,
+            },
+            {
+              value: "stories",
+              checked: false,
+            },
+          ],
+        },
+        {
+          targetApiField: "author",
+          options: [
+            {
+              value: "jane",
+              checked: false,
+            },
+            {
+              value: "jane doe",
+              checked: true,
+            },
+          ],
+        },
+      ],
+      "?category.value=releases%2Cstories"
+    );
+
+    expect(actual).toEqual([
+      {
+        targetApiField: "category.value",
+        options: [
+          {
+            value: "releases",
+            checked: true,
+          },
+          {
+            value: "stories",
+            checked: true,
+          },
+        ],
+      },
+      {
+        targetApiField: "author",
+        options: [
+          {
+            value: "jane",
+            checked: false,
+          },
+          {
+            value: "jane doe",
+            checked: false,
+          },
+        ],
+      },
+    ]);
+  });
 });
