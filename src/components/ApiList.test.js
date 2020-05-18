@@ -42,5 +42,7 @@ test("loads and displays a list", async () => {
     expect(screen.getByText(/jane doe/i)).toBeInTheDocument();
     expect(screen.getByText(/news story 2/i)).toBeInTheDocument();
     expect(screen.getByText(/john doe/i)).toBeInTheDocument();
+
+    //TODO: Make sure load more button is not visible
   });
 });
