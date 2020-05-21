@@ -21,14 +21,17 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
-  const [filters, setFilters] = useState(() =>
-    UpdateFilters(filtersFromProps, location.search)
+  const [filters, setFilters] = useState(() => filtersFromProps);
+  const [apiEndpoint, setApiEndpoint] = useState(
+    () => defaultApiEndpoint.split("?")[0]
   );
-  const [apiEndpoint, setApiEndpoint] = useState(() => defaultApiEndpoint);
+
+  console.log(filters);
 
   useEffect(() => {
     setFilters((filters) => UpdateFilters(filters, location.search));
-    setApiEndpoint(defaultApiEndpoint + location.search);
+
+    setApiEndpoint(defaultApiEndpoint.split("?")[0] + location.search);
   }, [location.search]);
 
   const handleFilterChange = (changeEvent) => {

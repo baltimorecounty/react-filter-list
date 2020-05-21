@@ -8,6 +8,21 @@ const filters = [
     options: [
       { value: "releases", label: "News Releases" },
       { value: "stories", label: "Stories" },
+      { value: "blue", label: "blue" },
+      { value: "orange", label: "orange" },
+      { value: "red", label: "red" },
+      { value: "black", label: "black" },
+      { value: "white", label: "white" },
+    ],
+  },
+  {
+    targetApiField: "recordsPerPage",
+    isVisible: false,
+    options: [
+      {
+        value: 2,
+        checked: true,
+      },
     ],
   },
 ];
@@ -18,7 +33,7 @@ const Demo = (props) => {
       <FilterList
         title="News"
         filters={filters}
-        apiEndpoint="{yourNewsEndpointGoesHere}"
+        apiEndpoint="http://localhost:54727/api/hub/structuredContent/news"
         renderItem={({ title, articleSummary }) => (
           <div
             style={{

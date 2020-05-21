@@ -3,7 +3,8 @@ import { parse } from "query-string";
 /** Resets filter to default state. All options are unchecked */
 const resetFilter = (filter) => {
   filter.options.map((option) => {
-    option.checked = false;
+    // If a filter is not visible, we should persist that value instead of resetting
+    option.checked = filter.isVisible === false || false;
     return option;
   });
   return filter;
@@ -40,7 +41,9 @@ const updateFilters = (filters = [], queryStringFilters = {}) => {
       matchingFilter.options.map((option) => {
         const { value = "" } = option;
         option.checked = urlValues.some(
-          (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
+          (urlValue = "") =>
+            matchingFilter.isVisible === false ||
+            value.toLowerCase() === urlValue.toLowerCase()
         );
         return option;
       });
