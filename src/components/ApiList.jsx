@@ -18,6 +18,7 @@ const fetchList = (key, { endpoint }, loadMoreEndpoint) =>
   fetch(loadMoreEndpoint || endpoint).then((res) => res.json());
 
 const ApiList = ({
+  className,
   title,
   endpoint,
   renderHeader = () => {},
@@ -62,7 +63,7 @@ const ApiList = ({
   };
 
   return (
-    <div className="list">
+    <div className={className}>
       {renderHeader(count)}
       <div className="items">
         {data.map((group, i) => (
