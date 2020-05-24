@@ -62,12 +62,12 @@ const ApiList = ({
   };
 
   return (
-    <div className={className}>
+    <div>
       <RecordsMessage
         count={totalRecords}
         renderMessage={({ count }) => `${count} results`}
       />
-      <div className="items">
+      <div className={className}>
         {data.map((group, i) => (
           <React.Fragment key={i}>
             {group.records.map((record) => (
