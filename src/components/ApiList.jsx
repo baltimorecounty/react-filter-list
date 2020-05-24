@@ -71,7 +71,9 @@ const ApiList = ({
         {data.map((group, i) => (
           <React.Fragment key={i}>
             {group.records.map((record) => (
-              <div key={record.id}>{renderItem(record)}</div>
+              <React.Fragment key={record.id}>
+                {renderItem(record)}
+              </React.Fragment>
             ))}
           </React.Fragment>
         ))}
