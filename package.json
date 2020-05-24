@@ -45,6 +45,7 @@
     "query-string": "^6.12.1",
     "react-query": "^1.0.30",
     "react-router-dom": "^5.1.2",
+    "use-debounce": "^3.4.2",
     "whatwg-fetch": "^3.0.0"
   }
 }
