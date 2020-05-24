@@ -5,10 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      .plus-text-icon,
+      .minus-text-icon {
+        position: relative;
+      }
+      .plus-text-icon:before,
+      .minus-text-icon:before {
+        display: inline-block;
+        margin-right: 5px;
+      }
+
+      .plus-text-icon:before {
+        content: "+";
+      }
+
+      .minus-text-icon:before {
+        content: "-";
+      }
+    </style>
   </head>
   <body>
     <h1>Package Name Examples</h1>
     <div id="root"></div>
+    <script src="//beta.baltimorecountymd.gov/sebin/z/l/dotgov-site.min.js"></script>
     <script src="demo.js"></script>
   </body>
 </html>
