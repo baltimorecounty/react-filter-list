@@ -21,6 +21,7 @@ const FilterList = ({
   ),
   renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
   includeInputFilter = false,
+  inputFilterPlaceholder = "Begin typing to filter...",
   filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
   history,
@@ -71,7 +72,10 @@ const FilterList = ({
         </div>
         <div className="col-md-9 col-xs-12">
           {includeInputFilter && (
-            <FilterTextInput onChange={handleFilterTextInputChange} />
+            <FilterTextInput
+              onChange={handleFilterTextInputChange}
+              placeholder={inputFilterPlaceholder}
+            />
           )}
           <ApiList
             endpoint={apiEndpoint}
