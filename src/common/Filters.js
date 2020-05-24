@@ -49,6 +49,27 @@ const updateFilters = (filters = [], queryStringFilters = {}) => {
 };
 
 /**
+ * Update a given url querystring for a name value pair
+ * @param {string} url full url with querystring
+ * @param {string} name name of query string value you wish to update
+ * @param {string} value value of query string name, an empty value will remove
+ * that name/value pair from the string
+ */
+const UpdateUrlQueryString = (url, name, value) => {
+  const [base, queryString] = url.split("?");
+  const searchParams = new URLSearchParams(queryString || "");
+  if (!!value) {
+    searchParams.set(name, value);
+  } else {
+    searchParams.delete(name);
+  }
+
+  return [...searchParams].length > 0
+    ? `${base}?${searchParams.toString()}`
+    : base;
+};
+
+/**
  * Update filters based on a given querystring
  * @param {array} filters list of filters in the standard format for this app
  * @param {string} queryString querystring to be parsed
@@ -115,4 +136,4 @@ const UpdateQueryString = ({
   return [...searchParams].length > 0 ? `?${searchParams.toString()}` : "";
 };
 
-export { UpdateFilters, UpdateQueryString };
+export { UpdateUrlQueryString, UpdateFilters, UpdateQueryString };
