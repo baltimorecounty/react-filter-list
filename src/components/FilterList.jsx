@@ -111,6 +111,10 @@ FilterList.propTypes = {
   filters: PropTypes.array.isRequired,
   /** Fully qualified api url plus endpoint targeting for the list. Ex. https://mycoolsite/api/news  */
   apiEndpoint: PropTypes.string.isRequired,
+  /** Includes a text input filter above the list, this does not impact filters in the url */
+  includeInputFilter: PropTypes.bool,
+  /** Placeholder text for the text input filter */
+  inputFilterPlaceholder: PropTypes.string,
 };
 
 export default withRouter(FilterList);
