@@ -87,6 +87,8 @@ FilterList.propTypes = {
   filters: PropTypes.array.isRequired,
   /** Fully qualified api url plus endpoint targeting for the list. Ex. https://mycoolsite/api/news  */
   apiEndpoint: PropTypes.string.isRequired,
+  /** className attribute for the list container */
+  listContainerClassName: PropTypes.string,
 };
 
 export default withRouter(FilterList);
