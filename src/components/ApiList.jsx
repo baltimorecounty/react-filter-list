@@ -20,6 +20,7 @@ const fetchList = (key, { endpoint }, loadMoreEndpoint) =>
 const ApiList = ({
   title,
   endpoint,
+  renderHeader = () => {},
   renderItem = () => {},
   renderLoadMoreButton = () => {},
 }) => {
@@ -54,18 +55,15 @@ const ApiList = ({
     );
   }
 
-  const { metaData: { totalRecords = 0 } = {} } = data[0] || {};
+  const { metaData: { totalRecords: count = 0 } = {} } = data[0] || {};
 
   const handleLoadMoreClick = () => {
     fetchMore();
   };
 
   return (
-    <>
-      <RecordsMessage
-        count={totalRecords}
-        renderMessage={({ count }) => `${count} results`}
-      />
+    <div className="list">
+      {renderHeader(count)}
       <div className="items">
         {data.map((group, i) => (
           <React.Fragment key={i}>
@@ -81,7 +79,7 @@ const ApiList = ({
           isFetchingMore,
           onClick: handleLoadMoreClick,
         })}
-    </>
+    </div>
   );
 };
 
