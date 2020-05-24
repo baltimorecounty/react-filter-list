@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { UpdateFilters, UpdateQueryString } from "../common/Filters";
+import {
+  UpdateFilters,
+  UpdateQueryString,
+  UpdateUrlQueryString,
+} from "../common/Filters";
 
 import ApiList from "./ApiList.jsx";
 import DefaultFilter from "./DefaultFilter.jsx";
 import DefaultLoadMoreButton from "./DefaultLoadMoreButton";
+import FilterTextInput from "./FilterTextInput";
 import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
@@ -15,6 +20,7 @@ const FilterList = ({
     <DefaultFilter filter={filter} onChange={onChange} />
   ),
   renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
+  includeInputFilter = false,
   filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
   history,
@@ -31,14 +37,26 @@ const FilterList = ({
     setApiEndpoint(defaultApiEndpoint + location.search);
   }, [location.search]);
 
-  const handleFilterChange = (changeEvent) => {
-    const { name, value, checked } = changeEvent;
+  const updateQueryString = (filter) => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
-      filter: { name, value, checked },
+      filter,
       queryString: currentQueryString,
     });
     history.push(queryString);
+  };
+
+  const handleFilterChange = (changeEvent) => {
+    const { name, value, checked } = changeEvent;
+    updateQueryString({ name, value, checked });
+  };
+
+  const handleFilterTextInputChange = (query) => {
+    const updatedUrl = UpdateUrlQueryString(apiEndpoint, "query", query);
+
+    // This disables any browser history updates
+    // Since a user could possibly update a ton of entries
+    setApiEndpoint(updatedUrl);
   };
 
   return (
@@ -52,11 +70,15 @@ const FilterList = ({
           />
         </div>
         <div className="col-md-9 col-xs-12">
+          {includeInputFilter && (
+            <FilterTextInput onChange={handleFilterTextInputChange} />
+          )}
           <ApiList
             endpoint={apiEndpoint}
-            title={title}
+            includeInputFilter={includeInputFilter}
             renderItem={renderItem}
             renderLoadMoreButton={renderLoadMoreButton}
+            title={title}
           />
         </div>
       </div>
