@@ -10,6 +10,7 @@ import { withRouter } from "react-router-dom";
 
 const FilterList = ({
   title = "",
+  listContainerClassName = "list",
   renderItem = () => <p>You must specify a renderItem function.</p>,
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
@@ -53,6 +54,7 @@ const FilterList = ({
         </div>
         <div className="col-md-9 col-xs-12">
           <ApiList
+            className={listContainerClassName}
             endpoint={apiEndpoint}
             title={title}
             renderItem={renderItem}

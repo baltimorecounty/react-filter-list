@@ -18,6 +18,7 @@ const fetchList = (key, { endpoint }, loadMoreEndpoint) =>
   fetch(loadMoreEndpoint || endpoint).then((res) => res.json());
 
 const ApiList = ({
+  className,
   title,
   endpoint,
   renderItem = () => {},
@@ -61,7 +62,7 @@ const ApiList = ({
   };
 
   return (
-    <>
+    <div className={className}>
       <RecordsMessage
         count={totalRecords}
         renderMessage={({ count }) => `${count} results`}
@@ -81,7 +82,7 @@ const ApiList = ({
           isFetchingMore,
           onClick: handleLoadMoreClick,
         })}
-    </>
+    </div>
   );
 };
 
