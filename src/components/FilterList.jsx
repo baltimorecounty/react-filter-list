@@ -6,6 +6,7 @@ import DefaultFilter from "./DefaultFilter.jsx";
 import DefaultLoadMoreButton from "./DefaultLoadMoreButton";
 import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
+import RecordsMessage from "./RecordsMessage";
 import { withRouter } from "react-router-dom";
 
 const FilterList = ({
@@ -13,6 +14,11 @@ const FilterList = ({
   renderItem = () => <p>You must specify a renderItem function.</p>,
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
+  ),
+  renderListHeader = (count) => (
+    <div className="list-header">
+      <RecordsMessage count={count} />
+    </div>
   ),
   renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
   filters: filtersFromProps = [],
@@ -54,9 +60,10 @@ const FilterList = ({
         <div className="col-md-9 col-xs-12">
           <ApiList
             endpoint={apiEndpoint}
-            title={title}
+            renderHeader={renderListHeader}
             renderItem={renderItem}
             renderLoadMoreButton={renderLoadMoreButton}
+            title={title}
           />
         </div>
       </div>
