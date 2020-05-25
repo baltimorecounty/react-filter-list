@@ -49,6 +49,22 @@ const updateFilters = (filters = [], queryStringFilters = {}) => {
 };
 
 /**
+ * Builds a querystring for static filters
+ * @param {string} queryString any query string
+ * @param {array} staticFilters list of static filters (targetApiField/value)
+ */
+const BuildApiUrl = (queryString, staticFilters = []) => {
+  const searchParams = new URLSearchParams(queryString || "");
+  staticFilters.forEach(({ targetApiField, value }) => {
+    searchParams.set(targetApiField, value);
+  });
+  return getQueryString(searchParams);
+};
+
+const getQueryString = (searchParams) =>
+  [...searchParams].length > 0 ? `?${searchParams.toString()}` : "";
+
+/**
  * Update a given url querystring for a name value pair
  * @param {string} url full url with querystring
  * @param {string} name name of query string value you wish to update
@@ -133,7 +149,7 @@ const UpdateQueryString = ({
     }
   }
 
-  return [...searchParams].length > 0 ? `?${searchParams.toString()}` : "";
+  return getQueryString(searchParams);
 };
 
-export { UpdateUrlQueryString, UpdateFilters, UpdateQueryString };
+export { BuildApiUrl, UpdateUrlQueryString, UpdateFilters, UpdateQueryString };
