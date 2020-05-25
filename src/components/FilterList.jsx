@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
 import {
+  BuildApiUrl,
   UpdateFilters,
   UpdateQueryString,
   UpdateUrlQueryString,
 } from "../common/Filters";
+import React, { useEffect, useState } from "react";
 
 import ApiList from "./ApiList.jsx";
 import DefaultFilter from "./DefaultFilter.jsx";
@@ -39,14 +40,10 @@ const FilterList = ({
 
   useEffect(() => {
     setFilters((filters) => UpdateFilters(filters, location.search));
-    const staticQueryString =
-      staticFilters.length > 0 ? `?${staticFilterString}` : "";
-    const dynamicQueryString = (staticFilters.length > 0
-      ? location.search.replace("?", "")
-      : location.search
-    ).replace(staticFilterString, "");
 
-    setApiEndpoint(defaultApiEndpoint + staticQueryString + dynamicQueryString);
+    setApiEndpoint(
+      defaultApiEndpoint + BuildApiUrl(location.search, staticFilters)
+    );
   }, [location.search]);
 
   const updateQueryString = (filter) => {
