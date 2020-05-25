@@ -53,7 +53,7 @@ const FilterList = ({
   };
 
   const handleFilterTextInputChange = (query) => {
-    const updatedUrl = UpdateUrlQueryString(apiEndpoint, "query", query);
+    const updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
 
     // This disables any browser history updates
     // Since a user could possibly update a ton of entries
