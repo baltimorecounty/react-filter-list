@@ -25,6 +25,7 @@ const FilterList = ({
   filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
   history,
+  staticFilters = [],
   staticContext,
   ...props
 }) => {
@@ -32,10 +33,20 @@ const FilterList = ({
     UpdateFilters(filtersFromProps, location.search)
   );
   const [apiEndpoint, setApiEndpoint] = useState(() => defaultApiEndpoint);
+  const staticFilterString = staticFilters
+    .map(({ targetApiField, value }) => `${targetApiField}=${value}`)
+    .join("&");
 
   useEffect(() => {
     setFilters((filters) => UpdateFilters(filters, location.search));
-    setApiEndpoint(defaultApiEndpoint + location.search);
+    const staticQueryString =
+      staticFilters.length > 0 ? `?${staticFilterString}` : "";
+    const dynamicQueryString = (staticFilters.length > 0
+      ? location.search.replace("?", "")
+      : location.search
+    ).replace(staticFilterString, "");
+
+    setApiEndpoint(defaultApiEndpoint + staticQueryString + dynamicQueryString);
   }, [location.search]);
 
   const updateQueryString = (filter) => {
@@ -115,6 +126,8 @@ FilterList.propTypes = {
   includeInputFilter: PropTypes.bool,
   /** Placeholder text for the text input filter */
   inputFilterPlaceholder: PropTypes.string,
+  /** allows user to pass in key/value (targetApiField, value) pair to always be applied to the list */
+  staticFilters: PropTypes.array,
 };
 
 export default withRouter(FilterList);
