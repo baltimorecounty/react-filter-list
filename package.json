@@ -7,7 +7,7 @@
   "demo": "public/demo.js",
   "scripts": {
     "build": "rollup --config",
-    "start": "parcel public/index.html",
+    "start": "npx parcel public/index.html",
     "watch-build": "rollup --config -w",
     "test": "jest",
     "prepublish": "npm run build"

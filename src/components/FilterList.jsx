@@ -16,15 +16,13 @@ const FilterList = ({
     <DefaultFilter filter={filter} onChange={onChange} />
   ),
   renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
-  filters: filtersFromProps = [],
+  filters: filtersFromProps,
   apiEndpoint: defaultApiEndpoint,
   history,
   staticContext,
   ...props
 }) => {
-  const [filters, setFilters] = useState(() =>
-    UpdateFilters(filtersFromProps, location.search)
-  );
+  const [filters, setFilters] = useState();
   const [apiEndpoint, setApiEndpoint] = useState(() => defaultApiEndpoint);
 
   useEffect(() => {
@@ -49,7 +47,7 @@ const FilterList = ({
           <Filters
             renderFilter={renderFilter}
             handleFilterChange={handleFilterChange}
-            filters={filters}
+            filters={filtersFromProps}
           />
         </div>
         <div className="col-md-9 col-xs-12">
@@ -83,8 +81,8 @@ FilterList.propTypes = {
    * The function is provided  all available information about that filter, and the change event.
    */
   renderFilter: PropTypes.func,
-  /** List of filters. A filter contains `targetApiField`, `displayName`, and list of options { label, value } */
-  filters: PropTypes.array.isRequired,
+  /** List of filters or a url to fetch the filters */
+  filters: PropTypes.oneOfType([PropTypes.array, PropTypes.string]).isRequired,
   /** Fully qualified api url plus endpoint targeting for the list. Ex. https://mycoolsite/api/news  */
   apiEndpoint: PropTypes.string.isRequired,
   /** className attribute for the list container */
