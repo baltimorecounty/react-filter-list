@@ -1,4 +1,4 @@
-import { Button, Checkbox, Collapse } from "@baltimorecounty/dotgov-components";
+import { Checkbox, Collapse } from "@baltimorecounty/dotgov-components";
 
 import OptionsCollapse from "./OptionsCollapse";
 import React from "react";
@@ -30,7 +30,7 @@ const DefaultFilter = ({
           />
         );
       })}
-      {moreOptions.length > 0 && (
+      {shouldCollapseOptions && (
         <OptionsCollapse
           options={moreOptions}
           onChange={onChange}
