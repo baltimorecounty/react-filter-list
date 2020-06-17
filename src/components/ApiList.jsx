@@ -2,7 +2,6 @@ import "promise-polyfill/src/polyfill";
 import "whatwg-fetch";
 
 import React from "react";
-import RecordsMessage from "./RecordsMessage";
 import { useInfiniteQuery } from "react-query";
 
 /**
