@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { UpdateFilters, UpdateQueryString } from "../common/Filters";
+import {
+  UpdateFilters,
+  UpdateQueryString,
+  UpdateUrlQueryString,
+} from "../common/Filters";
 
 import ApiList from "./ApiList.jsx";
 import DefaultFilter from "./DefaultFilter.jsx";
 import DefaultLoadMoreButton from "./DefaultLoadMoreButton";
+import FilterTextInput from "./FilterTextInput";
 import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
 import RecordsMessage from "./RecordsMessage";
@@ -11,6 +16,7 @@ import { withRouter } from "react-router-dom";
 
 const FilterList = ({
   title = "",
+  listContainerClassName = "list",
   renderItem = () => <p>You must specify a renderItem function.</p>,
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
@@ -21,6 +27,8 @@ const FilterList = ({
     </div>
   ),
   renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
+  includeInputFilter = false,
+  inputFilterPlaceholder = "Begin typing to filter...",
   filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
   history,
@@ -37,14 +45,26 @@ const FilterList = ({
     setApiEndpoint(defaultApiEndpoint + location.search);
   }, [location.search]);
 
-  const handleFilterChange = (changeEvent) => {
-    const { name, value, checked } = changeEvent;
+  const updateQueryString = (filter) => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
-      filter: { name, value, checked },
+      filter,
       queryString: currentQueryString,
     });
     history.push(queryString);
+  };
+
+  const handleFilterChange = (changeEvent) => {
+    const { name, value, checked } = changeEvent;
+    updateQueryString({ name, value, checked });
+  };
+
+  const handleFilterTextInputChange = (query) => {
+    const updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
+
+    // This disables any browser history updates
+    // Since a user could possibly update a ton of entries
+    setApiEndpoint(updatedUrl);
   };
 
   return (
@@ -58,9 +78,17 @@ const FilterList = ({
           />
         </div>
         <div className="col-md-9 col-xs-12">
+          {includeInputFilter && (
+            <FilterTextInput
+              onChange={handleFilterTextInputChange}
+              placeholder={inputFilterPlaceholder}
+            />
+          )}
           <ApiList
+            className={listContainerClassName}
             endpoint={apiEndpoint}
             renderHeader={renderListHeader}
+            includeInputFilter={includeInputFilter}
             renderItem={renderItem}
             renderLoadMoreButton={renderLoadMoreButton}
             title={title}
@@ -92,6 +120,12 @@ FilterList.propTypes = {
   filters: PropTypes.array.isRequired,
   /** Fully qualified api url plus endpoint targeting for the list. Ex. https://mycoolsite/api/news  */
   apiEndpoint: PropTypes.string.isRequired,
+  /** Includes a text input filter above the list, this does not impact filters in the url */
+  includeInputFilter: PropTypes.bool,
+  /** Placeholder text for the text input filter */
+  inputFilterPlaceholder: PropTypes.string,
+  /** className attribute for the list container */
+  listContainerClassName: PropTypes.string,
 };
 
 export default withRouter(FilterList);
