@@ -2,7 +2,6 @@ import "promise-polyfill/src/polyfill";
 import "whatwg-fetch";
 
 import React from "react";
-import RecordsMessage from "./RecordsMessage";
 import { useInfiniteQuery } from "react-query";
 
 /**
@@ -21,6 +20,7 @@ const ApiList = ({
   className,
   title,
   endpoint,
+  renderHeader = () => {},
   renderItem = () => {},
   renderLoadMoreButton = () => {},
 }) => {
@@ -55,7 +55,7 @@ const ApiList = ({
     );
   }
 
-  const { metaData: { totalRecords = 0 } = {} } = data[0] || {};
+  const { metaData: { totalRecords: count = 0 } = {} } = data[0] || {};
 
   const handleLoadMoreClick = () => {
     fetchMore();
@@ -63,10 +63,7 @@ const ApiList = ({
 
   return (
     <div>
-      <RecordsMessage
-        count={totalRecords}
-        renderMessage={({ count }) => `${count} results`}
-      />
+      {renderHeader(count)}
       <div className={className}>
         {data.map((group, i) => (
           <React.Fragment key={i}>
