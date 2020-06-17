@@ -1,6 +1,30 @@
-import { UpdateFilters, UpdateQueryString } from "./Filters";
+import {
+  UpdateFilters,
+  UpdateQueryString,
+  UpdateUrlQueryString,
+} from "./Filters";
 
 const comma = "%2C";
+
+describe("UpdateUrlQueryString", () => {
+  test("should add query, if no querystring exists", () => {
+    const actual = UpdateUrlQueryString("http://my/api", "query", "cars");
+
+    expect(actual).toEqual("http://my/api?query=cars");
+  });
+
+  test("should update the query, if no querystring already exits", () => {
+    const actual = UpdateUrlQueryString("http://my/api", "query", "vans");
+
+    expect(actual).toEqual("http://my/api?query=vans");
+  });
+
+  test("should remove the query, if value is falsy", () => {
+    const actual = UpdateUrlQueryString("http://my/api", "query", "");
+
+    expect(actual).toEqual("http://my/api");
+  });
+});
 
 describe("UpdateQueryString", () => {
   test("should add filter to querystring for a applied filter", () => {
