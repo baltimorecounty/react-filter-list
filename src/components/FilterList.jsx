@@ -15,6 +15,7 @@ import { withRouter } from "react-router-dom";
 
 const FilterList = ({
   title = "",
+  listContainerClassName = "list",
   renderItem = () => <p>You must specify a renderItem function.</p>,
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
@@ -78,6 +79,7 @@ const FilterList = ({
             />
           )}
           <ApiList
+            className={listContainerClassName}
             endpoint={apiEndpoint}
             includeInputFilter={includeInputFilter}
             renderItem={renderItem}
@@ -115,6 +117,8 @@ FilterList.propTypes = {
   includeInputFilter: PropTypes.bool,
   /** Placeholder text for the text input filter */
   inputFilterPlaceholder: PropTypes.string,
+  /** className attribute for the list container */
+  listContainerClassName: PropTypes.string,
 };
 
 export default withRouter(FilterList);
