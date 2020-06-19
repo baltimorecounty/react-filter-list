@@ -30,3 +30,43 @@ test("single filter removed", () => {
 
   expect(actual).toEqual({});
 });
+
+test("multiple filter exist, addFilter", () => {
+  const fakeFilter = {
+    or: [{ firstName: "Ron" }],
+  };
+  const actual = Update(
+    { name: "lastName", value: "Swanson", checked: true },
+    fakeFilter
+  );
+
+  expect(actual).toEqual({
+    or: [{ firstName: "Ron" }, { lastName: "Swanson" }],
+  });
+});
+
+test("multiple filter exist, added but already exists, does not create duplicate", () => {
+  const fakeFilter = {
+    or: [{ firstName: "Ron" }, { lastName: "Swanson" }],
+  };
+  const actual = Update(
+    { name: "lastName", value: "Swanson", checked: true },
+    fakeFilter
+  );
+
+  expect(actual).toEqual(fakeFilter);
+});
+
+test("multiple filter exist, removed", () => {
+  const fakeFilter = {
+    or: [{ firstName: "Ron" }, { lastName: "Swanson" }],
+  };
+  const actual = Update(
+    { name: "lastName", value: "Swanson", checked: false },
+    fakeFilter
+  );
+
+  expect(actual).toEqual({
+    or: [{ firstName: "Ron" }],
+  });
+});
