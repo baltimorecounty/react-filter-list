@@ -1,8 +1,8 @@
-import { Update, UpdateTextFilter } from "./ODataFilter";
+import { Update, UpdateCheckboxFilters, UpdateTextFilter } from "./ODataFilter";
 
-describe("Update", () => {
+describe("UpdateCheckboxFilters", () => {
   test("single filter added", () => {
-    const actual = Update(
+    const actual = UpdateCheckboxFilters(
       { name: "firstName", value: "Ron", checked: true },
       {}
     );
@@ -16,7 +16,7 @@ describe("Update", () => {
     const fakeFilter = {
       or: [{ firstName: "Ron" }],
     };
-    const actual = Update(
+    const actual = UpdateCheckboxFilters(
       { name: "firstName", value: "Ron", checked: true },
       fakeFilter
     );
@@ -30,7 +30,7 @@ describe("Update", () => {
       or: [{ firstName: "Ron" }],
     };
 
-    const actual = Update(fakeFilter, fakeExistingFilter);
+    const actual = UpdateCheckboxFilters(fakeFilter, fakeExistingFilter);
 
     expect(actual).toEqual({});
   });
@@ -39,7 +39,7 @@ describe("Update", () => {
     const fakeFilter = {
       or: [{ firstName: "Ron" }],
     };
-    const actual = Update(
+    const actual = UpdateCheckboxFilters(
       { name: "lastName", value: "Swanson", checked: true },
       fakeFilter
     );
@@ -53,7 +53,7 @@ describe("Update", () => {
     const fakeFilter = {
       or: [{ firstName: "Ron" }, { lastName: "Swanson" }],
     };
-    const actual = Update(
+    const actual = UpdateCheckboxFilters(
       { name: "lastName", value: "Swanson", checked: true },
       fakeFilter
     );

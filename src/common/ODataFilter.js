@@ -5,8 +5,24 @@ const getKeyIndex = (arr, name) =>
     )
   );
 
-const getOrConditions = (existingConditions, { name, value, checked }) => {
-  const or = [...existingConditions];
+const Update = ({ name = "", value, checked }, existingFilters = {}) => {};
+
+/**
+ * Updates an existing query string based on given filter information.
+ * @param {Object} obj
+ * @param {string} obj.filter - An object that contains information about the filter
+ * @param {boolean} obj.filter.checked - If true, the filter is applied, otherwise it should be removed
+ * @param {string} obj.filter.name - Name attribute of the filter
+ * @param {string} obj.filter.value - Value attribute of the filter
+ * @param {object} existingFilters - Filters to update
+ * @returns {string} Updated queryString based on whether the filter is applied or removed.
+ * "?" is included in the querystring
+ */
+const UpdateCheckboxFilters = (
+  { name = "", value, checked },
+  existingFilters = {}
+) => {
+  const { or = [] } = { ...existingFilters };
   const existingFilterIndex = getKeyIndex(or, name);
   const shouldRemoveFilter = existingFilterIndex > -1 && !checked;
   const isAlreadyApplied = existingFilterIndex > -1 && checked;
@@ -25,21 +41,10 @@ const getOrConditions = (existingConditions, { name, value, checked }) => {
 };
 
 /**
- * Updates an existing query string based on given filter information.
- * @param {Object} obj
- * @param {string} obj.filter - An object that contains information about the filter
- * @param {boolean} obj.filter.checked - If true, the filter is applied, otherwise it should be removed
- * @param {string} obj.filter.name - Name attribute of the filter
- * @param {string} obj.filter.value - Value attribute of the filter
- * @param {object} existingFilters - Filters to update
- * @returns {string} Updated queryString based on whether the filter is applied or removed.
- * "?" is included in the querystring
+ * Gets Odata object based on a given query
+ * @param {array} filterFieldNames - the fields names you use in the text filter
+ * @param {string} value - query value to filter the fields by
  */
-const Update = ({ name = "", value, checked }, existingFilters = {}) => {
-  const { or = [] } = { ...existingFilters };
-  return getOrConditions(or, { name, value, checked });
-};
-
 const UpdateTextFilter = (filterFieldNames = [], value) => {
   const andOrConditions = value
     ? filterFieldNames.reduce((filters, name) => {
@@ -58,4 +63,4 @@ const UpdateTextFilter = (filterFieldNames = [], value) => {
   };
 };
 
-export { Update, UpdateTextFilter };
+export { Update, UpdateCheckboxFilters, UpdateTextFilter };
