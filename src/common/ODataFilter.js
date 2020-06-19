@@ -5,7 +5,17 @@ const getKeyIndex = (arr, name) =>
     )
   );
 
-const Update = ({ name = "", value, checked }, existingFilters = {}) => {};
+/**
+ * Update
+ * @param {*} param0
+ */
+const Update = ({ checkboxFilters, textFilters, existingFilters }) => {
+  return {
+    ...(checkboxFilters &&
+      UpdateCheckboxFilters(checkboxFilters, existingFilters)),
+    ...(textFilters && UpdateTextFilter(textFilters)),
+  };
+};
 
 /**
  * Updates an existing query string based on given filter information.
@@ -42,12 +52,12 @@ const UpdateCheckboxFilters = (
 
 /**
  * Gets Odata object based on a given query
- * @param {array} filterFieldNames - the fields names you use in the text filter
+ * @param {array} fieldNames - the fields names you use in the text filter
  * @param {string} value - query value to filter the fields by
  */
-const UpdateTextFilter = (filterFieldNames = [], value) => {
+const UpdateTextFilter = ({ fieldNames = [], value }) => {
   const andOrConditions = value
-    ? filterFieldNames.reduce((filters, name) => {
+    ? fieldNames.reduce((filters, name) => {
         filters[name] = { contains: value };
         return filters;
       }, {})

@@ -64,7 +64,10 @@ describe("UpdateCheckboxFilters", () => {
 
 describe("UpdateTextFilter", () => {
   test("has value", () => {
-    const actual = UpdateTextFilter(["firstName", "lastName"], "Ron", {});
+    const actual = UpdateTextFilter(
+      { fieldNames: ["firstName", "lastName"], value: "Ron" },
+      {}
+    );
     expect(actual).toEqual({
       and: [
         {
@@ -75,7 +78,10 @@ describe("UpdateTextFilter", () => {
   });
 
   test("has value", () => {
-    const actual = UpdateTextFilter(["firstName", "lastName"], "", {});
+    const actual = UpdateTextFilter(
+      { fieldNames: ["firstName", "lastName"], value: "" },
+      {}
+    );
     expect(actual).toEqual({});
   });
 });
