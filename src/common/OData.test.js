@@ -56,17 +56,3 @@ test("multiple filter exist, added but already exists, does not create duplicate
 
   expect(actual).toEqual(fakeFilter);
 });
-
-test("multiple filter exist, removed", () => {
-  const fakeFilter = {
-    or: [{ firstName: "Ron" }, { lastName: "Swanson" }],
-  };
-  const actual = Update(
-    { name: "lastName", value: "Swanson", checked: false },
-    fakeFilter
-  );
-
-  expect(actual).toEqual({
-    or: [{ firstName: "Ron" }],
-  });
-});
