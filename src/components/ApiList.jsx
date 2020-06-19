@@ -61,8 +61,6 @@ const ApiList = ({
     fetchMore();
   };
 
-  console.log("data", data);
-
   return (
     <div>
       {renderHeader(count)}
