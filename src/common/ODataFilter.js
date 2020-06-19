@@ -5,6 +5,42 @@ const getKeyIndex = (arr, name) =>
     )
   );
 
+const getOrConditions = (existingConditions, { name, value, checked }) => {
+  const or = [...existingConditions];
+  const existingFilterIndex = getKeyIndex(or, name);
+  const shouldRemoveFilter = existingFilterIndex > -1 && !checked;
+  const isAlreadyApplied = existingFilterIndex > -1 && checked;
+
+  if (shouldRemoveFilter) {
+    or.splice(existingFilterIndex, 1);
+  }
+  // avoid duplicated filters
+  else if (!isAlreadyApplied) {
+    or.push({ [name]: value });
+  }
+
+  return {
+    ...(or.length > 0 && { or }),
+  };
+};
+
+const getAndConditions = () => {
+  //   const existingFilterIndex = getKeyIndex(or, name);
+  //   const shouldRemoveFilter = existingFilterIndex > -1 && !checked;
+  //   const isAlreadyApplied = existingFilterIndex > -1 && checked;
+  //   if (shouldRemoveFilter) {
+  //     or.splice(existingFilterIndex, 1);
+  //   }
+  //   // avoid duplicated filters
+  //   else if (!isAlreadyApplied) {
+  //     or.push({ [name]: value });
+  //   }
+  //   return {
+  //     ...(or.length > 0 && { or }),
+  //   };
+  return {};
+};
+
 /**
  * Updates an existing query string based on given filter information.
  * @param {Object} obj
@@ -22,24 +58,12 @@ const Update = (
   existingFilters = {},
   type = "or"
 ) => {
-  const updatedFilters = { ...existingFilters };
-  const { or = [], and = {} } = updatedFilters;
-
-  const existingFilterIndex = getKeyIndex(or, name);
-  const shouldRemoveFilter = existingFilterIndex > -1 && !checked;
-  const isAlreadyApplied = existingFilterIndex > -1 && checked;
-
-  if (shouldRemoveFilter) {
-    or.splice(existingFilterIndex, 1);
-  }
-  // avoid duplicated filters
-  else if (!isAlreadyApplied) {
-    or.push({ [name]: value });
-  }
-
-  return {
-    ...(or.length > 0 && { or }),
-  };
+  const { or = [], and = {} } = { ...existingFilters };
+  const conditionType = type.toLowerCase();
+  const orConditions =
+    conditionType === "or" ? getOrConditions(or, { name, value, checked }) : or;
+  const andConditions = conditionType === "and" ? getAndConditions() : and;
+  return { ...orConditions, ...andConditions };
 };
 
 export { Update };
