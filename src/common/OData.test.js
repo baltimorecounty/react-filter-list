@@ -20,13 +20,13 @@ test("single filter added but already exists, does not create duplicate", () => 
   expect(actual).toEqual(fakeFilter);
 });
 
-// test("single filter removed", () => {
-//   const fakeFilter = { name: "firstName", value: "Ron", checked: false };
-//   const fakeExistingFilter = {
-//     or: [{ firstName: "Ron" }],
-//   };
+test("single filter removed", () => {
+  const fakeFilter = { name: "firstName", value: "Ron", checked: false };
+  const fakeExistingFilter = {
+    or: [{ firstName: "Ron" }],
+  };
 
-//   const actual = Update(fakeFilter, fakeExistingFilter);
+  const actual = Update(fakeFilter, fakeExistingFilter);
 
-//   expect(actual).toEqual({});
-// });
+  expect(actual).toEqual({});
+});

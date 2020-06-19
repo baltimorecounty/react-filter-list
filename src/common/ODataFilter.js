@@ -22,7 +22,7 @@ const Update = ({ name = "", value, checked }, existingFilters = {}) => {
   const isAlreadyApplied = existingFilterIndex > -1 && checked;
 
   if (shouldRemoveFilter) {
-    or.slice(existingFilterIndex, 1);
+    or.splice(existingFilterIndex, 1);
   }
   // avoid duplicated filters
   else if (!isAlreadyApplied) {
@@ -30,7 +30,7 @@ const Update = ({ name = "", value, checked }, existingFilters = {}) => {
   }
 
   return {
-    or,
+    ...(or.length > 0 && { or }),
   };
 };
 
