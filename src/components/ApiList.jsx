@@ -61,13 +61,15 @@ const ApiList = ({
     fetchMore();
   };
 
+  console.log("data", data);
+
   return (
     <div>
       {renderHeader(count)}
       <div className={className}>
         {data.map((group, i) => (
           <React.Fragment key={i}>
-            {group.records.map((record) => (
+            {group.value.map((record) => (
               <React.Fragment key={record.id}>
                 {renderItem(record)}
               </React.Fragment>
