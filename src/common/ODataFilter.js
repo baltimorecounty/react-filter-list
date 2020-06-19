@@ -1,3 +1,10 @@
+const getKeyIndex = (arr, name) =>
+  arr.findIndex((orFilter) =>
+    Object.keys(orFilter).some(
+      (key = "") => key.toLowerCase() === name.toLowerCase()
+    )
+  );
+
 /**
  * Updates an existing query string based on given filter information.
  * @param {Object} obj
@@ -6,18 +13,19 @@
  * @param {string} obj.filter.name - Name attribute of the filter
  * @param {string} obj.filter.value - Value attribute of the filter
  * @param {object} existingFilters - Filter to update
+ * @param {string} type - Determines whether condition will be applied ot the filter. And and or are available.
  * @returns {string} Updated queryString based on whether the filter is applied or removed.
  * "?" is included in the querystring
  */
-const Update = ({ name = "", value, checked }, existingFilters = {}) => {
+const Update = (
+  { name = "", value, checked },
+  existingFilters = {},
+  type = "or"
+) => {
   const updatedFilters = { ...existingFilters };
-  const { or = [] } = updatedFilters;
+  const { or = [], and = {} } = updatedFilters;
 
-  const existingFilterIndex = or.findIndex((orFilter) =>
-    Object.keys(orFilter).some(
-      (key = "") => key.toLowerCase() === name.toLowerCase()
-    )
-  );
+  const existingFilterIndex = getKeyIndex(or, name);
   const shouldRemoveFilter = existingFilterIndex > -1 && !checked;
   const isAlreadyApplied = existingFilterIndex > -1 && checked;
 
