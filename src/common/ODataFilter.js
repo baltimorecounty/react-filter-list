@@ -40,4 +40,22 @@ const Update = ({ name = "", value, checked }, existingFilters = {}) => {
   return getOrConditions(or, { name, value, checked });
 };
 
-export { Update };
+const UpdateTextFilter = (filterFieldNames = [], value) => {
+  const andOrConditions = value
+    ? filterFieldNames.reduce((filters, name) => {
+        filters[name] = { contains: value };
+        return filters;
+      }, {})
+    : {};
+  return {
+    ...(Object.keys(andOrConditions).length > 0 && {
+      and: [
+        {
+          or: andOrConditions,
+        },
+      ],
+    }),
+  };
+};
+
+export { Update, UpdateTextFilter };
