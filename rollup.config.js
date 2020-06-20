@@ -8,6 +8,7 @@ const plugins = [
     include: "node_modules/**",
     namedExports: {
       "node_modules/react-is/index.js": ["isValidElementType"],
+      "node_modules/odata-query/index.js": ["buildQuery"],
     },
   }),
   resolve({
