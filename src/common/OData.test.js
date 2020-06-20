@@ -115,6 +115,20 @@ describe("UpdateCheckboxFilters", () => {
       or: [{ firstName: "Ron" }, { firstName: "Leslie" }],
     });
   });
+
+  test("remove condition when there are multiple conditions applied for the same field", () => {
+    const fakeFilter = {
+      or: [{ firstName: "Ron" }, { firstName: "Leslie" }],
+    };
+    const actual = UpdateCheckboxFilters(
+      { name: "firstName", value: "Leslie", checked: false },
+      fakeFilter
+    );
+
+    expect(actual).toEqual({
+      or: [{ firstName: "Ron" }],
+    });
+  });
 });
 
 describe("UpdateTextFilter", () => {
