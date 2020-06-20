@@ -12,6 +12,7 @@ import FilterTextInput from "./FilterTextInput";
 import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
 import RecordsMessage from "./RecordsMessage";
+import { Update } from "../common/ODataFilter";
 import { withRouter } from "react-router-dom";
 
 const FilterList = ({
@@ -35,6 +36,7 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
+  const [odataFilters, setOdataFilters] = useState({});
   const [filters, setFilters] = useState(() =>
     UpdateFilters(filtersFromProps, location.search)
   );
@@ -51,8 +53,20 @@ const FilterList = ({
       filter,
       queryString: currentQueryString,
     });
+
+    const odataFilter = Update({
+      checkboxFilter: filter,
+      existingFilters: odataFilters,
+    });
+
+    setOdataFilters(odataFilter);
+
     history.push(queryString);
   };
+
+  useEffect(() => {
+    console.log("filters updated", odataFilters);
+  }, [odataFilters]);
 
   const handleFilterChange = (changeEvent) => {
     const { name, value, checked } = changeEvent;
