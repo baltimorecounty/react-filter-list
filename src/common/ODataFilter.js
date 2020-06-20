@@ -35,7 +35,10 @@ const UpdateCheckboxFilters = (
   const { or = [] } = { ...existingFilters };
   const existingFilterIndex = getKeyIndex(or, name);
   const shouldRemoveFilter = existingFilterIndex > -1 && !checked;
-  const isAlreadyApplied = existingFilterIndex > -1 && checked;
+  const isAlreadyApplied =
+    existingFilterIndex > -1 &&
+    checked &&
+    or[existingFilterIndex][name].toLowerCase() === value.toLowerCase();
 
   if (shouldRemoveFilter) {
     or.splice(existingFilterIndex, 1);
