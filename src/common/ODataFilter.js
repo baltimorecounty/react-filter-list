@@ -16,10 +16,10 @@ const getKeyIndex = (arr, name, value) =>
 const Update = ({ checkboxFilter, textFilter, existingFilters }) => {
   const filters = {
     ...(checkboxFilter &&
-      UpdateCheckboxFilters(checkboxFilter, existingFilters)),
+      UpdateCheckboxFilters(checkboxFilter, existingFilters.filters)),
     ...(textFilter && UpdateTextFilter(textFilter)),
   };
-  const queryString = buildQuery(filters);
+  const queryString = buildQuery({ filter: filters });
 
   return {
     filters,
