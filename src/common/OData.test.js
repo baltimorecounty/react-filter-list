@@ -11,7 +11,7 @@ describe("Update", () => {
       existingFilters: {},
     });
 
-    expect(actual).toEqual({
+    expect(actual.filters).toEqual({
       or: [{ firstName: "Leslie" }],
     });
   });
@@ -30,7 +30,7 @@ describe("Update", () => {
       existingFilters: {},
     });
 
-    expect(actual).toEqual({
+    expect(actual.filters).toEqual({
       or: [{ firstName: "Leslie" }],
       and: [
         {

@@ -1,3 +1,5 @@
+import buildQuery from "odata-query";
+
 const getKeyIndex = (arr, name, value) =>
   arr.findIndex((orFilter) =>
     Object.keys(orFilter).some(
@@ -12,10 +14,16 @@ const getKeyIndex = (arr, name, value) =>
  * @param {*} param0
  */
 const Update = ({ checkboxFilter, textFilter, existingFilters }) => {
-  return {
+  const filters = {
     ...(checkboxFilter &&
       UpdateCheckboxFilters(checkboxFilter, existingFilters)),
     ...(textFilter && UpdateTextFilter(textFilter)),
+  };
+  const queryString = buildQuery(filters);
+
+  return {
+    filters,
+    queryString,
   };
 };
 
