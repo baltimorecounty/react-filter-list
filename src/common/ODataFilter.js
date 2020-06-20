@@ -1,7 +1,9 @@
-const getKeyIndex = (arr, name) =>
+const getKeyIndex = (arr, name, value) =>
   arr.findIndex((orFilter) =>
     Object.keys(orFilter).some(
-      (key = "") => key.toLowerCase() === name.toLowerCase()
+      (key = "") =>
+        key.toLowerCase() === name.toLowerCase() &&
+        value.toLowerCase() === orFilter[key].toLowerCase()
     )
   );
 
@@ -33,12 +35,9 @@ const UpdateCheckboxFilters = (
   existingFilters = {}
 ) => {
   const { or = [] } = { ...existingFilters };
-  const existingFilterIndex = getKeyIndex(or, name);
+  const existingFilterIndex = getKeyIndex(or, name, value);
   const shouldRemoveFilter = existingFilterIndex > -1 && !checked;
-  const isAlreadyApplied =
-    existingFilterIndex > -1 &&
-    checked &&
-    or[existingFilterIndex][name].toLowerCase() === value.toLowerCase();
+  const isAlreadyApplied = existingFilterIndex > -1 && checked;
 
   if (shouldRemoveFilter) {
     or.splice(existingFilterIndex, 1);
