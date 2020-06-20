@@ -1,5 +1,46 @@
 import { Update, UpdateCheckboxFilters, UpdateTextFilter } from "./ODataFilter";
 
+describe("Update", () => {
+  test("single checkbox filter add, no existing filters", () => {
+    const actual = Update({
+      checkboxFilters: {
+        name: "firstName",
+        value: "Leslie",
+        checked: true,
+      },
+      existingFilters: {},
+    });
+
+    expect(actual).toEqual({
+      or: [{ firstName: "Leslie" }],
+    });
+  });
+
+  test("single checkbox filter with text filter, no existing filters", () => {
+    const actual = Update({
+      checkboxFilters: {
+        name: "firstName",
+        value: "Leslie",
+        checked: true,
+      },
+      textFilters: {
+        fieldNames: ["firstName", "lastName"],
+        value: "les",
+      },
+      existingFilters: {},
+    });
+
+    expect(actual).toEqual({
+      or: [{ firstName: "Leslie" }],
+      and: [
+        {
+          or: { firstName: { contains: "les" }, lastName: { contains: "les" } },
+        },
+      ],
+    });
+  });
+});
+
 describe("UpdateCheckboxFilters", () => {
   test("single filter added", () => {
     const actual = UpdateCheckboxFilters(
