@@ -1,4 +1,9 @@
-import { Update, UpdateCheckboxFilters, UpdateTextFilter } from "./ODataFilter";
+import {
+  ToOdataFilter,
+  Update,
+  UpdateCheckboxFilters,
+  UpdateTextFilter,
+} from "./ODataFilter";
 
 describe("Update", () => {
   test("single checkbox filter add, no existing filters", () => {
@@ -152,5 +157,28 @@ describe("UpdateTextFilter", () => {
       {}
     );
     expect(actual).toEqual({});
+  });
+});
+
+describe("ToOdataFilter", () => {
+  test("empty return object", () => {
+    const actual = ToOdataFilter("");
+    expect(actual).toEqual({});
+  });
+
+  test("single checkboxFilter", () => {
+    const actual = ToOdataFilter("?$filter=((city eq 'Perry Hall'))");
+    expect(actual).toEqual({
+      or: [{ city: "Perry Hall" }],
+    });
+  });
+
+  test("multiple checkboxFilter", () => {
+    const actual = ToOdataFilter(
+      "?$filter=((city eq 'Essex') or (city eq 'Perry Hall'))"
+    );
+    expect(actual).toEqual({
+      or: [{ city: "Essex" }, { city: "Perry Hall" }],
+    });
   });
 });

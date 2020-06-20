@@ -10,6 +10,33 @@ const getKeyIndex = (arr, name, value) =>
   );
 
 /**
+ * Convert a odata query to a odata filter object
+ * @param {string} odataQuery
+ */
+const ToOdataFilter = (odataQuery = "") => {
+  if (!odataQuery) {
+    return {};
+  }
+
+  var [_, filters] = odataQuery.replace("?", "").split("$filter=");
+  var [or, and] = filters.split(" and ");
+  var orParts = or.split(" or ");
+
+  const orConditions = orParts.reduce((orFilters, currentValue) => {
+    const [property, value] = getQueryCondition(currentValue);
+    orFilters.push({ [property.toLowerCase()]: value });
+    return orFilters;
+  }, []);
+
+  return {
+    or: orConditions,
+  };
+};
+
+const getQueryCondition = (query, operator = " eq ") =>
+  query.replace(/\(|\)/g, "").replace(/\"|\'/g, "").split(operator);
+
+/**
  * Update
  * @param {*} param0
  */
@@ -83,4 +110,4 @@ const UpdateTextFilter = ({ fieldNames = [], value }) => {
   };
 };
 
-export { Update, UpdateCheckboxFilters, UpdateTextFilter };
+export { ToOdataFilter, Update, UpdateCheckboxFilters, UpdateTextFilter };
