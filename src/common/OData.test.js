@@ -3,7 +3,7 @@ import { Update, UpdateCheckboxFilters, UpdateTextFilter } from "./ODataFilter";
 describe("Update", () => {
   test("single checkbox filter add, no existing filters", () => {
     const actual = Update({
-      checkboxFilters: {
+      checkboxFilter: {
         name: "firstName",
         value: "Leslie",
         checked: true,
@@ -18,12 +18,12 @@ describe("Update", () => {
 
   test("single checkbox filter with text filter, no existing filters", () => {
     const actual = Update({
-      checkboxFilters: {
+      checkboxFilter: {
         name: "firstName",
         value: "Leslie",
         checked: true,
       },
-      textFilters: {
+      textFilter: {
         fieldNames: ["firstName", "lastName"],
         value: "les",
       },
@@ -100,6 +100,20 @@ describe("UpdateCheckboxFilters", () => {
     );
 
     expect(actual).toEqual(fakeFilter);
+  });
+
+  test("add multiple conditions for the same field", () => {
+    const fakeFilter = {
+      or: [{ firstName: "Ron" }],
+    };
+    const actual = UpdateCheckboxFilters(
+      { name: "firstName", value: "Leslie", checked: true },
+      fakeFilter
+    );
+
+    expect(actual).toEqual({
+      or: [{ firstName: "Ron" }, { firstName: "Leslie" }],
+    });
   });
 });
 

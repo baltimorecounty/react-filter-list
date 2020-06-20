@@ -9,11 +9,11 @@ const getKeyIndex = (arr, name) =>
  * Update
  * @param {*} param0
  */
-const Update = ({ checkboxFilters, textFilters, existingFilters }) => {
+const Update = ({ checkboxFilter, textFilter, existingFilters }) => {
   return {
-    ...(checkboxFilters &&
-      UpdateCheckboxFilters(checkboxFilters, existingFilters)),
-    ...(textFilters && UpdateTextFilter(textFilters)),
+    ...(checkboxFilter &&
+      UpdateCheckboxFilters(checkboxFilter, existingFilters)),
+    ...(textFilter && UpdateTextFilter(textFilter)),
   };
 };
 
