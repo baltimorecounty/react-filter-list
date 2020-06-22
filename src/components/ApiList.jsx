@@ -55,7 +55,8 @@ const ApiList = ({
     );
   }
 
-  const { metaData: { totalRecords: count = 0 } = {} } = data[0] || {};
+  const [firstSetOfData = {}, _] = data;
+  const count = firstSetOfData["@odata.count"] || 0;
 
   const handleLoadMoreClick = () => {
     fetchMore();

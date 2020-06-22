@@ -37,7 +37,14 @@ const FilterList = ({
   ...props
 }) => {
   const [{ uiFilters, odataFilters }, setFilters] = useState(() => {
-    const initialOdataFilters = ToOdataFilter(location.search);
+    const staticOdataFilters = filtersFromProps.filter(
+      ({ targetApiField = "", options = [] }) =>
+        options.length === 0 && targetApiField[0] === "$"
+    );
+    const initialOdataFilters = ToOdataFilter(
+      location.search,
+      staticOdataFilters
+    );
     return {
       uiFilters: UpdateFilters(filtersFromProps, initialOdataFilters),
       odataFilters: {
@@ -53,14 +60,16 @@ const FilterList = ({
   }, [location.search]);
 
   const updateQueryString = (filter) => {
-    const odataFilter = Update({
+    const odataFilters = Update({
       checkboxFilter: filter,
       existingFilters: odataFilters,
     });
 
-    setOdataFilters(odataFilter);
+    setFilters({
+      odataFilters,
+    });
 
-    history.push(odataFilter.queryString);
+    history.push(odataFilters.queryString);
   };
 
   const handleFilterChange = (changeEvent) => {
