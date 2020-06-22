@@ -36,21 +36,23 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
-  const [{ uiFilters, odataFilters }, setFilters] = useState(() => {
+  const [
+    { uiFilters, odataFilters, staticODataFilters },
+    setFilters,
+  ] = useState(() => {
     const staticOdataFilters = filtersFromProps.filter(
       ({ targetApiField = "", options = [] }) =>
         options.length === 0 && targetApiField[0] === "$"
     );
-    const initialOdataFilters = ToOdataFilter(
-      location.search,
-      staticOdataFilters
-    );
+    const initialOdataFilters = ToOdataFilter(location.search);
+
     return {
       uiFilters: UpdateFilters(filtersFromProps, initialOdataFilters),
       odataFilters: {
         filters: initialOdataFilters,
         queryString: location.search,
       },
+      staticOdataFilters,
     };
   });
   const [apiEndpoint, setApiEndpoint] = useState(() => defaultApiEndpoint);
@@ -60,16 +62,19 @@ const FilterList = ({
   }, [location.search]);
 
   const updateQueryString = (filter) => {
-    const odataFilters = Update({
+    const updatedFilters = Update({
       checkboxFilter: filter,
       existingFilters: odataFilters,
+      staticODataFilters,
     });
 
     setFilters({
-      odataFilters,
+      uiFilters,
+      odataFilters: updatedFilters,
+      staticODataFilters,
     });
 
-    history.push(odataFilters.queryString);
+    history.push(updatedFilters.queryString);
   };
 
   const handleFilterChange = (changeEvent) => {

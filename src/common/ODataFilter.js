@@ -19,7 +19,8 @@ const ToOdataFilter = (odataQuery = "") => {
     return {};
   }
 
-  const { $filter } = parse(odataQuery);
+  const { $filter, $count } = parse(odataQuery);
+
   const filterParts = decodeURIComponent($filter).split(" and ");
   const or =
     filterParts.find((x) => x.toLowerCase().indexOf(" eq ") > -1) || "";
@@ -43,6 +44,7 @@ const ToOdataFilter = (odataQuery = "") => {
     ...(Object.keys(andConditions).length > 0 && {
       and: [{ or: andConditions }],
     }),
+    ...($count && { count: $count }),
   };
 };
 
@@ -59,16 +61,28 @@ const removeQueryCharacters = (str = "") =>
  * Update
  * @param {*} param0
  */
-const Update = ({ checkboxFilter, textFilter, existingFilters }) => {
-  const filters = {
+const Update = ({
+  checkboxFilter,
+  textFilter,
+  existingFilters = {},
+  staticODataFilters = [],
+}) => {
+  const filter = {
     ...(checkboxFilter &&
+      existingFilters.filters &&
       UpdateCheckboxFilters(checkboxFilter, existingFilters.filters)),
     ...(textFilter && UpdateTextFilter(textFilter)),
   };
-  const queryString = buildQuery({ filter: filters });
+  const odataFilters = staticODataFilters.map(({ targetApiField, value }) => ({
+    [targetApiField.replace("$", "")]: value,
+  }));
+  const queryString = buildQuery({
+    filter,
+    ...(odataFilters.length > 0 && odataFilters),
+  });
 
   return {
-    filters,
+    filters: filter,
     queryString,
   };
 };
