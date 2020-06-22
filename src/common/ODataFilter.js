@@ -65,7 +65,7 @@ const Update = ({
   checkboxFilter,
   textFilter,
   existingFilters = {},
-  staticODataFilters = [],
+  additionalOdataFilters = [],
 }) => {
   const filter = {
     ...(checkboxFilter &&
@@ -73,9 +73,11 @@ const Update = ({
       UpdateCheckboxFilters(checkboxFilter, existingFilters.filters)),
     ...(textFilter && UpdateTextFilter(textFilter)),
   };
-  const odataFilters = staticODataFilters.map(({ targetApiField, value }) => ({
-    [targetApiField.replace("$", "")]: value,
-  }));
+  const odataFilters = additionalOdataFilters.map(
+    ({ targetApiField, value }) => ({
+      [targetApiField.replace("$", "")]: value,
+    })
+  );
   const queryString = buildQuery({
     filter,
     ...(odataFilters.length > 0 && odataFilters),
