@@ -1,4 +1,5 @@
 import buildQuery from "odata-query";
+import { parse } from "query-string";
 
 const getKeyIndex = (arr, name, value) =>
   arr.findIndex((orFilter) =>
@@ -18,11 +19,8 @@ const ToOdataFilter = (odataQuery = "") => {
     return {};
   }
 
-  const odataParts = decodeURIComponent(odataQuery).replace("?", "").split("&");
-  const filters = odataParts
-    .find((x) => x.indexOf("$filter=") > -1)
-    .replace("$filter=", "");
-  const filterParts = filters.split(" and ");
+  const { $filter } = parse(odataQuery);
+  const filterParts = decodeURIComponent($filter).split(" and ");
   const or =
     filterParts.find((x) => x.toLowerCase().indexOf(" eq ") > -1) || "";
   const and =
