@@ -181,4 +181,13 @@ describe("ToOdataFilter", () => {
       or: [{ city: "Essex" }, { city: "Perry Hall" }],
     });
   });
+
+  test("multiple checkboxFilter", () => {
+    const actual = ToOdataFilter(
+      "?$filter=((city eq 'Essex') or (city eq 'Perry Hall'))&$orderby=city desc"
+    );
+    expect(actual).toEqual({
+      or: [{ city: "Essex" }, { city: "Perry Hall" }],
+    });
+  });
 });

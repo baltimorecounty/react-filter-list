@@ -18,7 +18,10 @@ const ToOdataFilter = (odataQuery = "") => {
     return {};
   }
 
-  var [_, filters] = odataQuery.replace("?", "").split("$filter=");
+  var odataParts = odataQuery.replace("?", "").split("&");
+  var filters = odataParts
+    .find((x) => x.indexOf("$filter=") > -1)
+    .replace("$filter=", "");
   var [or, and] = filters.split(" and ");
   var orParts = or.split(" or ");
 
