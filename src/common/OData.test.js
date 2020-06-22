@@ -220,4 +220,13 @@ describe("ToOdataFilter", () => {
       ],
     });
   });
+
+  test("encoded querystring", () => {
+    const actual = ToOdataFilter(
+      "?$filter=((city%20eq%20%27Essex%27)%20or%20(city%20eq%20%27Perry%20Hall%27))"
+    );
+    expect(actual).toEqual({
+      or: [{ city: "Essex" }, { city: "Perry Hall" }],
+    });
+  });
 });

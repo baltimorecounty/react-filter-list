@@ -18,7 +18,7 @@ const ToOdataFilter = (odataQuery = "") => {
     return {};
   }
 
-  const odataParts = odataQuery.replace("?", "").split("&");
+  const odataParts = decodeURIComponent(odataQuery).replace("?", "").split("&");
   const filters = odataParts
     .find((x) => x.indexOf("$filter=") > -1)
     .replace("$filter=", "");
@@ -39,6 +39,8 @@ const ToOdataFilter = (odataQuery = "") => {
     andOrConditions[property] = { contains: value };
     return andOrConditions;
   }, {});
+
+  console.log(orConditions, andConditions);
 
   return {
     ...(orConditions.length > 0 && { or: orConditions }),
