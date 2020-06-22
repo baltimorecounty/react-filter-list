@@ -40,8 +40,6 @@ const ToOdataFilter = (odataQuery = "") => {
     return andOrConditions;
   }, {});
 
-  console.log(orConditions, andConditions);
-
   return {
     ...(orConditions.length > 0 && { or: orConditions }),
     ...(Object.keys(andConditions).length > 0 && {

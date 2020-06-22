@@ -10,11 +10,13 @@ const resetFilter = (filter) => {
 };
 
 /** Reset any filters that do not exist in the query string. */
-const resetEmptyFilters = (filters = [], queryStringFilters = {}) => {
+const resetEmptyFilters = (filters = [], checkboxFilters = []) => {
   filters
     .filter(({ targetApiField = "" }) =>
-      Object.keys(queryStringFilters).some(
-        (key = "") => key.toLowerCase() !== targetApiField.toLowerCase()
+      checkboxFilters.some((filter) =>
+        Object.keys(filter).some(
+          ({ key }) => key.toLowerCase() !== targetApiField.toLowerCase()
+        )
       )
     )
     .forEach(resetFilter);
@@ -23,28 +25,30 @@ const resetEmptyFilters = (filters = [], queryStringFilters = {}) => {
 /**
  * Update filters based on a given querystring (parsed to an object)
  */
-const updateFilters = (filters = [], queryStringFilters = {}) => {
+const updateFilters = (filters = [], checkboxFilters = []) => {
   // Reset any filters that do not exist in the current querystring
-  resetEmptyFilters(filters, queryStringFilters);
+  //resetEmptyFilters(filters, checkboxFilters);
 
   // Update active filters based on querystring
-  Object.keys(queryStringFilters).forEach((key) => {
-    const matchingFilter = filters.find(
-      ({ targetApiField = "" }) =>
-        targetApiField.toLowerCase() == key.toLowerCase()
-    );
+  checkboxFilters.map((filter, index) => {
+    Object.keys(filter).forEach((key) => {
+      const matchingFilter = filters.find(
+        ({ targetApiField = "" }) =>
+          targetApiField.toLowerCase() == key.toLowerCase()
+      );
 
-    if (matchingFilter) {
-      const urlValues = queryStringFilters[key].toLowerCase().split(",");
-
-      matchingFilter.options.map((option) => {
-        const { value = "" } = option;
-        option.checked = urlValues.some(
-          (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
+      if (matchingFilter) {
+        const filterKey = Object.keys(filter).find((x) => true);
+        const filterValue = filter[filterKey];
+        var matchingOption = matchingFilter.options.find(
+          ({ value = "" }) => value.toLowerCase() === filterValue.toLowerCase()
         );
-        return option;
-      });
-    }
+
+        if (matchingOption) {
+          matchingOption.checked = true;
+        }
+      }
+    });
   });
 };
 
@@ -74,14 +78,14 @@ const UpdateUrlQueryString = (url, name, value) => {
  * @param {array} filters list of filters in the standard format for this app
  * @param {string} queryString querystring to be parsed
  */
-const UpdateFilters = (filters = [], queryString = "") => {
-  if (!queryString) {
+const UpdateFilters = (filters = [], odataFilters = {}) => {
+  if (!Object.keys(odataFilters).length === 0) {
     return filters.map(resetFilter);
   }
 
-  const queryStringFilters = parse(queryString);
+  const { or: checkboxFilters = [] } = odataFilters;
 
-  updateFilters(filters, queryStringFilters);
+  updateFilters(filters, checkboxFilters);
 
   return [...filters];
 };
