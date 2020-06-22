@@ -36,13 +36,16 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
-  const [odataFilters, setOdataFilters] = useState(() => ({
-    filters: ToOdataFilter(location.search),
-    queryString: location.search,
-  }));
-  const [filters, setFilters] = useState(() =>
-    UpdateFilters(filtersFromProps, ToOdataFilter(location.search))
-  );
+  const [{ uiFilters, odataFilters }, setFilters] = useState(() => {
+    const initialOdataFilters = ToOdataFilter(location.search);
+    return {
+      uiFilters: UpdateFilters(filtersFromProps, initialOdataFilters),
+      odataFilters: {
+        filters: initialOdataFilters,
+        queryString: location.search,
+      },
+    };
+  });
   const [apiEndpoint, setApiEndpoint] = useState(() => defaultApiEndpoint);
 
   useEffect(() => {
@@ -80,7 +83,7 @@ const FilterList = ({
           <Filters
             renderFilter={renderFilter}
             handleFilterChange={handleFilterChange}
-            filters={filters}
+            filters={uiFilters}
           />
         </div>
         <div className="col-md-9 col-xs-12">
