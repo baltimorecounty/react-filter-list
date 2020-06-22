@@ -18,14 +18,17 @@ const ToOdataFilter = (odataQuery = "") => {
     return {};
   }
 
-  var odataParts = odataQuery.replace("?", "").split("&");
-  var filters = odataParts
+  const odataParts = odataQuery.replace("?", "").split("&");
+  const filters = odataParts
     .find((x) => x.indexOf("$filter=") > -1)
     .replace("$filter=", "");
-  var [or, and] = filters.split(" and ");
-  var orParts = or.split(" or ");
-  var andParts = and ? and.split(" or ") : [];
-
+  const filterParts = filters.split(" and ");
+  const or =
+    filterParts.find((x) => x.toLowerCase().indexOf(" eq ") > -1) || "";
+  const and =
+    filterParts.find((x) => x.toLowerCase().indexOf("contains(") > -1) || "";
+  const orParts = or.length > 0 ? or.split(" or ") : [];
+  const andParts = and.length > 0 ? and.split(" or ") : [];
   const orConditions = orParts.reduce((orFilters, currentValue) => {
     const [property, value] = getQueryCondition(currentValue);
     orFilters.push({ [property.toLowerCase()]: value });
@@ -38,8 +41,10 @@ const ToOdataFilter = (odataQuery = "") => {
   }, {});
 
   return {
-    ...(or && { or: orConditions }),
-    ...(and && { and: [{ or: andConditions }] }),
+    ...(orConditions.length > 0 && { or: orConditions }),
+    ...(Object.keys(andConditions).length > 0 && {
+      and: [{ or: andConditions }],
+    }),
   };
 };
 

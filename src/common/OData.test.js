@@ -204,4 +204,20 @@ describe("ToOdataFilter", () => {
       ],
     });
   });
+
+  test("only text filter", () => {
+    const actual = ToOdataFilter(
+      "?$filter=((contains(firstName,'Ron') or contains(lastName,'Ron'))"
+    );
+    expect(actual).toEqual({
+      and: [
+        {
+          or: {
+            firstName: { contains: "Ron" },
+            lastName: { contains: "Ron" },
+          },
+        },
+      ],
+    });
+  });
 });
