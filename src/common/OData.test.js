@@ -182,7 +182,7 @@ describe("ToOdataFilter", () => {
     });
   });
 
-  test("multiple checkboxFilter", () => {
+  test("multiple odata functions in query string", () => {
     const actual = ToOdataFilter(
       "?$filter=((city eq 'Essex') or (city eq 'Perry Hall'))&$orderby=city desc"
     );
