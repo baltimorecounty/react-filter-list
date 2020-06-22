@@ -190,4 +190,18 @@ describe("ToOdataFilter", () => {
       or: [{ city: "Essex" }, { city: "Perry Hall" }],
     });
   });
+
+  test("checkbox and text filters", () => {
+    const actual = ToOdataFilter(
+      "?$filter=((city eq 'Essex') or (city eq 'Perry Hall')) and ((contains(firstName,'Ron') or contains(lastName,'Ron')))"
+    );
+    expect(actual).toEqual({
+      or: [{ city: "Essex" }, { city: "Perry Hall" }],
+      and: [
+        {
+          or: { firstName: { contains: "Ron" }, lastName: { contains: "Ron" } },
+        },
+      ],
+    });
+  });
 });

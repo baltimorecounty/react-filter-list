@@ -24,20 +24,33 @@ const ToOdataFilter = (odataQuery = "") => {
     .replace("$filter=", "");
   var [or, and] = filters.split(" and ");
   var orParts = or.split(" or ");
+  var andParts = and ? and.split(" or ") : [];
 
   const orConditions = orParts.reduce((orFilters, currentValue) => {
     const [property, value] = getQueryCondition(currentValue);
     orFilters.push({ [property.toLowerCase()]: value });
     return orFilters;
   }, []);
+  const andConditions = andParts.reduce((andOrConditions, currentValue) => {
+    const [property, value] = getFunctionCondition(currentValue);
+    andOrConditions[property] = { contains: value };
+    return andOrConditions;
+  }, {});
 
   return {
-    or: orConditions,
+    ...(or && { or: orConditions }),
+    ...(and && { and: [{ or: andConditions }] }),
   };
 };
 
 const getQueryCondition = (query, operator = " eq ") =>
-  query.replace(/\(|\)/g, "").replace(/\"|\'/g, "").split(operator);
+  removeQueryCharacters(query).split(operator);
+
+const getFunctionCondition = (query, comparisonFn = "contains") =>
+  removeQueryCharacters(query.replace(`${comparisonFn}(`, "")).split(",");
+
+const removeQueryCharacters = (str = "") =>
+  str.replace(/\(|\)/g, "").replace(/\"|\'/g, "");
 
 /**
  * Update
