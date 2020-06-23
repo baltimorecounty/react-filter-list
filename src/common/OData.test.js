@@ -10,14 +10,17 @@ describe("Update", () => {
     const actual = Update({
       checkboxFilter: {
         name: "firstName",
-        value: "Leslie",
+        value: "Marty",
         checked: true,
       },
-      existingFilters: {},
+      odataQuery: {},
     });
 
-    expect(actual.filters).toEqual({
-      or: [{ firstName: "Leslie" }],
+    expect(actual.odataQuery).toEqual({
+      filter: {
+        or: [{ firstName: "Marty" }],
+      },
+      count: true,
     });
   });
 
@@ -32,16 +35,22 @@ describe("Update", () => {
         fieldNames: ["firstName", "lastName"],
         value: "les",
       },
-      existingFilters: {},
+      odataQuery: {},
     });
 
-    expect(actual.filters).toEqual({
-      or: [{ firstName: "Leslie" }],
-      and: [
-        {
-          or: { firstName: { contains: "les" }, lastName: { contains: "les" } },
-        },
-      ],
+    expect(actual.odataQuery).toEqual({
+      filter: {
+        or: [{ firstName: "Leslie" }],
+        and: [
+          {
+            or: {
+              firstName: { contains: "les" },
+              lastName: { contains: "les" },
+            },
+          },
+        ],
+      },
+      count: true,
     });
   });
 
@@ -56,8 +65,7 @@ describe("Update", () => {
         fieldNames: ["firstName", "lastName"],
         value: "les",
       },
-      additionalOdataFilters: [{ targetApiField: "$count", value: true }],
-      existingFilters: {},
+      odataFilter: {},
     });
 
     expect(actual.queryString).toEqual(
@@ -183,13 +191,14 @@ describe("UpdateTextFilter", () => {
 describe("ToOdataFilter", () => {
   test("empty return object", () => {
     const actual = ToOdataFilter("");
-    expect(actual).toEqual({});
+    expect(actual).toEqual({ count: true });
   });
 
   test("single checkboxFilter", () => {
     const actual = ToOdataFilter("?$filter=((city eq 'Perry Hall'))");
     expect(actual).toEqual({
-      or: [{ city: "Perry Hall" }],
+      filter: { or: [{ city: "Perry Hall" }] },
+      count: true,
     });
   });
 
@@ -198,7 +207,10 @@ describe("ToOdataFilter", () => {
       "?$filter=((city eq 'Essex') or (city eq 'Perry Hall'))"
     );
     expect(actual).toEqual({
-      or: [{ city: "Essex" }, { city: "Perry Hall" }],
+      filter: {
+        or: [{ city: "Essex" }, { city: "Perry Hall" }],
+      },
+      count: true,
     });
   });
 
@@ -207,7 +219,10 @@ describe("ToOdataFilter", () => {
       "?$filter=((city eq 'Essex') or (city eq 'Perry Hall'))&$orderby=city desc"
     );
     expect(actual).toEqual({
-      or: [{ city: "Essex" }, { city: "Perry Hall" }],
+      filter: {
+        or: [{ city: "Essex" }, { city: "Perry Hall" }],
+      },
+      count: true,
     });
   });
 
@@ -216,12 +231,18 @@ describe("ToOdataFilter", () => {
       "?$filter=((city eq 'Essex') or (city eq 'Perry Hall')) and ((contains(firstName,'Ron') or contains(lastName,'Ron')))"
     );
     expect(actual).toEqual({
-      or: [{ city: "Essex" }, { city: "Perry Hall" }],
-      and: [
-        {
-          or: { firstName: { contains: "Ron" }, lastName: { contains: "Ron" } },
-        },
-      ],
+      filter: {
+        or: [{ city: "Essex" }, { city: "Perry Hall" }],
+        and: [
+          {
+            or: {
+              firstName: { contains: "Ron" },
+              lastName: { contains: "Ron" },
+            },
+          },
+        ],
+      },
+      count: true,
     });
   });
 
@@ -230,14 +251,17 @@ describe("ToOdataFilter", () => {
       "?$filter=((contains(firstName,'Ron') or contains(lastName,'Ron'))"
     );
     expect(actual).toEqual({
-      and: [
-        {
-          or: {
-            firstName: { contains: "Ron" },
-            lastName: { contains: "Ron" },
+      filter: {
+        and: [
+          {
+            or: {
+              firstName: { contains: "Ron" },
+              lastName: { contains: "Ron" },
+            },
           },
-        },
-      ],
+        ],
+      },
+      count: true,
     });
   });
 
@@ -246,7 +270,10 @@ describe("ToOdataFilter", () => {
       "?$filter=((city%20eq%20%27Essex%27)%20or%20(city%20eq%20%27Perry%20Hall%27))"
     );
     expect(actual).toEqual({
-      or: [{ city: "Essex" }, { city: "Perry Hall" }],
+      filter: {
+        or: [{ city: "Essex" }, { city: "Perry Hall" }],
+      },
+      count: true,
     });
   });
 });
