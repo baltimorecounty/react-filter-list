@@ -16,12 +16,10 @@ const useFilters = (
     queryString,
   };
 
-  const [{ uiFilters, odataFilters }, setFilters] = useState(() => {
-    return {
-      uiFilters: UpdateFilters(initialFilters, initialOdataFilters),
-      odataFilters: initialOdataFilters,
-    };
-  });
+  const [{ uiFilters, odataFilters }, setFilters] = useState(() => ({
+    uiFilters: UpdateFilters(initialFilters, initialOdataFilters),
+    odataFilters: initialOdataFilters,
+  }));
   const [apiEndpoint, setApiEndpoint] = useState(
     () => defaultApiEndpoint + queryString
   );
