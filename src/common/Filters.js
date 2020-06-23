@@ -11,21 +11,14 @@ const resetFilter = (filter) => {
 
 /** Reset any filters that do not exist in the query string. */
 const resetEmptyFilters = (filters = [], checkboxFilters = []) => {
-  filters
-    .filter(({ targetApiField = "" }) =>
-      checkboxFilters.some((filter) =>
-        Object.keys(filter).some(
-          ({ key }) => key.toLowerCase() !== targetApiField.toLowerCase()
-        )
-      )
-    )
-    .forEach(resetFilter);
+  filters.forEach(resetFilter);
 };
 
 /**
  * Update filters based on a given querystring (parsed to an object)
  */
 const updateFilters = (filters = [], checkboxFilters = []) => {
+  resetEmptyFilters(filters, checkboxFilters);
   // Update active filters based on querystring
   checkboxFilters.map((filter) => {
     Object.keys(filter).forEach((key) => {
@@ -80,11 +73,7 @@ const UpdateFilters = (filters = [], odataFilters = {}) => {
     return filters.map(resetFilter);
   }
 
-  const {
-    filter: { or: checkboxFilters = [] },
-  } = odataFilters;
-
-  console.log(checkboxFilters);
+  const { filter: { or: checkboxFilters = [] } = {} } = odataFilters;
 
   updateFilters(filters, checkboxFilters);
 
