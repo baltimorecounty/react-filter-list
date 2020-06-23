@@ -26,11 +26,8 @@ const resetEmptyFilters = (filters = [], checkboxFilters = []) => {
  * Update filters based on a given querystring (parsed to an object)
  */
 const updateFilters = (filters = [], checkboxFilters = []) => {
-  // Reset any filters that do not exist in the current querystring
-  //resetEmptyFilters(filters, checkboxFilters);
-
   // Update active filters based on querystring
-  checkboxFilters.map((filter, index) => {
+  checkboxFilters.map((filter) => {
     Object.keys(filter).forEach((key) => {
       const matchingFilter = filters.find(
         ({ targetApiField = "" }) =>
@@ -83,7 +80,11 @@ const UpdateFilters = (filters = [], odataFilters = {}) => {
     return filters.map(resetFilter);
   }
 
-  const { or: checkboxFilters = [] } = odataFilters;
+  const {
+    filter: { or: checkboxFilters = [] },
+  } = odataFilters;
+
+  console.log(checkboxFilters);
 
   updateFilters(filters, checkboxFilters);
 
