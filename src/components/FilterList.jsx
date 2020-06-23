@@ -13,6 +13,7 @@ import FilterTextInput from "./FilterTextInput";
 import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
 import RecordsMessage from "./RecordsMessage";
+import useFilters from "../hooks/useFilters";
 import { withRouter } from "react-router-dom";
 
 const FilterList = ({
@@ -37,43 +38,24 @@ const FilterList = ({
   ...props
 }) => {
   const [
-    { uiFilters, odataFilters, additionalOdataFilters },
-    setFilters,
-  ] = useState(() => {
-    const initialOdataFilters = ToOdataFilter(location.search);
-
-    return {
-      uiFilters: UpdateFilters(filtersFromProps, initialOdataFilters),
-      odataFilters: {
-        filters: initialOdataFilters,
-        queryString: location.search,
-      },
-      additionalOdataFilters: filtersFromProps.filter(
-        ({ targetApiField = "", options = [] }) =>
-          options.length === 0 && targetApiField[0] === "$"
-      ),
-    };
-  });
-  const [apiEndpoint, setApiEndpoint] = useState(
-    () => defaultApiEndpoint + "?$count=true"
-  );
+    { uiFilters, odataFilters, apiEndpoint },
+    { setFilters, setApiEndpoint },
+  ] = useFilters(defaultApiEndpoint, location.search, filtersFromProps);
 
   useEffect(() => {
     setApiEndpoint(defaultApiEndpoint + odataFilters.queryString);
     history.push(odataFilters.queryString);
-  }, [uiFilters, odataFilters, additionalOdataFilters]);
+  }, [uiFilters, odataFilters]);
 
   const updateQueryString = (filter) => {
     const updatedFilters = Update({
       checkboxFilter: filter,
       existingFilters: odataFilters,
-      additionalOdataFilters,
     });
 
     setFilters({
       uiFilters,
       odataFilters: updatedFilters,
-      additionalOdataFilters,
     });
   };
 

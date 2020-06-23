@@ -13,7 +13,7 @@ import { useInfiniteQuery } from "react-query";
  * @param {string} optionalParams.endpoint endpoint passed to the list from props
  * @param {string} loadMoreEndpoint endpoint passed from api list when the load more button is selected
  */
-const fetchList = (key, { endpoint }, loadMoreEndpoint) =>
+const fetchList = (key, { endpoint = "" }, loadMoreEndpoint = "") =>
   fetch(loadMoreEndpoint || endpoint).then((res) => res.json());
 
 const ApiList = ({

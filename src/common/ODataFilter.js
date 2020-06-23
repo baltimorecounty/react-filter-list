@@ -1,6 +1,8 @@
 import buildQuery from "odata-query";
 import { parse } from "query-string";
 
+const countFilter = { count: true };
+
 const getKeyIndex = (arr, name, value) =>
   arr.findIndex((orFilter) =>
     Object.keys(orFilter).some(
@@ -16,11 +18,10 @@ const getKeyIndex = (arr, name, value) =>
  */
 const ToOdataFilter = (odataQuery = "") => {
   if (!odataQuery) {
-    return {};
+    return countFilter;
   }
 
   const { $filter, $count } = parse(odataQuery);
-
   const filterParts = decodeURIComponent($filter).split(" and ");
   const or =
     filterParts.find((x) => x.toLowerCase().indexOf(" eq ") > -1) || "";
@@ -39,12 +40,16 @@ const ToOdataFilter = (odataQuery = "") => {
     return andOrConditions;
   }, {});
 
-  return {
+  const filter = {
     ...(orConditions.length > 0 && { or: orConditions }),
     ...(Object.keys(andConditions).length > 0 && {
       and: [{ or: andConditions }],
     }),
-    ...($count && { count: $count }),
+  };
+
+  return {
+    ...(Object.keys(filter).length > 0 && { filter }),
+    ...countFilter,
   };
 };
 
@@ -61,30 +66,16 @@ const removeQueryCharacters = (str = "") =>
  * Update
  * @param {*} param0
  */
-const Update = ({
-  checkboxFilter,
-  textFilter,
-  existingFilters = {},
-  additionalOdataFilters = [],
-}) => {
+const Update = ({ checkboxFilter, textFilter, existingFilters = {} }) => {
   const filter = {
     ...(checkboxFilter &&
       UpdateCheckboxFilters(checkboxFilter, existingFilters.filters)),
     ...(textFilter && UpdateTextFilter(textFilter)),
   };
 
-  const odataFilters = additionalOdataFilters.reduce(
-    (filterObj, currentValue) => {
-      const { targetApiField, value } = currentValue;
-      filterObj[targetApiField.replace("$", "")] = value;
-      return filterObj;
-    },
-    {}
-  );
-
   const queryString = buildQuery({
-    filter,
-    ...(Object.keys(odataFilters).length > 0 && odataFilters),
+    ...(Object.keys(filter).length > 0 && { filter }),
+    ...countFilter,
   });
 
   return {
