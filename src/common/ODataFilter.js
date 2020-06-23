@@ -5,11 +5,13 @@ const countFilter = { count: true };
 
 const getKeyIndex = (arr, name, value) =>
   arr.findIndex((orFilter) =>
-    Object.keys(orFilter).some(
-      (key = "") =>
-        key.toLowerCase() === name.toLowerCase() &&
+    Object.keys(orFilter).some((key = "") => {
+      const keyWithoutUpper = key.replace("tolower(", "").replace(")", "");
+      return (
+        keyWithoutUpper.toLowerCase() === name.toLowerCase() &&
         value.toLowerCase() === orFilter[key].toLowerCase()
-    )
+      );
+    })
   );
 
 /**
@@ -30,13 +32,16 @@ const ToOdataFilter = (odataQuery = "") => {
   const orParts = or.length > 0 ? or.split(" or ") : [];
   const andParts = and.length > 0 ? and.split(" or ") : [];
   const orConditions = orParts.reduce((orFilters, currentValue) => {
-    const [property, value] = getQueryCondition(currentValue);
-    orFilters.push({ [property.toLowerCase()]: value });
+    console.log(currentValue);
+    const [name, value] = getQueryCondition(currentValue);
+    orFilters.push({
+      [name]: value.toLowerCase(),
+    });
     return orFilters;
   }, []);
   const andConditions = andParts.reduce((andOrConditions, currentValue) => {
-    const [property, value] = getFunctionCondition(currentValue);
-    andOrConditions[property] = { contains: value };
+    const [name, value] = getFunctionCondition(currentValue);
+    andOrConditions[name] = { contains: value.toLowerCase() };
     return andOrConditions;
   }, {});
 
@@ -47,14 +52,22 @@ const ToOdataFilter = (odataQuery = "") => {
     }),
   };
 
+  console.log(andConditions);
+  console.log(orConditions);
+
   return {
     ...(Object.keys(filter).length > 0 && { filter }),
     ...countFilter,
   };
 };
 
-const getQueryCondition = (query, operator = " eq ") =>
-  removeQueryCharacters(query).split(operator);
+const getQueryCondition = (query, operator = " eq ") => {
+  const [name, value] = query.split(operator);
+  return [
+    `${removeQueryCharacters(name).replace("tolower", "tolower(")})`,
+    removeQueryCharacters(value),
+  ];
+};
 
 const getFunctionCondition = (query, comparisonFn = "contains") =>
   removeQueryCharacters(query.replace(`${comparisonFn}(`, "")).split(",");
@@ -109,7 +122,7 @@ const UpdateCheckboxFilters = (
   }
   // avoid duplicated filters
   else if (!isAlreadyApplied) {
-    or.push({ [name]: value });
+    or.push({ [`tolower(${name})`]: value.toLowerCase() });
   }
 
   return {
@@ -125,7 +138,7 @@ const UpdateCheckboxFilters = (
 const UpdateTextFilter = ({ fieldNames = [], value }) => {
   const andOrConditions = value
     ? fieldNames.reduce((filters, name) => {
-        filters[name] = { contains: value };
+        filters[`tolower(${name})`] = { contains: value.toLowerCase() };
         return filters;
       }, {})
     : {};
