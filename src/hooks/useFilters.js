@@ -12,20 +12,20 @@ const useFilters = (
   const initialOdataFilterObj = ToOdataFilter(initialQueryString);
   const queryString = buildQuery(initialOdataFilterObj);
   const initialOdataFilters = {
-    filters: initialOdataFilterObj,
+    filter: initialOdataFilterObj.filter,
     queryString,
   };
   const initialUiFilters = UpdateFilters(initialFilters, initialOdataFilterObj);
-  const [{ uiFilters, odataFilters }, setFilters] = useState(() => ({
+  const [{ uiFilters, odataQuery }, setFilters] = useState(() => ({
     uiFilters: initialUiFilters,
-    odataFilters: initialOdataFilters,
+    odataQuery: initialOdataFilters,
   }));
   const [apiEndpoint, setApiEndpoint] = useState(
     () => defaultApiEndpoint + queryString
   );
 
   return [
-    { uiFilters, odataFilters, apiEndpoint },
+    { uiFilters, odataQuery, apiEndpoint },
     { setFilters, setApiEndpoint },
   ];
 };

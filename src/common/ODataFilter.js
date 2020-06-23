@@ -21,7 +21,7 @@ const ToOdataFilter = (odataQuery = "") => {
     return countFilter;
   }
 
-  const { $filter, $count } = parse(odataQuery);
+  const { $filter } = parse(odataQuery);
   const filterParts = decodeURIComponent($filter).split(" and ");
   const or =
     filterParts.find((x) => x.toLowerCase().indexOf(" eq ") > -1) || "";
@@ -66,20 +66,20 @@ const removeQueryCharacters = (str = "") =>
  * Update
  * @param {*} param0
  */
-const Update = ({ checkboxFilter, textFilter, existingFilters = {} }) => {
-  const filter = {
-    ...(checkboxFilter &&
-      UpdateCheckboxFilters(checkboxFilter, existingFilters.filters)),
+const Update = ({ checkboxFilter, textFilter, odataQuery = {} }) => {
+  const { filter = {} } = odataQuery;
+  const updatedFilter = {
+    ...(checkboxFilter && UpdateCheckboxFilters(checkboxFilter, filter)),
     ...(textFilter && UpdateTextFilter(textFilter)),
   };
-
-  const queryString = buildQuery({
-    ...(Object.keys(filter).length > 0 && { filter }),
+  const updatedOdataQuery = {
+    ...(Object.keys(updatedFilter).length > 0 && { filter: updatedFilter }),
     ...countFilter,
-  });
+  };
+  const queryString = buildQuery(updatedOdataQuery);
 
   return {
-    filters: filter,
+    ...updatedOdataQuery,
     queryString,
   };
 };
@@ -97,9 +97,9 @@ const Update = ({ checkboxFilter, textFilter, existingFilters = {} }) => {
  */
 const UpdateCheckboxFilters = (
   { name = "", value, checked },
-  existingFilters = {}
+  odataQuery = {}
 ) => {
-  const { or = [] } = { ...existingFilters };
+  const { or = [] } = { ...odataQuery };
   const existingFilterIndex = getKeyIndex(or, name, value);
   const shouldRemoveFilter = existingFilterIndex > -1 && !checked;
   const isAlreadyApplied = existingFilterIndex > -1 && checked;

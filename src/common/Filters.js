@@ -68,12 +68,12 @@ const UpdateUrlQueryString = (url, name, value) => {
  * @param {array} filters list of filters in the standard format for this app
  * @param {string} queryString querystring to be parsed
  */
-const UpdateFilters = (filters = [], odataFilters = {}) => {
-  if (!Object.keys(odataFilters).length === 0) {
+const UpdateFilters = (filters = [], odataQuery = {}) => {
+  if (!Object.keys(odataQuery).length === 0) {
     return filters.map(resetFilter);
   }
 
-  const { filter: { or: checkboxFilters = [] } = {} } = odataFilters;
+  const { filter: { or: checkboxFilters = [] } = {} } = odataQuery;
 
   updateFilters(filters, checkboxFilters);
 

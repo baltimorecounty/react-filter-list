@@ -38,24 +38,26 @@ const FilterList = ({
   ...props
 }) => {
   const [
-    { uiFilters, odataFilters, apiEndpoint },
+    { uiFilters, odataQuery, apiEndpoint },
     { setFilters, setApiEndpoint },
   ] = useFilters(defaultApiEndpoint, location.search, filtersFromProps);
 
   useEffect(() => {
-    setApiEndpoint(defaultApiEndpoint + odataFilters.queryString);
-    history.push(odataFilters.queryString);
-  }, [uiFilters, odataFilters]);
+    const { queryString } = odataQuery;
+    setApiEndpoint(defaultApiEndpoint + queryString);
+    history.push(queryString);
+  }, [uiFilters, odataQuery]);
 
   const updateQueryString = (filter) => {
     const updatedFilters = Update({
       checkboxFilter: filter,
-      existingFilters: odataFilters,
+      odataQuery,
     });
+    const updatedUiFilters = UpdateFilters(uiFilters, updatedFilters);
 
     setFilters({
-      uiFilters,
-      odataFilters: updatedFilters,
+      uiFilters: updatedUiFilters,
+      odataQuery: updatedFilters,
     });
   };
 
