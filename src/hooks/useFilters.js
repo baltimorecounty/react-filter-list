@@ -15,9 +15,9 @@ const useFilters = (
     filters: initialOdataFilterObj,
     queryString,
   };
-
+  const initialUiFilters = UpdateFilters(initialFilters, initialOdataFilterObj);
   const [{ uiFilters, odataFilters }, setFilters] = useState(() => ({
-    uiFilters: UpdateFilters(initialFilters, initialOdataFilters),
+    uiFilters: initialUiFilters,
     odataFilters: initialOdataFilters,
   }));
   const [apiEndpoint, setApiEndpoint] = useState(
