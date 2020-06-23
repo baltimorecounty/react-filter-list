@@ -44,6 +44,26 @@ describe("Update", () => {
       ],
     });
   });
+
+  test("single checkbox filter with text filter, with $count", () => {
+    const actual = Update({
+      checkboxFilter: {
+        name: "firstName",
+        value: "Leslie",
+        checked: true,
+      },
+      textFilter: {
+        fieldNames: ["firstName", "lastName"],
+        value: "les",
+      },
+      additionalOdataFilters: [{ targetApiField: "$count", value: true }],
+      existingFilters: {},
+    });
+
+    expect(actual.queryString).toEqual(
+      "?$filter=((firstName eq 'Leslie')) and ((contains(firstName,'les') or contains(lastName,'les')))&$count=true"
+    );
+  });
 });
 
 describe("UpdateCheckboxFilters", () => {

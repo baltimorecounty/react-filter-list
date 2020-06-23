@@ -73,14 +73,18 @@ const Update = ({
     ...(textFilter && UpdateTextFilter(textFilter)),
   };
 
-  const odataFilters = additionalOdataFilters.map(
-    ({ targetApiField, value }) => ({
-      [targetApiField.replace("$", "")]: value,
-    })
+  const odataFilters = additionalOdataFilters.reduce(
+    (filterObj, currentValue) => {
+      const { targetApiField, value } = currentValue;
+      filterObj[targetApiField.replace("$", "")] = value;
+      return filterObj;
+    },
+    {}
   );
+
   const queryString = buildQuery({
     filter,
-    ...(odataFilters.length > 0 && odataFilters),
+    ...(Object.keys(odataFilters).length > 0 && odataFilters),
   });
 
   return {
