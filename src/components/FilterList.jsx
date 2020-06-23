@@ -31,6 +31,7 @@ const FilterList = ({
   renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
   includeInputFilter = false,
   inputFilterPlaceholder = "Begin typing to filter...",
+  inputFilterFields = [],
   filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
   history,
@@ -67,11 +68,16 @@ const FilterList = ({
   };
 
   const handleFilterTextInputChange = (query) => {
-    const updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
+    const updatedFilters = Update({
+      textFilter: { fieldNames: inputFilterFields, value: query },
+      odataQuery,
+    });
+    const updatedUiFilters = UpdateFilters(uiFilters, updatedFilters);
 
-    // This disables any browser history updates
-    // Since a user could possibly update a ton of entries
-    setApiEndpoint(updatedUrl);
+    setFilters({
+      uiFilters: updatedUiFilters,
+      odataQuery: updatedFilters,
+    });
   };
 
   return (
@@ -133,6 +139,8 @@ FilterList.propTypes = {
   inputFilterPlaceholder: PropTypes.string,
   /** className attribute for the list container */
   listContainerClassName: PropTypes.string,
+  /** A list of fields to search in the text input */
+  inputFilterFields: PropTypes.array,
 };
 
 export default withRouter(FilterList);
