@@ -143,7 +143,7 @@ describe("UpdateFilters", () => {
         },
       ],
       {
-        or: [{ category: "fun" }],
+        filter: { or: [{ category: "fun" }] },
       }
     );
 
@@ -176,7 +176,9 @@ describe("UpdateFilters", () => {
         },
       ],
       {
-        or: [{ category: "fun" }, { category: "not-fun" }],
+        filter: {
+          or: [{ category: "fun" }, { category: "not-fun" }],
+        },
       }
     );
 
