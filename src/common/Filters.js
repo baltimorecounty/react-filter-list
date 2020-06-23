@@ -1,5 +1,3 @@
-import { parse } from "query-string";
-
 /** Resets filter to default state. All options are unchecked */
 const resetFilter = (filter) => {
   filter.options.map((option) => {
