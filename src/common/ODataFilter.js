@@ -69,10 +69,10 @@ const Update = ({
 }) => {
   const filter = {
     ...(checkboxFilter &&
-      existingFilters.filters &&
       UpdateCheckboxFilters(checkboxFilter, existingFilters.filters)),
     ...(textFilter && UpdateTextFilter(textFilter)),
   };
+
   const odataFilters = additionalOdataFilters.map(
     ({ targetApiField, value }) => ({
       [targetApiField.replace("$", "")]: value,
