@@ -54,11 +54,14 @@ const FilterList = ({
       ),
     };
   });
-  const [apiEndpoint, setApiEndpoint] = useState(() => defaultApiEndpoint);
+  const [apiEndpoint, setApiEndpoint] = useState(
+    () => defaultApiEndpoint + "?$count=true"
+  );
 
   useEffect(() => {
-    setApiEndpoint(defaultApiEndpoint + location.search);
-  }, [location.search]);
+    setApiEndpoint(defaultApiEndpoint + odataFilters.queryString);
+    history.push(odataFilters.queryString);
+  }, [uiFilters, odataFilters, additionalOdataFilters]);
 
   const updateQueryString = (filter) => {
     const updatedFilters = Update({
@@ -72,11 +75,7 @@ const FilterList = ({
       odataFilters: updatedFilters,
       additionalOdataFilters,
     });
-
-    history.push(updatedFilters.queryString);
   };
-
-  console.log(additionalOdataFilters);
 
   const handleFilterChange = (changeEvent) => {
     const { name, value, checked } = changeEvent;
