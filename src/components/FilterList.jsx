@@ -34,6 +34,7 @@ const FilterList = ({
   inputFilterFields = [],
   filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
+  orderBy = "",
   history,
   staticContext,
   ...props
@@ -41,7 +42,12 @@ const FilterList = ({
   const [
     { uiFilters, odataQuery, apiEndpoint },
     { setFilters, setApiEndpoint },
-  ] = useFilters(defaultApiEndpoint, location.search, filtersFromProps);
+  ] = useFilters(
+    defaultApiEndpoint,
+    location.search,
+    filtersFromProps,
+    orderBy
+  );
 
   useEffect(() => {
     const { queryString } = odataQuery;
@@ -52,6 +58,7 @@ const FilterList = ({
     const updateOdataQuery = Update({
       checkboxFilter: filter,
       odataQuery,
+      orderBy,
     });
     const updatedUiFilters = UpdateFilters(uiFilters, updateOdataQuery);
 
@@ -75,6 +82,7 @@ const FilterList = ({
     const updatedFilters = Update({
       textFilter: { fieldNames: inputFilterFields, value: query },
       odataQuery,
+      orderBy,
     });
     const updatedUiFilters = UpdateFilters(uiFilters, updatedFilters);
 

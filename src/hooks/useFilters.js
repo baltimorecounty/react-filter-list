@@ -7,9 +7,10 @@ import buildQuery from "odata-query";
 const useFilters = (
   defaultApiEndpoint,
   initialQueryString = "",
-  initialFilters
+  initialFilters,
+  orderBy
 ) => {
-  const initialOdataFilterObj = ToOdataFilter(initialQueryString);
+  const initialOdataFilterObj = ToOdataFilter(initialQueryString, orderBy);
   const queryString = buildQuery(initialOdataFilterObj);
   const initialOdataFilters = {
     filter: initialOdataFilterObj.filter,
