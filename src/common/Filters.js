@@ -22,7 +22,8 @@ const updateFilters = (filters = [], checkboxFilters = []) => {
     Object.keys(filter).forEach((key) => {
       const matchingFilter = filters.find(
         ({ targetApiField = "" }) =>
-          targetApiField.toLowerCase() == key.toLowerCase()
+          targetApiField.toLowerCase() ===
+          key.toLowerCase().replace("tolower(", "").replace(")", "")
       );
 
       if (matchingFilter) {
