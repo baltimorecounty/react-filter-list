@@ -46,20 +46,24 @@ const FilterList = ({
   useEffect(() => {
     const { queryString } = odataQuery;
     setApiEndpoint(defaultApiEndpoint + queryString);
-    history.push(queryString);
   }, [uiFilters, odataQuery]);
 
   const updateQueryString = (filter) => {
-    const updatedFilters = Update({
+    const updateOdataQuery = Update({
       checkboxFilter: filter,
       odataQuery,
     });
-    const updatedUiFilters = UpdateFilters(uiFilters, updatedFilters);
+    const updatedUiFilters = UpdateFilters(uiFilters, updateOdataQuery);
 
     setFilters({
       uiFilters: updatedUiFilters,
-      odataQuery: updatedFilters,
+      odataQuery: updateOdataQuery,
     });
+
+    // only update browser history checkbox filters
+    // otherwise every time you type for the text change
+    // there were be loads of history records
+    history.push(updateOdataQuery.queryString);
   };
 
   const handleFilterChange = (changeEvent) => {
