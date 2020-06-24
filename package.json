@@ -1,6 +1,6 @@
 {
   "name": "@baltimorecounty/react-filter-list",
-  "version": "0.2.0",
+  "version": "1.0.0-rc1",
   "description": "A react component that provides standard way to show and filter lists",
   "main": "dist/index.js",
   "module": "dist/index.em.js",
@@ -9,7 +9,7 @@
     "build": "rollup --config",
     "start": "parcel public/index.html",
     "watch-build": "rollup --config -w",
-    "test": "jest",
+    "test": "jest --watchAll",
     "prepublish": "npm run build"
   },
   "author": "",
