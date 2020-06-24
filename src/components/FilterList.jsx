@@ -34,7 +34,7 @@ const FilterList = ({
   inputFilterFields = [],
   filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
-  orderBy = "",
+  orderBy = [],
   history,
   staticContext,
   ...props
@@ -153,6 +153,8 @@ FilterList.propTypes = {
   listContainerClassName: PropTypes.string,
   /** A list of fields to search in the text input */
   inputFilterFields: PropTypes.array,
+  /** an array of fields you wish to order by, this is static and asc */
+  orderBy: PropTypes.array,
 };
 
 export default withRouter(FilterList);
