@@ -52,9 +52,6 @@ const ToOdataFilter = (odataQuery = "") => {
     }),
   };
 
-  console.log(andConditions);
-  console.log(orConditions);
-
   return {
     ...(Object.keys(filter).length > 0 && { filter }),
     ...countFilter,
