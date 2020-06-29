@@ -7,29 +7,32 @@ const DefaultFilter = ({
   filter: { targetApiField, displayName, options },
   onChange,
 }) => {
-  const shouldCollapseOptions = options.length > 0;
+  const visibleFiltersCount = 5;
+  const shouldCollapseOptions = options.length > visibleFiltersCount;
   let moreOptions;
 
   if (shouldCollapseOptions) {
-    moreOptions = [...options].splice(5);
+    moreOptions = [...options].splice(visibleFiltersCount);
   }
 
   return (
     <Collapse id={targetApiField} header={displayName}>
-      {options.slice(0, 5).map(({ label, value, checked }) => {
-        const id = `${targetApiField}-${value.split(" ").join("-")}`;
-        return (
-          <Checkbox
-            key={`${id}-${checked}`}
-            id={id}
-            name={targetApiField}
-            onChange={onChange}
-            label={label}
-            value={value}
-            checked={checked}
-          />
-        );
-      })}
+      {options
+        .slice(0, visibleFiltersCount)
+        .map(({ label, value, checked }) => {
+          const id = `${targetApiField}-${value.split(" ").join("-")}`;
+          return (
+            <Checkbox
+              key={`${id}-${checked}`}
+              id={id}
+              name={targetApiField}
+              onChange={onChange}
+              label={label}
+              value={value}
+              checked={checked}
+            />
+          );
+        })}
       {shouldCollapseOptions && (
         <OptionsCollapse
           options={moreOptions}
