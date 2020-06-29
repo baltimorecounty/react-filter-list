@@ -23,6 +23,7 @@ const FilterTextInput = ({ onChange = () => {}, ...rest }) => {
         placeholder=""
         onChange={handleChange}
         value={inputValue}
+        type="search"
         {...rest}
       />
     </div>
