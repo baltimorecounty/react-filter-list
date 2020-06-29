@@ -7,11 +7,12 @@ const DefaultFilter = ({
   filter: { targetApiField, displayName, options },
   onChange,
 }) => {
-  const shouldCollapseOptions = options.length > 0;
+  const optionsThreshold = 5;
+  const shouldCollapseOptions = options.length > optionsThreshold;
   let moreOptions;
 
   if (shouldCollapseOptions) {
-    moreOptions = [...options].splice(5);
+    moreOptions = [...options].splice(optionsThreshold);
   }
 
   return (
