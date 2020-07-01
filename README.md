@@ -94,6 +94,15 @@ works
 
 To run all tests use `npm test`
 
+## Deployment
+
+To deploy this package to NPM:
+
+1. Ensure the package.json file has been updated with the newest version that you wish to publish
+2. [Create a release](https://github.com/baltimorecounty/react-filter-list/releases/new) using the version from step 1.
+3. A [Github Action](https://github.com/baltimorecounty/react-filter-list/actions?query=workflow%3A%22Release+to+NPM%22) will publish this to NPM once the release is published
+
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please
