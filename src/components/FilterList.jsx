@@ -51,7 +51,8 @@ const FilterList = ({
       filter,
       queryString: currentQueryString,
     });
-    history.push(queryString);
+
+    history.push(location.pathname + queryString);
   };
 
   const handleFilterChange = (changeEvent) => {
