@@ -77,6 +77,24 @@ const filters = [
 | displayName    | string          | Value you want to display for users to view.                                                                                    |
 | options        | array (objects) | Contains an array of objects (label / value). Value is what you need to pass to the api, label is what you want the user to see |
 
+#### Static Filters
+
+A static filter can be added to the filter list if you always want that filter
+value you to be passed to the API request.
+
+In order to do that you must simply pass the `targetApiField` and `value` that
+you want to pass. For Example:
+
+```js
+{
+    targetApiField: "recordsPerPage",
+    value: 1000
+}
+```
+
+This can be added to the array of filters, but will not be displayed in teh
+application.
+
 ### Running the App
 
 Since the primary function of repository is to export the FilterList to npm, we
@@ -98,10 +116,13 @@ To run all tests use `npm test`
 
 To deploy this package to NPM:
 
-1. Ensure the package.json file has been updated with the newest version that you wish to publish
-2. [Create a release](https://github.com/baltimorecounty/react-filter-list/releases/new) using the version from step 1.
-3. A [Github Action](https://github.com/baltimorecounty/react-filter-list/actions?query=workflow%3A%22Release+to+NPM%22) will publish this to NPM once the release is published
-
+1. Ensure the package.json file has been updated with the newest version that
+   you wish to publish
+2. [Create a release](https://github.com/baltimorecounty/react-filter-list/releases/new)
+   using the version from step 1.
+3. A
+   [Github Action](https://github.com/baltimorecounty/react-filter-list/actions?query=workflow%3A%22Release+to+NPM%22)
+   will publish this to NPM once the release is published
 
 ## Contributing
 
