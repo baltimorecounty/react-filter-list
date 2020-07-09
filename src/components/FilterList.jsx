@@ -35,21 +35,32 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
+  const staticFilterQueryString = filtersFromProps
+    .filter(({ value }) => value)
+    .map(({ targetApiField, value }) => `${targetApiField}=${value}`)
+    .join("&");
   const [filters, setFilters] = useState(() =>
     UpdateFilters(filtersFromProps, location.search)
   );
-  const [apiEndpoint, setApiEndpoint] = useState(() => defaultApiEndpoint);
+  const [apiEndpoint, setApiEndpoint] = useState(
+    () => defaultApiEndpoint + "?" + staticFilterQueryString
+  );
 
   useEffect(() => {
     setFilters((filters) => UpdateFilters(filters, location.search));
-    setApiEndpoint(defaultApiEndpoint + location.search);
+    setApiEndpoint(
+      defaultApiEndpoint +
+        location.search +
+        (location.search.indexOf("?") > -1 ? "&" : "?") +
+        staticFilterQueryString
+    );
   }, [location.search]);
 
   const updateQueryString = (filter) => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter,
-      queryString: currentQueryString,
+      queryString: currentQueryString.replace(staticFilterQueryString, ""),
     });
 
     history.push(location.pathname + queryString);

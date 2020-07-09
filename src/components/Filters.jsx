@@ -6,11 +6,13 @@ const Filters = ({
   renderFilter = () => {},
 }) => (
   <>
-    {filters.map((filter) => (
-      <div key={filter.targetApiField}>
-        {renderFilter(filter, handleFilterChange)}
-      </div>
-    ))}
+    {filters
+      .filter(({ options = [] }) => options.length > 0)
+      .map((filter) => (
+        <div key={filter.targetApiField}>
+          {renderFilter(filter, handleFilterChange)}
+        </div>
+      ))}
   </>
 );
 

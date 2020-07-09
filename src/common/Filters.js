@@ -2,7 +2,8 @@ import { parse } from "query-string";
 
 /** Resets filter to default state. All options are unchecked */
 const resetFilter = (filter) => {
-  filter.options.map((option) => {
+  const { options = [] } = filter;
+  options.map((option) => {
     option.checked = false;
     return option;
   });
@@ -36,8 +37,9 @@ const updateFilters = (filters = [], queryStringFilters = {}) => {
 
     if (matchingFilter) {
       const urlValues = queryStringFilters[key].toLowerCase().split(",");
+      const { options = [] } = matchingFilter;
 
-      matchingFilter.options.map((option) => {
+      options.map((option) => {
         const { value = "" } = option;
         option.checked = urlValues.some(
           (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
