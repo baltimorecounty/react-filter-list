@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   UpdateFilters,
   UpdateQueryString,
-  UpdateUrlQueryString,
+  UpdateUrlQueryString
 } from "../common/Filters";
 
 import ApiList from "./ApiList.jsx";
@@ -13,6 +13,7 @@ import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
 import RecordsMessage from "./RecordsMessage";
 import { withRouter } from "react-router-dom";
+import DatePicker from "react-datepicker";
 
 const FilterList = ({
   title = "",
@@ -21,12 +22,12 @@ const FilterList = ({
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
   ),
-  renderListHeader = (count) => (
+  renderListHeader = count => (
     <div className="list-header">
       <RecordsMessage count={count} />
     </div>
   ),
-  renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
+  renderLoadMoreButton = props => <DefaultLoadMoreButton {...props} />,
   includeInputFilter = false,
   inputFilterPlaceholder = "Begin typing to filter...",
   filters: filtersFromProps = [],
@@ -47,7 +48,7 @@ const FilterList = ({
   );
 
   useEffect(() => {
-    setFilters((filters) => UpdateFilters(filters, location.search));
+    setFilters(filters => UpdateFilters(filters, location.search));
     setApiEndpoint(
       defaultApiEndpoint +
         location.search +
@@ -56,22 +57,22 @@ const FilterList = ({
     );
   }, [location.search]);
 
-  const updateQueryString = (filter) => {
+  const updateQueryString = filter => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter,
-      queryString: currentQueryString.replace(staticFilterQueryString, ""),
+      queryString: currentQueryString.replace(staticFilterQueryString, "")
     });
 
     history.push(location.pathname + queryString);
   };
 
-  const handleFilterChange = (changeEvent) => {
+  const handleFilterChange = changeEvent => {
     const { name, value, checked } = changeEvent;
     updateQueryString({ name, value, checked });
   };
 
-  const handleFilterTextInputChange = (query) => {
+  const handleFilterTextInputChange = query => {
     const updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
 
     // This disables any browser history updates
@@ -79,8 +80,23 @@ const FilterList = ({
     setApiEndpoint(updatedUrl);
   };
 
+  console.log(filtersFromProps);
+  const [startDate, setStartDate] = useState(new Date());
   return (
     <div {...props}>
+      <div className="row">
+        <div className="col-md-3 col-xs-12">
+          <DatePicker
+            // name={name}
+            //id={id}
+            selected={startDate}
+            // onChange={handleDateChange}
+            //startDate={months[0] || new Date()}
+            //dateFormat="MM/yyyy"
+            // showMonthYearPicker
+          />
+        </div>
+      </div>
       <div className="row">
         <div className="col-md-3 col-xs-12">
           <Filters
@@ -137,7 +153,7 @@ FilterList.propTypes = {
   /** Placeholder text for the text input filter */
   inputFilterPlaceholder: PropTypes.string,
   /** className attribute for the list container */
-  listContainerClassName: PropTypes.string,
+  listContainerClassName: PropTypes.string
 };
 
 export default withRouter(FilterList);

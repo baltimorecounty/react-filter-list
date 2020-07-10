@@ -17,7 +17,7 @@
   "peerDependencies": {
     "react": "^16.x",
     "react-dom": "^16.x",
-    "@baltimorecounty/dotgov-components": "^1.x"
+    "@baltimorecounty/dotgov-components": "1.0.12"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
@@ -33,7 +33,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "rollup": "^2.16.1",
-    "rollup-plugin-babel": "^4.4.0"
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-node-polyfills": "^0.2.1"
   },
   "files": [
     "dist"
@@ -43,9 +44,10 @@
     "promise-polyfill": "8.1.3",
     "prop-types": "^15.7.2",
     "query-string": "^6.13.1",
+    "react-datepicker": "^2.9.6",
     "react-query": "^1.5.8",
     "react-router-dom": "^5.2.0",
     "use-debounce": "^3.4.2",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.2.0"
   }
 }

@@ -1,5 +1,6 @@
 import { FilterList } from "../src/index";
 import React from "react";
+//import " ../node_modules/react-datepicker/dist/react-datepicker-cssmodules.css";
 
 const filters = [
   {
@@ -18,7 +19,7 @@ const Demo = (props) => {
       <FilterList
         title="News"
         filters={filters}
-        apiEndpoint="{yourNewsEndpointGoesHere}"
+        apiEndpoint="https://localhost:44393/api/News"
         renderItem={({ title, articleSummary }) => (
           <div
             style={{
