@@ -36,7 +36,27 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
-  //console.log(filtersFromProps);
+  // console.log("props:" + JSON.stringify(filtersFromProps));
+  let filterDateValue = filtersFromProps.filter(
+    name => name.targetApiField == "FilterDate"
+  );
+  let toFromDatePart = filterDateValue[0].value.split(",");
+  //  console.log("toFromDatePart----:" + JSON.stringify(toFromDatePart[0]));
+  // console.log("filterDate----:" + JSON.stringify(filterDateValue[0].value.split(",")));
+  const [fromDate, setFromDate] = useState(
+    filterDateValue ? new Date(toFromDatePart[0]) : new Date("01/01/2019")
+  );
+  const [toDate, setToDate] = useState(
+    filterDateValue ? new Date(toFromDatePart[1]) : new Date("07/11/2020")
+  );
+  const fromDateId = `fromDate`;
+  const toDateId = `toDate`;
+  // const [filterDate, setFilterDate] = useState(
+  //   "?FilterDate=06/01/2020,12/01/2020"
+  // );
+  console.log("fromDate:" + fromDate);
+  //const [staticFilterQueryString, setStaticFilterQueryString] = useState();
+
   let staticFilterQueryString = null;
   staticFilterQueryString = filtersFromProps
     .filter(({ value }) => value)
@@ -45,17 +65,10 @@ const FilterList = ({
   const [filters, setFilters] = useState(() =>
     UpdateFilters(filtersFromProps, location.search)
   );
-  if (staticFilterQueryString) {
-    console.log("if");
-  } else {
-    console.log("else");
-  }
-  // console.log(
-  //   "staticFilterQueryString:" + staticFilterQueryString.trim()
-  //     ? staticFilterQueryString
-  //     : "nothing"
-  // );
-  //console.log("inside --FilterList-----");
+  console.log("*****************************************");
+  console.log(staticFilterQueryString);
+  console.log(filters);
+  console.log("*****************************************");
 
   const [apiEndpoint, setApiEndpoint] = useState(
     () =>
@@ -65,7 +78,6 @@ const FilterList = ({
   );
   //console.log(apiEndpoint);
   useEffect(() => {
-    
     setFilters(filters => UpdateFilters(filters, location.search));
     setApiEndpoint(
       defaultApiEndpoint +
@@ -81,12 +93,20 @@ const FilterList = ({
       filter,
       queryString: currentQueryString.replace(staticFilterQueryString, "")
     });
-   
+    // console.log("--before history.push---");
+    // console.log("currentQueryString:" + currentQueryString);
+    // console.log("staticFilterQueryString:" + staticFilterQueryString);
+    // console.log("currentQueryString.replace:" + currentQueryString.replace(staticFilterQueryString, ""));
+    // console.log("queryString:" + queryString);
+    // console.log("--location.pathname:--" + location.pathname);
+    // console.log("---end history.push---");
     history.push(location.pathname + queryString);
   };
 
   const handleFilterChange = changeEvent => {
+    // console.log("inside -handleFilterChange");
     const { name, value, checked } = changeEvent;
+    // console.log("name:value:checked::" + name + "--" + value + "---" + checked);
     updateQueryString({ name, value, checked });
   };
 
@@ -97,23 +117,50 @@ const FilterList = ({
     // Since a user could possibly update a ton of entries
     setApiEndpoint(updatedUrl);
   };
+
+  const handleFromDateChange = date => {
+    console.log("--in handleFromDateChange--");
+    // setFromDate(date);
+    //staticFilterQueryString="FilterDate={fromDate},{toDate}"
+    // handleChange({
+    //   fromDate: date,
+    //   toDate
+    // });
+    //const updatedUrl = testUpdateUrlQueryString(apiEndpoint, "FilterDate",staticFilterQueryString);
+
+    // This disables any browser history updates
+    // Since a user could possibly update a ton of entries
+    //setApiEndpoint(updatedUrl);
+  };
+
+  const handleToDateChange = date => {
+    console.log("-+++++-handleToDateChange-++++++-");
+/*     setToDate(date);
+    staticFilterQueryString = "FilterDate={fromDate},{toDate}"; */
+    // handleChange({
+    //   fromDate,
+    //   toDate: date
+    // });
+  };
+
   console.log("==================");
 
-//  let test1 = apiEndpoint.indexOf("?") > -1 || apiEndpoint.indexOf("&") > -1? apiEndpoint.substring(0, apiEndpoint.length-1):apiEndpoint;
+  //  let test1 = apiEndpoint.indexOf("?") > -1 || apiEndpoint.indexOf("&") > -1? apiEndpoint.substring(0, apiEndpoint.length-1):apiEndpoint;
   //console.log(test1);
- /// setApiEndpoint({test1});
- // console.log(apiEndpoint);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate , setStartDate] = useState(new Date()); //startDate.getMonth()-1);
+  /// setApiEndpoint({test1});
+  // console.log(apiEndpoint);
+
   return (
     <div {...props}>
       <div className="row">
         <div className="col-md-3 col-xs-12">
           <DatePicker
-           //  name={name}
-           // id={id}
-            selected={startDate}
-            // onChange={handleDateChange}
+            name={fromDateId}
+            id={fromDateId}
+            selected={fromDate}
+            onChange={handleFromDateChange}
+          //  onSelect={handleSelect}
+            value={fromDate}
             //startDate={months[0] || new Date()}
             //dateFormat="MM/yyyy"
             // showMonthYearPicker
@@ -123,10 +170,11 @@ const FilterList = ({
       <div className="row">
         <div className="col-md-3 col-xs-12">
           <DatePicker
-            // name={name}
-            //id={id}
-            selected={endDate}
-            // onChange={handleDateChange}
+            name={toDateId}
+            id={toDateId}
+            selected={toDate}
+            onChange={handleToDateChange}
+            value={fromDate}
             //startDate={months[0] || new Date()}
             //dateFormat="MM/yyyy"
             // showMonthYearPicker

@@ -11,6 +11,14 @@ const filters = [
       { value: "stories", label: "Stories" },
     ],
   },
+  // {
+  //   targetApiField: "Filter",
+  //   value:"Million"
+  // },
+  {
+    targetApiField: "FilterDate",
+    value:"06/01/2020,12/01/2020"
+  }
 ];
 
 const Demo = (props) => {

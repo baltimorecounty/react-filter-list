@@ -71,12 +71,28 @@ const UpdateUrlQueryString = (url, name, value) => {
     : base;
 };
 
+const testUpdateUrlQueryString = (url, name,staticFilterQueryString) => {
+  const [base, queryString] = url.split("?");
+  const searchParams = new URLSearchParams(queryString || "");
+  console.log("searchParams:" + searchParams);
+  // if (!!value) {
+  //   searchParams.set(name, value);
+  // } else {
+  //   searchParams.delete(name);
+  // }
+
+  return [...searchParams].length > 0
+    ? `${base}?${searchParams.toString()}`
+    : base;
+};
+
+
 /**
  * Update filters based on a given querystring
  * @param {array} filters list of filters in the standard format for this app
  * @param {string} queryString querystring to be parsed
  */
-const UpdateFilters = (filters = [], queryString = "") => {
+const UpdateFilters = (filters = [], queryString) => {
   if (!queryString) {
     return filters.map(resetFilter);
   }
