@@ -36,18 +36,36 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
-  const staticFilterQueryString = filtersFromProps
+  //console.log(filtersFromProps);
+  let staticFilterQueryString = null;
+  staticFilterQueryString = filtersFromProps
     .filter(({ value }) => value)
     .map(({ targetApiField, value }) => `${targetApiField}=${value}`)
     .join("&");
   const [filters, setFilters] = useState(() =>
     UpdateFilters(filtersFromProps, location.search)
   );
-  const [apiEndpoint, setApiEndpoint] = useState(
-    () => defaultApiEndpoint + "?" + staticFilterQueryString
-  );
+  if (staticFilterQueryString) {
+    console.log("if");
+  } else {
+    console.log("else");
+  }
+  // console.log(
+  //   "staticFilterQueryString:" + staticFilterQueryString.trim()
+  //     ? staticFilterQueryString
+  //     : "nothing"
+  // );
+  //console.log("inside --FilterList-----");
 
+  const [apiEndpoint, setApiEndpoint] = useState(
+    () =>
+      (defaultApiEndpoint = staticFilterQueryString
+        ? defaultApiEndpoint + "?" + staticFilterQueryString
+        : defaultApiEndpoint)
+  );
+  //console.log(apiEndpoint);
   useEffect(() => {
+    
     setFilters(filters => UpdateFilters(filters, location.search));
     setApiEndpoint(
       defaultApiEndpoint +
@@ -63,7 +81,7 @@ const FilterList = ({
       filter,
       queryString: currentQueryString.replace(staticFilterQueryString, "")
     });
-
+   
     history.push(location.pathname + queryString);
   };
 
@@ -79,17 +97,35 @@ const FilterList = ({
     // Since a user could possibly update a ton of entries
     setApiEndpoint(updatedUrl);
   };
+  console.log("==================");
 
-  console.log(filtersFromProps);
+//  let test1 = apiEndpoint.indexOf("?") > -1 || apiEndpoint.indexOf("&") > -1? apiEndpoint.substring(0, apiEndpoint.length-1):apiEndpoint;
+  //console.log(test1);
+ /// setApiEndpoint({test1});
+ // console.log(apiEndpoint);
   const [startDate, setStartDate] = useState(new Date());
+  const [endDate , setStartDate] = useState(new Date()); //startDate.getMonth()-1);
   return (
     <div {...props}>
       <div className="row">
         <div className="col-md-3 col-xs-12">
           <DatePicker
+           //  name={name}
+           // id={id}
+            selected={startDate}
+            // onChange={handleDateChange}
+            //startDate={months[0] || new Date()}
+            //dateFormat="MM/yyyy"
+            // showMonthYearPicker
+          />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-3 col-xs-12">
+          <DatePicker
             // name={name}
             //id={id}
-            selected={startDate}
+            selected={endDate}
             // onChange={handleDateChange}
             //startDate={months[0] || new Date()}
             //dateFormat="MM/yyyy"

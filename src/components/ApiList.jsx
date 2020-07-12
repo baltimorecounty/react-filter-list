@@ -24,6 +24,9 @@ const ApiList = ({
   renderItem = () => {},
   renderLoadMoreButton = () => {},
 }) => {
+  console.log("+++++++++++++++++++++++++++++");
+  console.log(endpoint);
+  console.log("+++++============++++++++");
   const {
     data,
     isFetching,

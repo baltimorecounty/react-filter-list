@@ -20,6 +20,7 @@ const Demo = (props) => {
         title="News"
         filters={filters}
         apiEndpoint="https://localhost:44393/api/News"
+        
         renderItem={({ title, articleSummary }) => (
           <div
             style={{
