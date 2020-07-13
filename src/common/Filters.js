@@ -1,9 +1,9 @@
 import { parse } from "query-string";
 
 /** Resets filter to default state. All options are unchecked */
-const resetFilter = (filter) => {
+const resetFilter = filter => {
   const { options = [] } = filter;
-  options.map((option) => {
+  options.map(option => {
     option.checked = false;
     return option;
   });
@@ -29,7 +29,7 @@ const updateFilters = (filters = [], queryStringFilters = {}) => {
   resetEmptyFilters(filters, queryStringFilters);
 
   // Update active filters based on querystring
-  Object.keys(queryStringFilters).forEach((key) => {
+  Object.keys(queryStringFilters).forEach(key => {
     const matchingFilter = filters.find(
       ({ targetApiField = "" }) =>
         targetApiField.toLowerCase() == key.toLowerCase()
@@ -39,7 +39,7 @@ const updateFilters = (filters = [], queryStringFilters = {}) => {
       const urlValues = queryStringFilters[key].toLowerCase().split(",");
       const { options = [] } = matchingFilter;
 
-      options.map((option) => {
+      options.map(option => {
         const { value = "" } = option;
         option.checked = urlValues.some(
           (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
@@ -71,22 +71,6 @@ const UpdateUrlQueryString = (url, name, value) => {
     : base;
 };
 
-const testUpdateUrlQueryString = (url, name,staticFilterQueryString) => {
-  const [base, queryString] = url.split("?");
-  const searchParams = new URLSearchParams(queryString || "");
-  console.log("searchParams:" + searchParams);
-  // if (!!value) {
-  //   searchParams.set(name, value);
-  // } else {
-  //   searchParams.delete(name);
-  // }
-
-  return [...searchParams].length > 0
-    ? `${base}?${searchParams.toString()}`
-    : base;
-};
-
-
 /**
  * Update filters based on a given querystring
  * @param {array} filters list of filters in the standard format for this app
@@ -117,7 +101,7 @@ const UpdateFilters = (filters = [], queryString) => {
  */
 const UpdateQueryString = ({
   filter: { checked, name, value },
-  queryString,
+  queryString
 }) => {
   const searchParams = new URLSearchParams(queryString || "");
   const existingValues = searchParams.has(name)

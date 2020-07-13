@@ -1,6 +1,22 @@
 import { FilterList } from "../src/index";
 import React from "react";
+import { subMonths } from "date-fns";
 //import " ../node_modules/react-datepicker/dist/react-datepicker-cssmodules.css";
+const currentDate = new Date();
+
+var fromDate = subMonths(new Date() ,0);
+var fromDateFormat=`${fromDate.getMonth() }` +
+`/` +
+`${fromDate.getDate()}` +
+`/` +
+`${fromDate.getFullYear()},`;
+
+var toDateFormat = `${currentDate.getMonth() + 1}` +
+`/` +
+`${currentDate.getDate()}` +
+`/` +
+`${currentDate.getFullYear()}`;
+var fromToDateFormat = fromDateFormat +  toDateFormat
 
 const filters = [
   {
@@ -12,12 +28,12 @@ const filters = [
     ],
   },
   // {
-  //   targetApiField: "Filter",
-  //   value:"Million"
-  // },
+  //  targetApiField: "Filter",
+  //    value:"Million"
+  //  },
   {
     targetApiField: "FilterDate",
-    value:"06/01/2020,12/01/2020"
+    value: `${fromToDateFormat}`
   }
 ];
 
