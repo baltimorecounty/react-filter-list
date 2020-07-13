@@ -146,10 +146,6 @@ const FilterList = ({
             selected={fromDate}
             onChange={handleFromDateChange}
             maxDate={toDate}
-            //  onSelect={handleSelect}
-            //  value={fromDate}
-            //startDate={months[0] || new Date()}
-            //dateFormat="MM/yyyy"
           />
         </div>
       </div>
@@ -162,9 +158,6 @@ const FilterList = ({
             onChange={handleToDateChange}
             minDate={fromDate}
             maxDate={new Date()}
-            //  value={fromDate}
-            //startDate={months[0] || new Date()}
-            //dateFormat="MM/yyyy"
           />
         </div>
       </div>
