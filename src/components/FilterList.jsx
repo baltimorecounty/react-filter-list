@@ -15,6 +15,7 @@ import PropTypes from "prop-types";
 import RecordsMessage from "./RecordsMessage";
 import { withRouter } from "react-router-dom";
 import DatePicker from "react-datepicker";
+import { DateSelector } from "@baltimorecounty/dotgov-components";
 import { get } from "http";
 
 const FilterList = ({
@@ -47,7 +48,6 @@ const FilterList = ({
   const [toDate, setToDate] = useState(new Date(toFromDatePart[1]) || null);
   const fromDateId = `fromDate`;
   const toDateId = `toDate`;
-
 
   const staticFilterQueryString = filtersFromProps
     .filter(({ value }) => value)
@@ -140,7 +140,7 @@ const FilterList = ({
     <div {...props}>
       <div className="row">
         <div className="col-md-3 col-xs-12">
-          <DatePicker
+          <DateSelector
             name={fromDateId}
             id={fromDateId}
             selected={fromDate}
