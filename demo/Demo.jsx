@@ -31,10 +31,10 @@ const filters = [
   //  targetApiField: "Filter",
   //    value:"Million"
   //  },
-  {
+   {
     targetApiField: "FilterDate",
-    value: `${fromToDateFormat}`
-  }
+     value: `${fromToDateFormat}`
+   }
 ];
 
 const Demo = (props) => {

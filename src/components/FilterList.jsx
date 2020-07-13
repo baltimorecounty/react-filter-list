@@ -48,7 +48,7 @@ const FilterList = ({
   const fromDateId = `fromDate`;
   const toDateId = `toDate`;
 
-  //let staticFilterQueryString = null;
+
   const staticFilterQueryString = filtersFromProps
     .filter(({ value }) => value)
     .map(({ targetApiField, value }) => `${targetApiField}=${value}`)
