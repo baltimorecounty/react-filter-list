@@ -48,8 +48,8 @@ const FilterList = ({
   const fromDateId = `fromDate`;
   const toDateId = `toDate`;
 
-  let staticFilterQueryString = null;
-  staticFilterQueryString = filtersFromProps
+  //let staticFilterQueryString = null;
+  const staticFilterQueryString = filtersFromProps
     .filter(({ value }) => value)
     .map(({ targetApiField, value }) => `${targetApiField}=${value}`)
     .join("&");
@@ -109,12 +109,17 @@ const FilterList = ({
 
     // This disables any browser history updates
     // Since a user could possibly update a ton of entries
+    //TODO: if you uncomment this line , it will change the url ???
+    // const [base, queryString] = updatedUrl.split("?");
+    // history.push(location.pathname + "?" + queryString);
+
     setApiEndpoint(updatedUrl);
   };
 
   const handleToDateChange = date => {
     setToDate(date);
-    var fromToDateFormattedValue = FormatDateString(fromDate) + "," + FormatDateString(date) ;
+    var fromToDateFormattedValue =
+      FormatDateString(fromDate) + "," + FormatDateString(date);
 
     const updatedUrl = UpdateUrlQueryString(
       apiEndpoint,
@@ -124,6 +129,10 @@ const FilterList = ({
 
     // This disables any browser history updates
     // Since a user could possibly update a ton of entries
+    //TODO: if you uncomment this line , it will change the url ???
+    // const [base, queryString] = updatedUrl.split("?");
+    // history.push(location.pathname + "?" + queryString);
+
     setApiEndpoint(updatedUrl);
   };
 

@@ -70,7 +70,10 @@ const UpdateUrlQueryString = (url, name, value) => {
     ? `${base}?${searchParams.toString()}`
     : base;
 };
-
+/**
+ *
+ * @param {date} date for data value
+ */
 const FormatDateString = date => {
   return (formatDateValue =
     `${date.getMonth() + 1}` +
@@ -116,7 +119,6 @@ const UpdateQueryString = ({
   const existingValues = searchParams.has(name)
     ? searchParams.get(name).split(",")
     : [];
-
   if (checked) {
     if (existingValues.length > 0) {
       const doesValueExist =
