@@ -41,14 +41,7 @@ const FilterList = ({
   let filterDateValue = filtersFromProps.filter(
     name => name.targetApiField == "FilterDate"
   );
-  // let toFromDatePart = filterDateValue[0].value.split(",");
-  // const [fromDate, setFromDate] = useState(
-  //   filterDateValue ? new Date(toFromDatePart[0]) : null
-  // );
-  // const [toDate, setToDate] = useState(
-  //   filterDateValue ? new Date(toFromDatePart[1]) : null
-  // );
-
+ 
   let toFromDatePart = filterDateValue[0].value.split(",");
   const [fromDate, setFromDate] = useState(new Date(toFromDatePart[0]) || null);
   const [toDate, setToDate] = useState( new Date(toFromDatePart[1]) || null);

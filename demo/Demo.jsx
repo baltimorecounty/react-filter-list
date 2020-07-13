@@ -16,7 +16,7 @@ var toDateFormat = `${currentDate.getMonth() + 1}` +
 `${currentDate.getDate()}` +
 `/` +
 `${currentDate.getFullYear()}`;
-var fromToDateFormat = fromDateFormat +  toDateFormat
+var fromToDateFormat = fromDateFormat +  toDateFormat;
 
 const filters = [
   {
