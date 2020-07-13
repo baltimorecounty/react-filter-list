@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import {
   UpdateFilters,
   UpdateQueryString,
-  UpdateUrlQueryString
+  UpdateUrlQueryString,
+  FormatDateString
 } from "../common/Filters";
 
 import ApiList from "./ApiList.jsx";
@@ -37,18 +38,15 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
-
   let filterDateValue = filtersFromProps.filter(
     name => name.targetApiField == "FilterDate"
   );
- 
+
   let toFromDatePart = filterDateValue[0].value.split(",");
   const [fromDate, setFromDate] = useState(new Date(toFromDatePart[0]) || null);
-  const [toDate, setToDate] = useState( new Date(toFromDatePart[1]) || null);
+  const [toDate, setToDate] = useState(new Date(toFromDatePart[1]) || null);
   const fromDateId = `fromDate`;
   const toDateId = `toDate`;
-
-
 
   let staticFilterQueryString = null;
   staticFilterQueryString = filtersFromProps
@@ -81,7 +79,7 @@ const FilterList = ({
       filter,
       queryString: currentQueryString.replace(staticFilterQueryString, "")
     });
-  
+
     history.push(location.pathname + queryString);
   };
 
@@ -101,25 +99,12 @@ const FilterList = ({
 
   const handleFromDateChange = date => {
     setFromDate(date);
-    var fromDateFormatVal =
-      `${date.getMonth() + 1}` +
-      `/` +
-      `${date.getDate()}` +
-      `/` +
-      `${date.getFullYear()}`;
-    var toDateFormatVal =
-      `${toDate.getMonth() + 1}` +
-      `/` +
-      `${toDate.getDate()}` +
-      `/` +
-      `${toDate.getFullYear()}`;
-
-    staticFilterQueryString = fromDateFormatVal + "," + toDateFormatVal;
-   
+    var fromToDateFormattedValue =
+      FormatDateString(date) + "," + FormatDateString(toDate);
     const updatedUrl = UpdateUrlQueryString(
       apiEndpoint,
       "FilterDate",
-      staticFilterQueryString
+      fromToDateFormattedValue
     );
 
     // This disables any browser history updates
@@ -129,34 +114,18 @@ const FilterList = ({
 
   const handleToDateChange = date => {
     setToDate(date);
-    var toDateFormatVal =
-      `${date.getMonth() + 1}` +
-      `/` +
-      `${date.getDate()}` +
-      `/` +
-      `${date.getFullYear()}`;
-    var fromDateFormatVal =
-      `${fromDate.getMonth() + 1}` +
-      `/` +
-      `${fromDate.getDate()}` +
-      `/` +
-      `${fromDate.getFullYear()}`;
+    var fromToDateFormattedValue = FormatDateString(fromDate) + "," + FormatDateString(date) ;
 
-    staticFilterQueryString = fromDateFormatVal + "," + toDateFormatVal;
-  
     const updatedUrl = UpdateUrlQueryString(
       apiEndpoint,
       "FilterDate",
-      staticFilterQueryString
+      fromToDateFormattedValue
     );
 
     // This disables any browser history updates
     // Since a user could possibly update a ton of entries
     setApiEndpoint(updatedUrl);
   };
-
-
-
 
   return (
     <div {...props}>
@@ -167,12 +136,11 @@ const FilterList = ({
             id={fromDateId}
             selected={fromDate}
             onChange={handleFromDateChange}
-            maxDate={ toDate }
+            maxDate={toDate}
             //  onSelect={handleSelect}
             //  value={fromDate}
             //startDate={months[0] || new Date()}
             //dateFormat="MM/yyyy"
-      
           />
         </div>
       </div>
@@ -184,11 +152,10 @@ const FilterList = ({
             selected={toDate}
             onChange={handleToDateChange}
             minDate={fromDate}
-            maxDate={ new Date() }
+            maxDate={new Date()}
             //  value={fromDate}
             //startDate={months[0] || new Date()}
             //dateFormat="MM/yyyy"
-       
           />
         </div>
       </div>

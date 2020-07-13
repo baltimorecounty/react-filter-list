@@ -71,6 +71,15 @@ const UpdateUrlQueryString = (url, name, value) => {
     : base;
 };
 
+const FormatDateString = date => {
+  return (formatDateValue =
+    `${date.getMonth() + 1}` +
+    `/` +
+    `${date.getDate()}` +
+    `/` +
+    `${date.getFullYear()}`);
+};
+
 /**
  * Update filters based on a given querystring
  * @param {array} filters list of filters in the standard format for this app
@@ -138,4 +147,9 @@ const UpdateQueryString = ({
   return [...searchParams].length > 0 ? `?${searchParams.toString()}` : "";
 };
 
-export { UpdateUrlQueryString, UpdateFilters, UpdateQueryString };
+export {
+  UpdateUrlQueryString,
+  UpdateFilters,
+  UpdateQueryString,
+  FormatDateString
+};
