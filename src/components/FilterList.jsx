@@ -137,8 +137,18 @@ const FilterList = ({
 
   return (
     <div {...props}>
+      
       <div className="row">
         <div className="col-md-3 col-xs-12">
+          <div>
+          <Filters
+            renderFilter={renderFilter}
+            handleFilterChange={handleFilterChange}
+            filters={filters}
+          />
+          </div>
+      
+        <div>
           <FilterDateSelector
             name={fromDateId}
             id={fromDateId}
@@ -146,10 +156,8 @@ const FilterList = ({
             onChange={handleFromDateChange}
             maxDate={toDate}
           />
-        </div>
       </div>
-      <div className="row">
-        <div className="col-md-3 col-xs-12">
+      <div>
           <FilterDateSelector
             name={toDateId}
             id={toDateId}
@@ -158,16 +166,8 @@ const FilterList = ({
             minDate={fromDate}
             maxDate={new Date()}
           />
-        </div>
       </div>
-      <div className="row">
-        <div className="col-md-3 col-xs-12">
-          <Filters
-            renderFilter={renderFilter}
-            handleFilterChange={handleFilterChange}
-            filters={filters}
-          />
-        </div>
+      </div>
         <div className="col-md-9 col-xs-12">
           {includeInputFilter && (
             <FilterTextInput
@@ -186,6 +186,7 @@ const FilterList = ({
           />
         </div>
       </div>
+     
     </div>
   );
 };
