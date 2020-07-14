@@ -3,8 +3,13 @@ import commonjs from "@rollup/plugin-commonjs";
 import pkg from "./package.json";
 import resolve from "@rollup/plugin-node-resolve";
 // import css from 'rollup-plugin-css-only';
+//import postcss from 'rollup-plugin-postcss';
+
 
 const plugins = [
+    //  postcss({
+    //       extensions: [ '.css' ],
+    // }),
   commonjs({
     include: "node_modules/**",
     namedExports: {
