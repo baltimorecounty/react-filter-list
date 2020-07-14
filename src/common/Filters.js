@@ -1,5 +1,5 @@
 import { parse } from "query-string";
-
+import { subMonths } from "date-fns";
 /** Resets filter to default state. All options are unchecked */
 const resetFilter = filter => {
   const { options = [] } = filter;
@@ -83,6 +83,23 @@ const FormatDateString = date => {
     `${date.getFullYear()}`);
 };
 
+const InitilizeDateValues= ()=>{
+  const currentDate = new Date();
+var fromDate = subMonths(new Date() ,0);
+var fromDateFormat=`${fromDate.getMonth() }` +
+`/` +
+`${fromDate.getDate()}` +
+`/` +
+`${fromDate.getFullYear()},`;
+
+var toDateFormat = `${currentDate.getMonth() + 1}` +
+`/` +
+`${currentDate.getDate()}` +
+`/` +
+`${currentDate.getFullYear()}`;
+return fromToDateFormat = fromDateFormat +  toDateFormat;
+}
+
 /**
  * Update filters based on a given querystring
  * @param {array} filters list of filters in the standard format for this app
@@ -153,5 +170,7 @@ export {
   UpdateUrlQueryString,
   UpdateFilters,
   UpdateQueryString,
-  FormatDateString
+  FormatDateString,
+  InitilizeDateValues,
+  resetFilter
 };

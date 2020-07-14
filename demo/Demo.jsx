@@ -1,23 +1,10 @@
 import { FilterList } from "../src/index";
 import React from "react";
-import { subMonths } from "date-fns";
-//import " ../node_modules/react-datepicker/dist/react-datepicker-cssmodules.css";
-const currentDate = new Date();
+import {
+  InitilizeDateValues
+} from "../src/common/Filters";
 
-var fromDate = subMonths(new Date() ,0);
-var fromDateFormat=`${fromDate.getMonth() }` +
-`/` +
-`${fromDate.getDate()}` +
-`/` +
-`${fromDate.getFullYear()},`;
-
-var toDateFormat = `${currentDate.getMonth() + 1}` +
-`/` +
-`${currentDate.getDate()}` +
-`/` +
-`${currentDate.getFullYear()}`;
-var fromToDateFormat = fromDateFormat +  toDateFormat;
-
+var fromToDateFormat =InitilizeDateValues();
 const filters = [
   {
     targetApiField: "category.value",
