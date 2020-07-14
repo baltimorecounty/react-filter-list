@@ -5,6 +5,7 @@ import {
   UpdateUrlQueryString,
   FormatDateString
 } from "../common/Filters";
+import { button } from "@baltimorecounty/dotgov-components";
 
 import ApiList from "./ApiList.jsx";
 import DefaultFilter from "./DefaultFilter.jsx";
@@ -135,8 +136,6 @@ const FilterList = ({
   };
   const clearFilter = () => {
     history.push(location.pathname);
-
-    
   };
   return (
     <div {...props}>
@@ -169,7 +168,11 @@ const FilterList = ({
               maxDate={new Date()}
             />
           </div>
-          <button onClick={clearFilter}>Click me!</button>
+         <div className="dg_card__footer">
+          <button type="button" onClick={clearFilter} className="dg_button">
+            Clear filters
+          </button>
+          </div>
         </div>
         <div></div>
         <div className="col-md-9 col-xs-12">
