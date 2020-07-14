@@ -141,7 +141,7 @@ const FilterList = ({
     <div {...props}>
       <div className="row">
         <div className="col-md-3 col-xs-12">
-          <DateSelector
+          <DatePicker
             name={fromDateId}
             id={fromDateId}
             selected={fromDate}
@@ -152,7 +152,7 @@ const FilterList = ({
       </div>
       <div className="row">
         <div className="col-md-3 col-xs-12">
-          <DatePicker
+          <DateSelector
             name={toDateId}
             id={toDateId}
             selected={toDate}
