@@ -5,7 +5,7 @@ import {
   UpdateUrlQueryString,
   FormatDateString,
 } from "../common/Filters";
-import { button } from "@baltimorecounty/dotgov-components";
+import { button, Fieldset } from "@baltimorecounty/dotgov-components";
 
 import ApiList from "./ApiList.jsx";
 import DefaultFilter from "./DefaultFilter.jsx";
@@ -151,23 +151,25 @@ const FilterList = ({
           </div>
 
           <div>
-            <FilterDateSelector
-              name={fromDateId}
-              id={fromDateId}
-              selected={fromDate}
-              onChange={handleFromDateChange}
-              maxDate={toDate}
-              label="Start Date"
-            />
-            <FilterDateSelector
-              name={toDateId}
-              id={toDateId}
-              selected={toDate}
-              onChange={handleToDateChange}
-              minDate={fromDate}
-              maxDate={new Date()}
-              label="End Date"
-            />
+            <Fieldset title="Filter by Date">
+              <FilterDateSelector
+                name={fromDateId}
+                id={fromDateId}
+                selected={fromDate}
+                onChange={handleFromDateChange}
+                maxDate={toDate}
+                label="Start Date"
+              />
+              <FilterDateSelector
+                name={toDateId}
+                id={toDateId}
+                selected={toDate}
+                onChange={handleToDateChange}
+                minDate={fromDate}
+                maxDate={new Date()}
+                label="End Date"
+              />
+            </Fieldset>
           </div>
           <div className="dg_card__footer">
             <button type="button" onClick={clearFilter} className="dg_button">
