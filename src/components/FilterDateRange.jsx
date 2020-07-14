@@ -1,11 +1,30 @@
 import React, { useState } from "react";
 
-import { DateSelector } from "@baltimorecounty/dotgov-components";
+import { DateSelector, Fieldset } from "@baltimorecounty/dotgov-components";
 
-const FilterDateSelector = ({ onChange = () => {}, ...rest }) => {
+const FilterDateSelector = (props) => {
+  const {
+    label,
+    name,
+    id,
+    selected,
+    onChange,
+    maxDate,
+    minDate,
+    ...rest
+  } = props;
   return (
     <div className="input-filter-form">
-      <DateSelector title="Start Date" {...rest} />
+      <DateSelector
+        label={label}
+        name={name}
+        id={id}
+        selected={selected}
+        onChange={onChange}
+        maxDate={maxDate}
+        minDate={minDate}
+        {...rest}
+      />
     </div>
   );
 };
