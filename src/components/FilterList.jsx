@@ -136,7 +136,7 @@ const FilterList = ({
     setApiEndpoint(updatedUrl);
   };
   const clearFilter = () => {
-    console.log(filters);
+    //console.log(filters);
     console.log("on clicked");
     // filters.forEach(resetFilter);
   };
