@@ -3,8 +3,7 @@ import {
   UpdateFilters,
   UpdateQueryString,
   UpdateUrlQueryString,
-  FormatDateString,
-  resetFilter
+  FormatDateString
 } from "../common/Filters";
 
 import ApiList from "./ApiList.jsx";
@@ -79,7 +78,6 @@ const FilterList = ({
       filter,
       queryString: currentQueryString.replace(staticFilterQueryString, "")
     });
-
     history.push(location.pathname + queryString);
   };
 
@@ -136,9 +134,9 @@ const FilterList = ({
     setApiEndpoint(updatedUrl);
   };
   const clearFilter = () => {
-    //console.log(filters);
-    console.log("on clicked");
-    // filters.forEach(resetFilter);
+    history.push(location.pathname);
+
+    
   };
   return (
     <div {...props}>

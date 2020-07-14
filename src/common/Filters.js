@@ -2,6 +2,7 @@ import { parse } from "query-string";
 import { subMonths } from "date-fns";
 /** Resets filter to default state. All options are unchecked */
 const resetFilter = filter => {
+  //console.log('resetfilter --:' + JSON.stringify(filter));
   const { options = [] } = filter;
   options.map(option => {
     option.checked = false;
@@ -136,6 +137,7 @@ const UpdateQueryString = ({
   const existingValues = searchParams.has(name)
     ? searchParams.get(name).split(",")
     : [];
+
   if (checked) {
     if (existingValues.length > 0) {
       const doesValueExist =
@@ -171,6 +173,5 @@ export {
   UpdateFilters,
   UpdateQueryString,
   FormatDateString,
-  InitilizeDateValues,
-  resetFilter
+  InitilizeDateValues
 };
