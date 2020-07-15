@@ -13,7 +13,11 @@ const FilterDateSelector = (props) => {
     minDate,
     ...rest
   } = props;
+  console.log('selected:' + selected);
+//  console.log('selected1:' + selected1);
+  console.log(props);
   return (
+  
     <div className="input-filter-form">
       <DateSelector
         label={label}
@@ -23,7 +27,7 @@ const FilterDateSelector = (props) => {
         onChange={onChange}
         maxDate={maxDate}
         minDate={minDate}
-        {...rest}
+       // {...rest}
       />
     </div>
   );

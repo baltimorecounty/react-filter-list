@@ -48,7 +48,7 @@ const FilterList = ({
   const [toDate, setToDate] = useState(new Date(toFromDatePart[1]) || null);
   const fromDateId = `fromDate`;
   const toDateId = `toDate`;
-
+console.log('fromDate:' + fromDate);
   const staticFilterQueryString = filtersFromProps
     .filter(({ value }) => value)
     .map(({ targetApiField, value }) => `${targetApiField}=${value}`)
@@ -97,15 +97,16 @@ const FilterList = ({
   };
 
   const handleFromDateChange = (date) => {
-    alert("WTF");
-    // setFromDate(date);
-    // var fromToDateFormattedValue =
-    //   FormatDateString(date) + "," + FormatDateString(toDate);
-    // const updatedUrl = UpdateUrlQueryString(
-    //   apiEndpoint,
-    //   "FilterDate",
-    //   fromToDateFormattedValue
-    // );
+   // alert("handleFromDateChange");
+    setFromDate(date);
+    
+    var fromToDateFormattedValue =
+      FormatDateString(date) + "," + FormatDateString(toDate);
+    const updatedUrl = UpdateUrlQueryString(
+      apiEndpoint,
+      "FilterDate",
+      fromToDateFormattedValue
+    );
 
     // // This disables any browser history updates
     // // Since a user could possibly update a ton of entries
@@ -113,10 +114,11 @@ const FilterList = ({
     // // const [base, queryString] = updatedUrl.split("?");
     // // history.push(location.pathname + "?" + queryString);
 
-    // setApiEndpoint(updatedUrl);
+    setApiEndpoint(updatedUrl);
   };
 
   const handleToDateChange = (date) => {
+    //alert("handleToDateChange");
     setToDate(date);
     var fromToDateFormattedValue =
       FormatDateString(fromDate) + "," + FormatDateString(date);
@@ -139,7 +141,8 @@ const FilterList = ({
     history.push(location.pathname);
   };
   return (
-    <div {...props}>
+     //{...props}
+     <div > 
       <div className="row">
         <div className="col-md-3 col-xs-12">
           <div>
@@ -151,12 +154,13 @@ const FilterList = ({
           </div>
 
           <div>
-            <Fieldset title="Filter by Date">
+            {/* <Fieldset title="Filter by Date"> */}
               <FilterDateSelector
                 name={fromDateId}
                 id={fromDateId}
                 selected={fromDate}
-                onChange={handleFromDateChange}
+               onChange={handleFromDateChange}
+                //onChange={date=> setFromDate(date)}
                 maxDate={toDate}
                 label="Start Date"
               />
@@ -169,7 +173,7 @@ const FilterList = ({
                 maxDate={new Date()}
                 label="End Date"
               />
-            </Fieldset>
+            {/* </Fieldset> */}
           </div>
           <div className="dg_card__footer">
             <button type="button" onClick={clearFilter} className="dg_button">
@@ -196,7 +200,7 @@ const FilterList = ({
           />
         </div>
       </div>
-    </div>
+    </div> 
   );
 };
 
