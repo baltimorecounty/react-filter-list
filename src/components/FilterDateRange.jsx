@@ -27,7 +27,7 @@ const FilterDateSelector = (props) => {
         onChange={onChange}
         maxDate={maxDate}
         minDate={minDate}
-       // {...rest}
+        {...rest}
       />
     </div>
   );
