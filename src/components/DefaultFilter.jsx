@@ -5,7 +5,7 @@ import React from "react";
 
 const DefaultFilter = ({
   filter: { targetApiField, displayName, options },
-  onChange,
+  onChange
 }) => {
   const visibleFiltersCount = 5;
   const shouldCollapseOptions = options.length > visibleFiltersCount;
@@ -16,31 +16,33 @@ const DefaultFilter = ({
   }
 
   return (
-    <Collapse id={targetApiField} header={displayName}>
-      {options
-        .slice(0, visibleFiltersCount)
-        .map(({ label, value, checked }) => {
-          const id = `${targetApiField}-${value.split(" ").join("-")}`;
-          return (
-            <Checkbox
-              key={`${id}-${checked}`}
-              id={id}
-              name={targetApiField}
-              onChange={onChange}
-              label={label}
-              value={value}
-              checked={checked}
-            />
-          );
-        })}
-      {shouldCollapseOptions && (
-        <OptionsCollapse
-          options={moreOptions}
-          onChange={onChange}
-          targetApiField={targetApiField}
-        />
-      )}
-    </Collapse>
+    <React.Fragment>
+      <Collapse id={targetApiField} header={displayName}>
+        {options
+          .slice(0, visibleFiltersCount)
+          .map(({ label, value, checked }) => {
+            const id = `${targetApiField}-${value.split(" ").join("-")}`;
+            return (
+              <Checkbox
+                key={`${id}-${checked}`}
+                id={id}
+                name={targetApiField}
+                onChange={onChange}
+                label={label}
+                value={value}
+                checked={checked}
+              />
+            );
+          })}
+        {shouldCollapseOptions && (
+          <OptionsCollapse
+            options={moreOptions}
+            onChange={onChange}
+            targetApiField={targetApiField}
+          />
+        )}
+      </Collapse>
+    </React.Fragment>
   );
 };
 

@@ -14,12 +14,15 @@ const filters = [
       { value: "stories", label: "Stories" },
     ],
   },
+ 
   // {
   //  targetApiField: "Filter",
   //    value:"Million"
   //  },
+ 
    {
     targetApiField: "FilterDate",
+    displayName: "FilterDate",
      value: `${fromToDateFormat}`
    }
 ];

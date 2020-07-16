@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { subMonths } from "date-fns";
 import {
   UpdateFilters,
   UpdateQueryString,
   UpdateUrlQueryString,
   FormatDateString,
+  InitilizeDateValues
 } from "../common/Filters";
-import { button, Fieldset } from "@baltimorecounty/dotgov-components";
+
+import { Button } from "@baltimorecounty/dotgov-components";
 
 import ApiList from "./ApiList.jsx";
 import DefaultFilter from "./DefaultFilter.jsx";
@@ -25,12 +28,12 @@ const FilterList = ({
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
   ),
-  renderListHeader = (count) => (
+  renderListHeader = count => (
     <div className="list-header">
       <RecordsMessage count={count} />
     </div>
   ),
-  renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
+  renderLoadMoreButton = props => <DefaultLoadMoreButton {...props} />,
   includeInputFilter = false,
   inputFilterPlaceholder = "Begin typing to filter...",
   filters: filtersFromProps = [],
@@ -40,15 +43,13 @@ const FilterList = ({
   ...props
 }) => {
   let filterDateValue = filtersFromProps.filter(
-    (name) => name.targetApiField == "FilterDate"
+    name => name.targetApiField == "FilterDate"
   );
-
   let toFromDatePart = filterDateValue[0].value.split(",");
   const [fromDate, setFromDate] = useState(new Date(toFromDatePart[0]) || null);
   const [toDate, setToDate] = useState(new Date(toFromDatePart[1]) || null);
   const fromDateId = `fromDate`;
   const toDateId = `toDate`;
-console.log('fromDate:' + fromDate);
   const staticFilterQueryString = filtersFromProps
     .filter(({ value }) => value)
     .map(({ targetApiField, value }) => `${targetApiField}=${value}`)
@@ -64,7 +65,7 @@ console.log('fromDate:' + fromDate);
         : defaultApiEndpoint)
   );
   useEffect(() => {
-    setFilters((filters) => UpdateFilters(filters, location.search));
+    setFilters(filters => UpdateFilters(filters, location.search));
     setApiEndpoint(
       defaultApiEndpoint +
         location.search +
@@ -73,33 +74,30 @@ console.log('fromDate:' + fromDate);
     );
   }, [location.search]);
 
-  const updateQueryString = (filter) => {
+  const updateQueryString = filter => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter,
-      queryString: currentQueryString.replace(staticFilterQueryString, ""),
+      queryString: currentQueryString.replace(staticFilterQueryString, "")
     });
     history.push(location.pathname + queryString);
   };
 
-  const handleFilterChange = (changeEvent) => {
+  const handleFilterChange = changeEvent => {
     const { name, value, checked } = changeEvent;
 
     updateQueryString({ name, value, checked });
   };
 
-  const handleFilterTextInputChange = (query) => {
+  const handleFilterTextInputChange = query => {
     const updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
 
     // This disables any browser history updates
     // Since a user could possibly update a ton of entries
     setApiEndpoint(updatedUrl);
   };
-
-  const handleFromDateChange = (date) => {
-   // alert("handleFromDateChange");
+  const handleFromDateChange = date => {
     setFromDate(date);
-    
     var fromToDateFormattedValue =
       FormatDateString(date) + "," + FormatDateString(toDate);
     const updatedUrl = UpdateUrlQueryString(
@@ -117,8 +115,7 @@ console.log('fromDate:' + fromDate);
     setApiEndpoint(updatedUrl);
   };
 
-  const handleToDateChange = (date) => {
-    //alert("handleToDateChange");
+  const handleToDateChange = date => {
     setToDate(date);
     var fromToDateFormattedValue =
       FormatDateString(fromDate) + "," + FormatDateString(date);
@@ -138,11 +135,19 @@ console.log('fromDate:' + fromDate);
     setApiEndpoint(updatedUrl);
   };
   const clearFilter = () => {
+    var fromToDateFormat = InitilizeDateValues();
+    let [fromDatePart, toDatePart] = fromToDateFormat.split(",");
+    setFromDate(new Date(new Date(fromDatePart)));
+    setToDate(new Date(toDatePart));
     history.push(location.pathname);
   };
+  const buttonStyles = {
+    paddingLeft: "50px",
+    paddingRight: "0"
+  };
+
   return (
-     //{...props}
-     <div > 
+    <div>
       <div className="row">
         <div className="col-md-3 col-xs-12">
           <div>
@@ -152,33 +157,49 @@ console.log('fromDate:' + fromDate);
               filters={filters}
             />
           </div>
-
-          <div>
-            {/* <Fieldset title="Filter by Date"> */}
-              <FilterDateSelector
-                name={fromDateId}
-                id={fromDateId}
-                selected={fromDate}
-               onChange={handleFromDateChange}
-                //onChange={date=> setFromDate(date)}
-                maxDate={toDate}
-                label="Start Date"
-              />
-              <FilterDateSelector
-                name={toDateId}
-                id={toDateId}
-                selected={toDate}
-                onChange={handleToDateChange}
-                minDate={fromDate}
-                maxDate={new Date()}
-                label="End Date"
-              />
-            {/* </Fieldset> */}
-          </div>
-          <div className="dg_card__footer">
-            <button type="button" onClick={clearFilter} className="dg_button">
-              Clear filters
+          <div class="dg_accordion__collapsible dg_collapse">
+            <button
+              class="dg_accordion-btn"
+              type="button"
+              id="accordion-btn-sample-collapse"
+              aria-expanded="true"
+            >
+              <span class="dg_accordion_buttontext-holder">Date Filter</span>
             </button>
+            <div
+              class="multi-collapse collapse show"
+              aria-labelledby="accordion-btn-sample-collapse"
+              aria-expanded="true"
+            >
+              <div class="dg_accordion-item-body">
+                <FilterDateSelector
+                  name={fromDateId}
+                  id={fromDateId}
+                  selected={fromDate}
+                  onChange={handleFromDateChange}
+                  maxDate={toDate}
+                  label="Start Date"
+                />
+                <FilterDateSelector
+                  name={toDateId}
+                  id={toDateId}
+                  selected={toDate}
+                  onChange={handleToDateChange}
+                  minDate={fromDate}
+                  maxDate={new Date()}
+                  label="End Date"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="dg_card__footer">
+            <Button
+              className="dg_button-link plus-text-icon"
+              onClick={clearFilter}
+              text="Clear filters"
+              style={buttonStyles}
+            />
           </div>
         </div>
         <div></div>
@@ -200,7 +221,7 @@ console.log('fromDate:' + fromDate);
           />
         </div>
       </div>
-    </div> 
+    </div>
   );
 };
 
@@ -230,7 +251,7 @@ FilterList.propTypes = {
   /** Placeholder text for the text input filter */
   inputFilterPlaceholder: PropTypes.string,
   /** className attribute for the list container */
-  listContainerClassName: PropTypes.string,
+  listContainerClassName: PropTypes.string
 };
 
 export default withRouter(FilterList);

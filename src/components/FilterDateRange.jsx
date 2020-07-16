@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { DateSelector, Fieldset } from "@baltimorecounty/dotgov-components";
 
-const FilterDateSelector = (props) => {
+const FilterDateSelector = props => {
   const {
     label,
     name,
@@ -13,11 +13,8 @@ const FilterDateSelector = (props) => {
     minDate,
     ...rest
   } = props;
-  console.log('selected:' + selected);
-//  console.log('selected1:' + selected1);
-  console.log(props);
+
   return (
-  
     <div className="input-filter-form">
       <DateSelector
         label={label}
