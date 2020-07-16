@@ -8,8 +8,6 @@ import {
   InitilizeDateValues
 } from "../common/Filters";
 
-import { Button } from "@baltimorecounty/dotgov-components";
-
 import ApiList from "./ApiList.jsx";
 import DefaultFilter from "./DefaultFilter.jsx";
 import DefaultLoadMoreButton from "./DefaultLoadMoreButton";
@@ -19,6 +17,7 @@ import PropTypes from "prop-types";
 import RecordsMessage from "./RecordsMessage";
 import { withRouter } from "react-router-dom";
 import FilterDateSelector from "./FilterDateRange";
+import { Button } from "@baltimorecounty/dotgov-components";
 import { get } from "http";
 
 const FilterList = ({
@@ -45,9 +44,17 @@ const FilterList = ({
   let filterDateValue = filtersFromProps.filter(
     name => name.targetApiField == "FilterDate"
   );
-  let toFromDatePart = filterDateValue[0].value.split(",");
-  const [fromDate, setFromDate] = useState(new Date(toFromDatePart[0]) || null);
-  const [toDate, setToDate] = useState(new Date(toFromDatePart[1]) || null);
+
+  let toFromDatePart =
+    filterDateValue.length > 0 ? filterDateValue[0].value.split(",") : null;
+
+  const [fromDate, setFromDate] = useState(
+    !!toFromDatePart ? new Date(toFromDatePart[0]) : null
+  );
+  const [toDate, setToDate] = useState(
+    !!toFromDatePart ? new Date(toFromDatePart[1]) : null
+  );
+
   const fromDateId = `fromDate`;
   const toDateId = `toDate`;
   const staticFilterQueryString = filtersFromProps
@@ -64,12 +71,14 @@ const FilterList = ({
         ? defaultApiEndpoint + "?" + staticFilterQueryString
         : defaultApiEndpoint)
   );
+
   useEffect(() => {
     setFilters(filters => UpdateFilters(filters, location.search));
+
     setApiEndpoint(
       defaultApiEndpoint +
         location.search +
-        (location.search.indexOf("?") > -1 ? "&" : "?") +
+        (location.search.indexOf("?") > -1 ? "" : "?") +
         staticFilterQueryString
     );
   }, [location.search]);
@@ -80,6 +89,7 @@ const FilterList = ({
       filter,
       queryString: currentQueryString.replace(staticFilterQueryString, "")
     });
+
     history.push(location.pathname + queryString);
   };
 
@@ -135,14 +145,16 @@ const FilterList = ({
     setApiEndpoint(updatedUrl);
   };
   const clearFilter = () => {
-    var fromToDateFormat = InitilizeDateValues();
-    let [fromDatePart, toDatePart] = fromToDateFormat.split(",");
-    setFromDate(new Date(new Date(fromDatePart)));
-    setToDate(new Date(toDatePart));
+    if (toFromDatePart) {
+      var fromToDateFormat = InitilizeDateValues();
+      let [fromDatePart, toDatePart] = fromToDateFormat.split(",");
+      setFromDate(new Date(new Date(fromDatePart)));
+      setToDate(new Date(toDatePart));
+    }
     history.push(location.pathname);
   };
   const buttonStyles = {
-    paddingLeft: "50px",
+    paddingLeft: "100",
     paddingRight: "0"
   };
 
@@ -157,42 +169,43 @@ const FilterList = ({
               filters={filters}
             />
           </div>
-          <div class="dg_accordion__collapsible dg_collapse">
-            <button
-              class="dg_accordion-btn"
-              type="button"
-              id="accordion-btn-sample-collapse"
-              aria-expanded="true"
-            >
-              <span class="dg_accordion_buttontext-holder">Date Filter</span>
-            </button>
-            <div
-              class="multi-collapse collapse show"
-              aria-labelledby="accordion-btn-sample-collapse"
-              aria-expanded="true"
-            >
-              <div class="dg_accordion-item-body">
-                <FilterDateSelector
-                  name={fromDateId}
-                  id={fromDateId}
-                  selected={fromDate}
-                  onChange={handleFromDateChange}
-                  maxDate={toDate}
-                  label="Start Date"
-                />
-                <FilterDateSelector
-                  name={toDateId}
-                  id={toDateId}
-                  selected={toDate}
-                  onChange={handleToDateChange}
-                  minDate={fromDate}
-                  maxDate={new Date()}
-                  label="End Date"
-                />
+          {toFromDatePart && (
+            <div class="dg_accordion__collapsible dg_collapse">
+              <button
+                class="dg_accordion-btn"
+                type="button"
+                id="accordion-btn-sample-collapse"
+                aria-expanded="true"
+              >
+                <span class="dg_accordion_buttontext-holder">Date Filter</span>
+              </button>
+              <div
+                class="multi-collapse collapse show"
+                aria-labelledby="accordion-btn-sample-collapse"
+                aria-expanded="true"
+              >
+                <div class="dg_accordion-item-body">
+                  <FilterDateSelector
+                    name={fromDateId}
+                    id={fromDateId}
+                    selected={fromDate}
+                    onChange={handleFromDateChange}
+                    maxDate={toDate}
+                    label="Start Date"
+                  />
+                  <FilterDateSelector
+                    name={toDateId}
+                    id={toDateId}
+                    selected={toDate}
+                    onChange={handleToDateChange}
+                    minDate={fromDate}
+                    maxDate={new Date()}
+                    label="End Date"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-
+          )}
           <div className="dg_card__footer">
             <Button
               className="dg_button-link plus-text-icon"
