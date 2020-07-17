@@ -107,7 +107,7 @@ const InitilizeDateValues = () => {
  * @param {array} filters list of filters in the standard format for this app
  * @param {string} queryString querystring to be parsed
  */
-const UpdateFilters = (filters = [], queryString) => {
+const UpdateFilters = (filters = [], queryString = "") => {
   if (!queryString) {
     return filters.map(resetFilter);
   }
