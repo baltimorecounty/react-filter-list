@@ -159,7 +159,7 @@ const FilterList = ({
   };
 
   return (
-    <div>
+    <div {...props}>
       <div className="row">
         <div className="col-md-3 col-xs-12">
           <div>
