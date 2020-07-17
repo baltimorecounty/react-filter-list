@@ -18,7 +18,7 @@ import RecordsMessage from "./RecordsMessage";
 import { withRouter } from "react-router-dom";
 import FilterDateSelector from "./FilterDateRange";
 import { Button } from "@baltimorecounty/dotgov-components";
-import { get } from "http";
+
 
 const FilterList = ({
   title = "",
