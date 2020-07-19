@@ -19,7 +19,6 @@ import { withRouter } from "react-router-dom";
 import FilterDateSelector from "./FilterDateRange";
 import { Button } from "@baltimorecounty/dotgov-components";
 
-
 const FilterList = ({
   title = "",
   listContainerClassName = "list",
@@ -47,14 +46,12 @@ const FilterList = ({
 
   let toFromDatePart =
     filterDateValue.length > 0 ? filterDateValue[0].value.split(",") : null;
-
   const [fromDate, setFromDate] = useState(
     !!toFromDatePart ? new Date(toFromDatePart[0]) : null
   );
   const [toDate, setToDate] = useState(
     !!toFromDatePart ? new Date(toFromDatePart[1]) : null
   );
-
   const fromDateId = `fromDate`;
   const toDateId = `toDate`;
   const staticFilterQueryString = filtersFromProps
@@ -75,27 +72,25 @@ const FilterList = ({
   useEffect(() => {
     setFilters(filters => UpdateFilters(filters, location.search));
 
-    setApiEndpoint(
-      defaultApiEndpoint +
-        location.search +
-        (location.search.indexOf("?") > -1 ? "" : "?") +
-        staticFilterQueryString
-    );
+    if (location.search.indexOf("?") > -1) {
+      setApiEndpoint(defaultApiEndpoint + location.search);
+    } else {
+      setApiEndpoint(toFromDatePart ? apiEndpoint : defaultApiEndpoint);
+    }
   }, [location.search]);
 
   const updateQueryString = filter => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter,
-      queryString: currentQueryString.replace(staticFilterQueryString, "")
+      queryString: currentQueryString === undefined ? "" : currentQueryString
     });
-
+    setApiEndpoint(queryString);
     history.push(location.pathname + queryString);
   };
 
   const handleFilterChange = changeEvent => {
     const { name, value, checked } = changeEvent;
-
     updateQueryString({ name, value, checked });
   };
 
@@ -119,9 +114,8 @@ const FilterList = ({
     // // This disables any browser history updates
     // // Since a user could possibly update a ton of entries
     // //TODO: if you uncomment this line , it will change the url ???
-    // // const [base, queryString] = updatedUrl.split("?");
-    // // history.push(location.pathname + "?" + queryString);
-
+    const [base, queryString] = updatedUrl.split("?");
+    history.push(location.pathname + "?" + queryString);
     setApiEndpoint(updatedUrl);
   };
 
@@ -139,20 +133,30 @@ const FilterList = ({
     // This disables any browser history updates
     // Since a user could possibly update a ton of entries
     //TODO: if you uncomment this line , it will change the url ???
-    // const [base, queryString] = updatedUrl.split("?");
-    // history.push(location.pathname + "?" + queryString);
-
+    const [base, queryString] = updatedUrl.split("?");
+    history.push(location.pathname + "?" + queryString);
     setApiEndpoint(updatedUrl);
   };
   const clearFilter = () => {
+    const [base, currentQueryString] = apiEndpoint.split("?");
     if (toFromDatePart) {
       var fromToDateFormat = InitilizeDateValues();
       let [fromDatePart, toDatePart] = fromToDateFormat.split(",");
       setFromDate(new Date(new Date(fromDatePart)));
       setToDate(new Date(toDatePart));
+      const updatedUrl = UpdateUrlQueryString(
+        apiEndpoint,
+        "FilterDate",
+        fromToDateFormat
+      );
+
+      setApiEndpoint(base + "?FilterDate=" + fromToDateFormat);
+    } else {
+      setApiEndpoint(base);
     }
     history.push(location.pathname);
   };
+
   const buttonStyles = {
     paddingLeft: "100",
     paddingRight: "0"
