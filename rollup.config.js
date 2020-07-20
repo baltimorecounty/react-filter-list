@@ -7,16 +7,16 @@ const plugins = [
   commonjs({
     include: "node_modules/**",
     namedExports: {
-      "node_modules/react-is/index.js": ["isValidElementType"],
-    },
+      "node_modules/react-is/index.js": ["isValidElementType"]
+    }
   }),
   resolve({
     preferBuiltins: true,
-    extensions: [".mjs", ".js", ".jsx", ".json", ".node"],
+    extensions: [".mjs", ".js", ".jsx", ".json", ".node"]
   }),
   babel({
-    exclude: "node_modules/**",
-  }),
+    exclude: "node_modules/**"
+  })
 ];
 
 export default [
@@ -24,7 +24,7 @@ export default [
     input: "demo/index.js",
     output: [{ file: pkg.demo, format: "cjs" }],
     external: ["react", "react-dom"],
-    plugins,
+    plugins
   },
   // CommonJS (for Node) and ES module (for bundlers) build.
   // (We could have three entries in the configuration array
@@ -36,9 +36,9 @@ export default [
     input: "src/index.js",
     output: [
       { file: pkg.main, format: "cjs" },
-      { file: pkg.module, format: "es" },
+      { file: pkg.module, format: "es" }
     ],
     external: ["react", "react-dom"],
-    plugins,
-  },
+    plugins
+  }
 ];

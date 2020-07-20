@@ -14,7 +14,7 @@ import { useInfiniteQuery } from "react-query";
  * @param {string} loadMoreEndpoint endpoint passed from api list when the load more button is selected
  */
 const fetchList = (key, { endpoint }, loadMoreEndpoint) =>
-  fetch(loadMoreEndpoint || endpoint).then((res) => res.json());
+  fetch(loadMoreEndpoint || endpoint).then(res => res.json());
 
 const ApiList = ({
   className,
@@ -22,7 +22,7 @@ const ApiList = ({
   endpoint,
   renderHeader = () => {},
   renderItem = () => {},
-  renderLoadMoreButton = () => {},
+  renderLoadMoreButton = () => {}
 }) => {
   const {
     data,
@@ -30,16 +30,15 @@ const ApiList = ({
     isFetchingMore,
     fetchMore,
     canFetchMore,
-    status,
+    status
   } = useInfiniteQuery(
     ["apiGET", { endpoint }],
     fetchList,
     {
-      getFetchMore: ({ metaData: { links = {} } = {} }, allGroups) =>
-        links.next,
+      getFetchMore: ({ metaData: { links = {} } = {} }, allGroups) => links.next
     },
     {
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: false
     }
   );
 
@@ -67,7 +66,7 @@ const ApiList = ({
       <div className={className}>
         {data.map((group, i) => (
           <React.Fragment key={i}>
-            {group.records.map((record) => (
+            {group.records.map(record => (
               <React.Fragment key={record.id}>
                 {renderItem(record)}
               </React.Fragment>
@@ -79,7 +78,7 @@ const ApiList = ({
         renderLoadMoreButton({
           isFetching,
           isFetchingMore,
-          onClick: handleLoadMoreClick,
+          onClick: handleLoadMoreClick
         })}
     </div>
   );

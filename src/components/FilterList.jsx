@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { subMonths } from "date-fns";
 import {
   UpdateFilters,
   UpdateQueryString,
   UpdateUrlQueryString,
+  FormatDateString,
+  InitilizeDateValues,
 } from "../common/Filters";
 
 import ApiList from "./ApiList.jsx";
@@ -13,6 +16,8 @@ import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
 import RecordsMessage from "./RecordsMessage";
 import { withRouter } from "react-router-dom";
+import FilterDateSelector from "./FilterDateRange";
+import { Button } from "@baltimorecounty/dotgov-components";
 
 const FilterList = ({
   title = "",
@@ -28,6 +33,7 @@ const FilterList = ({
   ),
   renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
   includeInputFilter = false,
+  includeClearButton = false,
   inputFilterPlaceholder = "Begin typing to filter...",
   filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
@@ -35,6 +41,20 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
+  let filterDateValue = filtersFromProps.filter(
+    (name) => name.targetApiField == "FilterDate"
+  );
+
+  let toFromDatePart =
+    filterDateValue.length > 0 ? filterDateValue[0].value.split(",") : null;
+  const [fromDate, setFromDate] = useState(
+    !!toFromDatePart ? new Date(toFromDatePart[0]) : null
+  );
+  const [toDate, setToDate] = useState(
+    !!toFromDatePart ? new Date(toFromDatePart[1]) : null
+  );
+  const fromDateId = `fromDate`;
+  const toDateId = `toDate`;
   const staticFilterQueryString = filtersFromProps
     .filter(({ value }) => value)
     .map(({ targetApiField, value }) => `${targetApiField}=${value}`)
@@ -42,27 +62,31 @@ const FilterList = ({
   const [filters, setFilters] = useState(() =>
     UpdateFilters(filtersFromProps, location.search)
   );
+
   const [apiEndpoint, setApiEndpoint] = useState(
-    () => defaultApiEndpoint + "?" + staticFilterQueryString
+    () =>
+      (defaultApiEndpoint = staticFilterQueryString
+        ? defaultApiEndpoint + "?" + staticFilterQueryString
+        : defaultApiEndpoint)
   );
 
   useEffect(() => {
     setFilters((filters) => UpdateFilters(filters, location.search));
-    setApiEndpoint(
-      defaultApiEndpoint +
-        location.search +
-        (location.search.indexOf("?") > -1 ? "&" : "?") +
-        staticFilterQueryString
-    );
+
+    if (location.search.indexOf("?") > -1) {
+      setApiEndpoint(defaultApiEndpoint + location.search);
+    } else {
+      setApiEndpoint(toFromDatePart ? apiEndpoint : defaultApiEndpoint);
+    }
   }, [location.search]);
 
   const updateQueryString = (filter) => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter,
-      queryString: currentQueryString.replace(staticFilterQueryString, ""),
+      queryString: currentQueryString === undefined ? "" : currentQueryString,
     });
-
+    setApiEndpoint(queryString);
     history.push(location.pathname + queryString);
   };
 
@@ -78,17 +102,127 @@ const FilterList = ({
     // Since a user could possibly update a ton of entries
     setApiEndpoint(updatedUrl);
   };
+  const handleFromDateChange = (date) => {
+    setFromDate(date);
+    var fromToDateFormattedValue =
+      FormatDateString(date) + "," + FormatDateString(toDate);
+    const updatedUrl = UpdateUrlQueryString(
+      apiEndpoint,
+      "FilterDate",
+      fromToDateFormattedValue
+    );
+
+    // // This disables any browser history updates
+    // // Since a user could possibly update a ton of entries
+    // //TODO: if you uncomment this line , it will change the url ???
+    const [base, queryString] = updatedUrl.split("?");
+    history.push(location.pathname + "?" + queryString);
+    setApiEndpoint(updatedUrl);
+  };
+
+  const handleToDateChange = (date) => {
+    setToDate(date);
+    var fromToDateFormattedValue =
+      FormatDateString(fromDate) + "," + FormatDateString(date);
+
+    const updatedUrl = UpdateUrlQueryString(
+      apiEndpoint,
+      "FilterDate",
+      fromToDateFormattedValue
+    );
+
+    // This disables any browser history updates
+    // Since a user could possibly update a ton of entries
+    //TODO: if you uncomment this line , it will change the url ???
+    const [base, queryString] = updatedUrl.split("?");
+    history.push(location.pathname + "?" + queryString);
+    setApiEndpoint(updatedUrl);
+  };
+  const clearFilter = () => {
+    const [base, currentQueryString] = apiEndpoint.split("?");
+    if (toFromDatePart) {
+      var fromToDateFormat = InitilizeDateValues();
+      let [fromDatePart, toDatePart] = fromToDateFormat.split(",");
+      setFromDate(new Date(new Date(fromDatePart)));
+      setToDate(new Date(toDatePart));
+      const updatedUrl = UpdateUrlQueryString(
+        apiEndpoint,
+        "FilterDate",
+        fromToDateFormat
+      );
+
+      setApiEndpoint(base + "?FilterDate=" + fromToDateFormat);
+    } else {
+      setApiEndpoint(base);
+    }
+    history.push(location.pathname);
+  };
+
+  const buttonStyles = {
+    paddingLeft: "100",
+    paddingRight: "0",
+  };
 
   return (
     <div {...props}>
       <div className="row">
         <div className="col-md-3 col-xs-12">
-          <Filters
-            renderFilter={renderFilter}
-            handleFilterChange={handleFilterChange}
-            filters={filters}
-          />
+          <div>
+            <Filters
+              renderFilter={renderFilter}
+              handleFilterChange={handleFilterChange}
+              filters={filters}
+            />
+          </div>
+          {toFromDatePart && (
+            <div class="dg_accordion__collapsible dg_collapse">
+              <button
+                class="dg_accordion-btn"
+                type="button"
+                id="accordion-btn-sample-collapse"
+                aria-expanded="true"
+              >
+                <span class="dg_accordion_buttontext-holder">Date Filter</span>
+              </button>
+              <div
+                class="multi-collapse collapse show"
+                aria-labelledby="accordion-btn-sample-collapse"
+                aria-expanded="true"
+              >
+                <div class="dg_accordion-item-body">
+                  <FilterDateSelector
+                    name={fromDateId}
+                    id={fromDateId}
+                    selected={fromDate}
+                    onChange={handleFromDateChange}
+                    maxDate={toDate}
+                    label="Start Date"
+                  />
+                  <FilterDateSelector
+                    name={toDateId}
+                    id={toDateId}
+                    selected={toDate}
+                    onChange={handleToDateChange}
+                    minDate={fromDate}
+                    maxDate={new Date()}
+                    label="End Date"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+          {includeClearButton ? (
+            <div className="dg_card__footer">
+              <Button
+                className="dg_button-link"
+                onClick={clearFilter}
+                text="Clear filters"
+                style={buttonStyles}
+              />
+            </div>
+          ) : null}
         </div>
+        <div></div>
         <div className="col-md-9 col-xs-12">
           {includeInputFilter && (
             <FilterTextInput
