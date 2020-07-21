@@ -1,9 +1,9 @@
 import { parse } from "query-string";
 import { subMonths } from "date-fns";
 /** Resets filter to default state. All options are unchecked */
-const resetFilter = filter => {
+const resetFilter = (filter) => {
   const { options = [] } = filter;
-  options.map(option => {
+  options.map((option) => {
     option.checked = false;
     return option;
   });
@@ -29,7 +29,7 @@ const updateFilters = (filters = [], queryStringFilters = {}) => {
   resetEmptyFilters(filters, queryStringFilters);
 
   // Update active filters based on querystring
-  Object.keys(queryStringFilters).forEach(key => {
+  Object.keys(queryStringFilters).forEach((key) => {
     const matchingFilter = filters.find(
       ({ targetApiField = "" }) =>
         targetApiField.toLowerCase() == key.toLowerCase()
@@ -39,7 +39,7 @@ const updateFilters = (filters = [], queryStringFilters = {}) => {
       const urlValues = queryStringFilters[key].toLowerCase().split(",");
       const { options = [] } = matchingFilter;
 
-      options.map(option => {
+      options.map((option) => {
         const { value = "" } = option;
         option.checked = urlValues.some(
           (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
@@ -74,7 +74,7 @@ const UpdateUrlQueryString = (url, name, value) => {
  *
  * @param {date} date for data value
  */
-const FormatDateString = date => {
+const FormatDateString = (date) => {
   return (formatDateValue =
     `${date.getMonth() + 1}` +
     `/` +
@@ -99,7 +99,10 @@ const InitilizeDateValues = () => {
     `${currentDate.getDate()}` +
     `/` +
     `${currentDate.getFullYear()}`;
-  return (fromToDateFormat = fromDateFormat + toDateFormat);
+
+  var fromToDateFormat = fromDateFormat + toDateFormat;
+
+  return fromToDateFormat;
 };
 
 /**
@@ -132,7 +135,7 @@ const UpdateFilters = (filters = [], queryString = "") => {
  */
 const UpdateQueryString = ({
   filter: { checked, name, value },
-  queryString
+  queryString,
 }) => {
   const searchParams = new URLSearchParams(queryString || "");
   const existingValues = searchParams.has(name)
@@ -174,5 +177,5 @@ export {
   UpdateFilters,
   UpdateQueryString,
   FormatDateString,
-  InitilizeDateValues
+  InitilizeDateValues,
 };
