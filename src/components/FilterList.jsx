@@ -178,27 +178,25 @@ const FilterList = ({
           </div>
           {includeDateFilter ? (
             <Collapse id="date-collapse" header="Date">
-              <div class="dg_accordion-item-body">
-                <FilterDateSelector
-                  name={fromDateId}
-                  id={fromDateId}
-                  selected={fromDate}
-                  onChange={handleFromDateChange}
-                  maxDate={toDate}
-                  autocomplete="off"
-                  label="Start Date"
-                />
-                <FilterDateSelector
-                  name={toDateId}
-                  id={toDateId}
-                  selected={toDate}
-                  onChange={handleToDateChange}
-                  minDate={fromDate}
-                  maxDate={new Date()}
-                  autocomplete="off"
-                  label="End Date"
-                />
-              </div>
+              <FilterDateSelector
+                name={fromDateId}
+                id={fromDateId}
+                selected={fromDate}
+                onChange={handleFromDateChange}
+                maxDate={toDate}
+                autocomplete="off"
+                label="Start Date"
+              />
+              <FilterDateSelector
+                name={toDateId}
+                id={toDateId}
+                selected={toDate}
+                onChange={handleToDateChange}
+                minDate={fromDate}
+                maxDate={new Date()}
+                autocomplete="off"
+                label="End Date"
+              />
             </Collapse>
           ) : null}
           {includeClearButton ? (
