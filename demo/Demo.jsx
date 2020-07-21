@@ -1,8 +1,6 @@
 import { FilterList } from "../src/index";
 import React from "react";
-import { InitilizeDateValues } from "../src/common/Filters";
 
-var fromToDateFormat = InitilizeDateValues();
 const filters = [
   {
     targetApiField: "category.value",
@@ -11,17 +9,6 @@ const filters = [
       { value: "releases", label: "News Releases" },
       { value: "stories", label: "Stories" }
     ]
-  },
-
-  // {
-  //  targetApiField: "Filter",
-  //    value:"Million"
-  //  },
-
-  {
-    targetApiField: "FilterDate",
-    displayName: "FilterDate",
-    value: `${fromToDateFormat}`
   }
 ];
 
@@ -32,6 +19,9 @@ const Demo = props => {
         title="News"
         filters={filters}
         apiEndpoint="https://localhost:44393/api/News"
+        includeDateFilter={true}
+        includeInputFilter={true}
+        includeClearButton={true}
         renderItem={({ title, articleSummary }) => (
           <div
             style={{
