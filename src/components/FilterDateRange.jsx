@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { DateSelector, Fieldset } from "@baltimorecounty/dotgov-components";
+import { DateSelector } from "@baltimorecounty/dotgov-components";
 
-const FilterDateSelector = props => {
+const FilterDateSelector = (props) => {
   const {
     label,
     name,

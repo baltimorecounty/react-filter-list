@@ -17,7 +17,7 @@ import PropTypes from "prop-types";
 import RecordsMessage from "./RecordsMessage";
 import { withRouter } from "react-router-dom";
 import FilterDateSelector from "./FilterDateRange";
-import { Button } from "@baltimorecounty/dotgov-components";
+import { Button, Collapse } from "@baltimorecounty/dotgov-components";
 
 const FilterList = ({
   title = "",
@@ -33,6 +33,7 @@ const FilterList = ({
   ),
   renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
   includeInputFilter = false,
+  includeDateFilter = false,
   includeClearButton = false,
   inputFilterPlaceholder = "Begin typing to filter...",
   filters: filtersFromProps = [],
@@ -174,43 +175,31 @@ const FilterList = ({
               filters={filters}
             />
           </div>
-          {toFromDatePart && (
-            <div class="dg_accordion__collapsible dg_collapse">
-              <button
-                class="dg_accordion-btn"
-                type="button"
-                id="accordion-btn-sample-collapse"
-                aria-expanded="true"
-              >
-                <span class="dg_accordion_buttontext-holder">Date Filter</span>
-              </button>
-              <div
-                class="multi-collapse collapse show"
-                aria-labelledby="accordion-btn-sample-collapse"
-                aria-expanded="true"
-              >
-                <div class="dg_accordion-item-body">
-                  <FilterDateSelector
-                    name={fromDateId}
-                    id={fromDateId}
-                    selected={fromDate}
-                    onChange={handleFromDateChange}
-                    maxDate={toDate}
-                    label="Start Date"
-                  />
-                  <FilterDateSelector
-                    name={toDateId}
-                    id={toDateId}
-                    selected={toDate}
-                    onChange={handleToDateChange}
-                    minDate={fromDate}
-                    maxDate={new Date()}
-                    label="End Date"
-                  />
-                </div>
+          {includeDateFilter ? (
+            <Collapse id="date-collapse" header="Date">
+              <div class="dg_accordion-item-body">
+                <FilterDateSelector
+                  name={fromDateId}
+                  id={fromDateId}
+                  selected={fromDate}
+                  onChange={handleFromDateChange}
+                  maxDate={toDate}
+                  autocomplete="off"
+                  label="Start Date"
+                />
+                <FilterDateSelector
+                  name={toDateId}
+                  id={toDateId}
+                  selected={toDate}
+                  onChange={handleToDateChange}
+                  minDate={fromDate}
+                  maxDate={new Date()}
+                  autocomplete="off"
+                  label="End Date"
+                />
               </div>
-            </div>
-          )}
+            </Collapse>
+          ) : null}
           {includeClearButton ? (
             <div className="dg_card__footer">
               <Button
