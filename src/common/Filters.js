@@ -75,12 +75,14 @@ const UpdateUrlQueryString = (url, name, value) => {
  * @param {date} date for data value
  */
 const FormatDateString = (date) => {
-  return (formatDateValue =
+  var formatDateValue =
     `${date.getMonth() + 1}` +
     `/` +
     `${date.getDate()}` +
     `/` +
-    `${date.getFullYear()}`);
+    `${date.getFullYear()}`;
+
+  return formatDateValue;
 };
 
 const InitilizeDateValues = () => {
