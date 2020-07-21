@@ -42,12 +42,12 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
-  let filterDateValue = filtersFromProps.filter(
-    (name) => name.targetApiField == "FilterDate"
-  );
+  // let filterDateValue = filtersFromProps.filter(
+  //   (name) => name.targetApiField == "FilterDate"
+  // );
+  let filterDateValue= includeDateFilter? InitilizeDateValues():"";
 
-  let toFromDatePart =
-    filterDateValue.length > 0 ? filterDateValue[0].value.split(",") : null;
+   let toFromDatePart= filterDateValue.length > 0 ? filterDateValue[0].value.split(",") : null;
   const [fromDate, setFromDate] = useState(
     !!toFromDatePart ? new Date(toFromDatePart[0]) : null
   );
