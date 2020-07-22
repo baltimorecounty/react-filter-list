@@ -87,22 +87,22 @@ const FormatDateString = (date) => {
 
 const InitilizeDateValues = () => {
   const currentDate = new Date();
-  var fromDate = subMonths(new Date(), 0);
-  var fromDateFormat =
-    `${fromDate.getMonth()}` +
-    `/` +
-    `${fromDate.getDate()}` +
-    `/` +
-    `${fromDate.getFullYear()},`;
 
-  var toDateFormat =
+  var startDateFormat =
+    `${currentDate.getMonth()}` +
+    `/` +
+    `${currentDate.getDate()}` +
+    `/` +
+    `${currentDate.getFullYear()},`;
+
+  var endDateFormat =
     `${currentDate.getMonth() + 1}` +
     `/` +
     `${currentDate.getDate()}` +
     `/` +
     `${currentDate.getFullYear()}`;
 
-  var fromToDateFormat = fromDateFormat + toDateFormat;
+  var fromToDateFormat = startDateFormat + endDateFormat;
 
   return fromToDateFormat;
 };
