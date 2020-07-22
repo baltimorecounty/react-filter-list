@@ -23,9 +23,9 @@ const Demo = (props) => {
         title="News"
         filters={filters}
         apiEndpoint="https://localhost:44393/api/News"
-        includeDateFilter={true}
+        //includeDateFilter={true}
         includeInputFilter={true}
-        includeClearButton={true}
+        //includeClearButton={true}
         renderItem={({ title, articleSummary }) => (
           <div
             style={{

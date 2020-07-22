@@ -42,10 +42,13 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
-  let filterDateValue = includeDateFilter ? InitilizeDateValues() : "";
+
+  let filterDateValue = InitilizeDateValues();
+
   let [startDatePart, endDatePart] = !!filterDateValue
     ? filterDateValue.split(",")
     : null;
+
   const [fromDate, setFromDate] = useState(
     !!startDatePart ? new Date(startDatePart) : null
   );
@@ -83,16 +86,6 @@ const FilterList = ({
   const [apiEndpoint, setApiEndpoint] = useState(
     () => (defaultApiEndpoint = buildDefaultEndPoint())
   );
-
-  console.log(buildDefaultEndPoint());
-
-  const setDefaultDateEndPoint = () => {
-    const defaultDateEndPoint = includeDateFilter
-      ? UpdateUrlQueryString(defaultApiEndpoint, "filterdate", filterDateValue)
-      : null;
-
-    setApiEndpoint(defaultDateEndPoint);
-  };
 
   useEffect(() => {
     setFilters((filters) => UpdateFilters(filters, location.search));

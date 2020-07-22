@@ -17,7 +17,7 @@
   "peerDependencies": {
     "react": "^16.x",
     "react-dom": "^16.x",
-    "@baltimorecounty/dotgov-components": "1.0.18"
+    "@baltimorecounty/dotgov-components": "1.0.19"
   },
   "devDependencies": {
     "@babel/core": "^7.10.2",
