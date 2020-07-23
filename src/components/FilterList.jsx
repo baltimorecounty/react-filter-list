@@ -42,7 +42,6 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
-
   let filterDateValue = InitilizeDateValues();
 
   let [startDatePart, endDatePart] = !!filterDateValue
@@ -119,11 +118,13 @@ const FilterList = ({
     // Since a user could possibly update a ton of entries
     setApiEndpoint(updatedUrl);
   };
+
   const handleFromDateChange = (date) => {
     setFromDate(date);
 
-    var fromToDateFormattedValue =
-      FormatDateString(date) + "," + FormatDateString(toDate);
+    var fromToDateFormattedValue = date
+      ? FormatDateString(date) + "," + FormatDateString(toDate)
+      : null;
 
     const updatedUrl = UpdateUrlQueryString(
       apiEndpoint,
@@ -142,8 +143,9 @@ const FilterList = ({
   const handleToDateChange = (date) => {
     setToDate(date);
 
-    var fromToDateFormattedValue =
-      FormatDateString(fromDate) + "," + FormatDateString(date);
+    var fromToDateFormattedValue = date
+      ? FormatDateString(fromDate) + "," + FormatDateString(date)
+      : null;
 
     const updatedUrl = UpdateUrlQueryString(
       apiEndpoint,
