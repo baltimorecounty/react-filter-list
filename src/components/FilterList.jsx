@@ -42,18 +42,21 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
-  let filterDateValue = includeDateFilter ? InitilizeDateValues() : "";
+
+  let filterDateValue = InitilizeDateValues();
+
   let [startDatePart, endDatePart] = !!filterDateValue
     ? filterDateValue.split(",")
     : null;
+
   const [fromDate, setFromDate] = useState(
     !!startDatePart ? new Date(startDatePart) : null
   );
+
   const [toDate, setToDate] = useState(
     !!endDatePart ? new Date(endDatePart) : null
   );
-  const fromDateId = `fromDate`;
-  const toDateId = `toDate`;
+
   const staticFilterQueryString = filtersFromProps
     .filter(({ value }) => value)
     .map(({ targetApiField, value }) => `${targetApiField}=${value}`)
@@ -62,11 +65,26 @@ const FilterList = ({
     UpdateFilters(filtersFromProps, location.search)
   );
 
+  const buildDefaultEndPoint = () => {
+    const dateFilter = "filterdate=" + filterDateValue;
+    const staticFilter = "?" + staticFilterQueryString;
+    let newEndPoint;
+
+    if (staticFilterQueryString && includeDateFilter) {
+      newEndPoint = defaultApiEndpoint + staticFilter + "&" + dateFilter;
+    } else if (staticFilterQueryString && !includeDateFilter) {
+      newEndPoint = defaultApiEndpoint + staticFilter;
+    } else if (!staticFilterQueryString && includeDateFilter) {
+      newEndPoint = defaultApiEndpoint + "?" + dateFilter;
+    } else {
+      newEndPoint = defaultApiEndpoint;
+    }
+
+    return newEndPoint;
+  };
+
   const [apiEndpoint, setApiEndpoint] = useState(
-    () =>
-      (defaultApiEndpoint = staticFilterQueryString
-        ? defaultApiEndpoint + "?" + staticFilterQueryString
-        : defaultApiEndpoint)
+    () => (defaultApiEndpoint = buildDefaultEndPoint())
   );
 
   useEffect(() => {
@@ -103,11 +121,13 @@ const FilterList = ({
   };
   const handleFromDateChange = (date) => {
     setFromDate(date);
+
     var fromToDateFormattedValue =
       FormatDateString(date) + "," + FormatDateString(toDate);
+
     const updatedUrl = UpdateUrlQueryString(
       apiEndpoint,
-      "FilterDate",
+      "filterdate",
       fromToDateFormattedValue
     );
 
@@ -121,12 +141,13 @@ const FilterList = ({
 
   const handleToDateChange = (date) => {
     setToDate(date);
+
     var fromToDateFormattedValue =
       FormatDateString(fromDate) + "," + FormatDateString(date);
 
     const updatedUrl = UpdateUrlQueryString(
       apiEndpoint,
-      "FilterDate",
+      "filterdate",
       fromToDateFormattedValue
     );
 
@@ -149,11 +170,11 @@ const FilterList = ({
       setToDate(new Date(toDatePart));
       const updatedUrl = UpdateUrlQueryString(
         apiEndpoint,
-        "FilterDate",
+        "filterdate",
         fromToDateFormat
       );
 
-      setApiEndpoint(base + "?FilterDate=" + fromToDateFormat);
+      setApiEndpoint(base + "?filterdate=" + fromToDateFormat);
     } else {
       setApiEndpoint(base);
     }
@@ -179,8 +200,8 @@ const FilterList = ({
           {includeDateFilter ? (
             <Collapse id="date-collapse" header="Date">
               <FilterDateSelector
-                name={fromDateId}
-                id={fromDateId}
+                name="startDate"
+                id="startDate"
                 selected={fromDate}
                 onChange={handleFromDateChange}
                 maxDate={toDate}
@@ -188,8 +209,8 @@ const FilterList = ({
                 label="Start Date"
               />
               <FilterDateSelector
-                name={toDateId}
-                id={toDateId}
+                name="endDate"
+                id="endDate"
                 selected={toDate}
                 onChange={handleToDateChange}
                 minDate={fromDate}
