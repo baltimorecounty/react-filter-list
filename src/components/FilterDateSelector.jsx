@@ -21,12 +21,12 @@ const FilterDateSelector = (props) => {
     ...otherProps
   } = props;
 
+  const datePickerIsClosed = true;
+
   const [state, setState] = useState({
     datePickerIsOpen,
     datePickerIsClosed,
   });
-
-  const datePickerIsClosed = true;
 
   const openDatePicker = () => {
     setState({
