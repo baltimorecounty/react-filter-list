@@ -16,7 +16,7 @@ import Filters from "./Filters.jsx";
 import PropTypes from "prop-types";
 import RecordsMessage from "./RecordsMessage";
 import { withRouter } from "react-router-dom";
-import FilterDateSelector from "./FilterDateRange";
+import FilterDateSelector from "../components/FilterDateSelector";
 import { Button, Collapse } from "@baltimorecounty/dotgov-components";
 
 const FilterList = ({
