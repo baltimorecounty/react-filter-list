@@ -86,23 +86,23 @@ const FormatDateString = (date) => {
 };
 
 const InitilizeDateValues = () => {
-  var currentDate = new Date();
-  var endDate = new Date(currentDate.setDate(currentDate.getMonth() + 1));
-  var startDate = new Date(endDate.setDate(endDate.getMonth() - 1));
+  const current = new Date();
+  const startDate = new Date(current.setDate(current.getDate() - 30));
 
-  console.log(new Date());
-  console.log(currentDate);
-  console.log(endDate);
-  console.log(startDate);
+  const endDate = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth() + 1,
+    new Date().getDate()
+  );
 
   const startDateFormat =
-    `${startDate.getMonth()}` +
+    `${startDate.getMonth() + 1}` +
     `/` +
     `${startDate.getDate()}` +
     `/` +
     `${startDate.getFullYear()}`;
 
-  var endDateFormat =
+  const endDateFormat =
     `${endDate.getMonth()}` +
     `/` +
     `${endDate.getDate()}` +
