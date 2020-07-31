@@ -44,9 +44,9 @@ const FilterDateSelector = (props) => {
 
   return (
     <div className="dg_date-container">
-      <div class="dg_form-field">
-        <label for="full-name" class="dg_label">
-          <span class="dg_label-text">{label}</span>
+      <div className="dg_form-field">
+        <label htmlFor="full-name" className="dg_label">
+          <span className="dg_label-text">{label}</span>
         </label>
         <DatePicker
           selected={selected}
