@@ -87,7 +87,11 @@ const FormatDateString = (date) => {
 
 const InitilizeDateValues = () => {
   const current = new Date();
-  const startDate = new Date(current.setDate(current.getDate() - 30));
+  const startDate = new Date(
+    new Date().getFullYear() - 1,
+    new Date().getMonth(),
+    new Date().getDate()
+  );
 
   const endDate = new Date(
     new Date().getFullYear(),
