@@ -6,26 +6,29 @@ const filters = [
     targetApiField: "category.value",
     displayName: "Category",
     options: [
-      { value: "releases", label: "News Releases" },
+      { value: "releases", label: "Cat" },
+      //  { value: "releases", label: "News Releases" },
       { value: "stories", label: "Stories" },
-    ],
-   
+      { value: "others", label: "Others" }
+    ]
   },
+
   {
     targetApiField: "category1.value",
     displayName: "Category1",
     options: [
-      { value: "releases1", label: "News Releases1" },
-      { value: "stories1", label: "Stories1" },
-    ],
+      { value: "stories1", label: "Small" },
+      { value: "releases1", label: "Medium" },
+      { value: "stories3", label: "Large" }
+    ]
   },
   {
     targetApiField: "recordsperpage",
-    value: 10,
-  },
+    value: 10
+  }
 ];
 
-const Demo = (props) => {
+const Demo = props => {
   return (
     <div className="demo">
       <FilterList
@@ -40,7 +43,7 @@ const Demo = (props) => {
             style={{
               border: "1px solid #e0e0e0",
               padding: "10px",
-              marginBottom: "10px",
+              marginBottom: "10px"
             }}
           >
             <h2>{title}</h2>

@@ -15,11 +15,10 @@ const DefaultFilter = ({
   if (shouldCollapseOptions) {
     moreOptions = [...options].splice(visibleFiltersCount);
   }
-  const onChange1 = () => {
-    console.log(filter1);
-    startDate.st
-    onChange();
-  };
+  // const onChange1 = () => {
+  //   console.log(filter1);
+  //   onChange();
+  // };
 
 
   return (
@@ -34,7 +33,7 @@ const DefaultFilter = ({
                 key={`${id}-${checked}`}
                 id={id}
                 name={targetApiField}
-                onChange={onChange1}
+                onChange={onChange}
                 label={label}
                 value={value}
                 checked={checked}
