@@ -9,6 +9,15 @@ const filters = [
       { value: "releases", label: "News Releases" },
       { value: "stories", label: "Stories" },
     ],
+   
+  },
+  {
+    targetApiField: "category1.value",
+    displayName: "Category1",
+    options: [
+      { value: "releases1", label: "News Releases1" },
+      { value: "stories1", label: "Stories1" },
+    ],
   },
   {
     targetApiField: "recordsperpage",

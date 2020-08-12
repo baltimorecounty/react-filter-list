@@ -24,7 +24,7 @@ const FilterList = ({
   listContainerClassName = "list",
   renderItem = () => <p>You must specify a renderItem function.</p>,
   renderFilter = (filter, onChange) => (
-    <DefaultFilter filter={filter} onChange={onChange} />
+    <DefaultFilter filter={filter} filter1={filter} onChange={onChange} />
   ),
   renderListHeader = (count) => (
     <div className="list-header">

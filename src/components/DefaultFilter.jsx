@@ -5,6 +5,7 @@ import React from "react";
 
 const DefaultFilter = ({
   filter: { targetApiField, displayName, options },
+  filter1,
   onChange
 }) => {
   const visibleFiltersCount = 5;
@@ -14,6 +15,12 @@ const DefaultFilter = ({
   if (shouldCollapseOptions) {
     moreOptions = [...options].splice(visibleFiltersCount);
   }
+  const onChange1 = () => {
+    console.log(filter1);
+    startDate.st
+    onChange();
+  };
+
 
   return (
     <React.Fragment>
@@ -27,7 +34,7 @@ const DefaultFilter = ({
                 key={`${id}-${checked}`}
                 id={id}
                 name={targetApiField}
-                onChange={onChange}
+                onChange={onChange1}
                 label={label}
                 value={value}
                 checked={checked}
