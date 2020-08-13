@@ -57,6 +57,8 @@ const FilterList = ({
     !!endDatePart ? new Date(endDatePart) : null
   );
 
+  const [isCleared, setIsCleared] = useState(false);
+
   const staticFilterQueryString = filtersFromProps
     .filter(({ value }) => value)
     .map(({ targetApiField, value }) => `${targetApiField}=${value}`)
@@ -116,7 +118,7 @@ const FilterList = ({
     updateQueryString({ name, value, checked });
   };
 
-  const handleFilterTextInputChange = (query) => {
+  const handleFilterTextInputChange = (query, isCleared = false) => {
     const updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
 
     // This disables any browser history updates
@@ -169,19 +171,14 @@ const FilterList = ({
     const [base, currentQueryString] = apiEndpoint.split("?");
     if (includeInputFilter) {
       //TODO: how do you clear the text here
+      setIsCleared(true);
     }
     if (includeDateFilter) {
       var fromToDateFormat = InitilizeDateValues();
       let [fromDatePart, toDatePart] = fromToDateFormat.split(",");
-      setFromDate(new Date(new Date(fromDatePart)));
-      setToDate(new Date(toDatePart));
-      const updatedUrl = UpdateUrlQueryString(
-        apiEndpoint,
-        "filterdate",
-        fromToDateFormat
-      );
-
-      setApiEndpoint(base + "?filterdate=" + fromToDateFormat);
+      setFromDate("");
+      setToDate("");
+      setApiEndpoint(base);
     } else {
       setApiEndpoint(base);
     }
@@ -244,6 +241,7 @@ const FilterList = ({
             <FilterTextInput
               onChange={handleFilterTextInputChange}
               placeholder={inputFilterPlaceholder}
+              isCleared={isCleared}
             />
           )}
           <ApiList
