@@ -5,7 +5,6 @@ import React from "react";
 
 const DefaultFilter = ({
   filter: { targetApiField, displayName, options },
-  filter1,
   onChange,
 }) => {
   const visibleFiltersCount = 5;
