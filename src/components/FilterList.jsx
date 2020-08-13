@@ -52,6 +52,7 @@ const FilterList = ({
   const [fromDate, setFromDate] = useState(
     !!startDatePart ? new Date(startDatePart) : null
   );
+  const [isClear, setIsClear] = useState(false);
 
   const [toDate, setToDate] = useState(
     !!endDatePart ? new Date(endDatePart) : null
@@ -166,25 +167,9 @@ const FilterList = ({
     setApiEndpoint(updatedUrl);
   };
   const clearFilter = () => {
+    setIsClear(true);
     const [base, currentQueryString] = apiEndpoint.split("?");
-    if (includeInputFilter) {
-      //TODO: how do you clear the text here
-    }
-    if (includeDateFilter) {
-      var fromToDateFormat = InitilizeDateValues();
-      let [fromDatePart, toDatePart] = fromToDateFormat.split(",");
-      setFromDate(new Date(new Date(fromDatePart)));
-      setToDate(new Date(toDatePart));
-      const updatedUrl = UpdateUrlQueryString(
-        apiEndpoint,
-        "filterdate",
-        fromToDateFormat
-      );
-
-      setApiEndpoint(base + "?filterdate=" + fromToDateFormat);
-    } else {
-      setApiEndpoint(base);
-    }
+    setApiEndpoint(base);
     history.push(location.pathname);
   };
 
@@ -209,7 +194,7 @@ const FilterList = ({
               <FilterDateSelector
                 name="startDate"
                 id="startDate"
-                selected={fromDate}
+                selected={!isClear ? fromDate : null}
                 onChange={handleFromDateChange}
                 maxDate={toDate}
                 autocomplete="off"
@@ -218,7 +203,7 @@ const FilterList = ({
               <FilterDateSelector
                 name="endDate"
                 id="endDate"
-                selected={toDate}
+                selected={!isClear ? toDate : null}
                 onChange={handleToDateChange}
                 minDate={fromDate}
                 maxDate={new Date()}
@@ -244,6 +229,7 @@ const FilterList = ({
             <FilterTextInput
               onChange={handleFilterTextInputChange}
               placeholder={inputFilterPlaceholder}
+              isClear={isClear}
             />
           )}
           <ApiList
