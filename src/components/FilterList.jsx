@@ -6,6 +6,7 @@ import {
   UpdateUrlQueryString,
   FormatDateString,
   InitilizeDateValues,
+  ShowHideSmallSizeCheckBox,
 } from "../common/Filters";
 
 import ApiList from "./ApiList.jsx";
@@ -108,6 +109,10 @@ const FilterList = ({
 
   const handleFilterChange = (changeEvent) => {
     const { name, value, checked } = changeEvent;
+    if (name == "petType") {
+      ShowHideSmallSizeCheckBox(name);
+    }
+
     updateQueryString({ name, value, checked });
   };
 

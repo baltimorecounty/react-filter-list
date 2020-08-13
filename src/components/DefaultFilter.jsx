@@ -5,7 +5,7 @@ import React from "react";
 
 const DefaultFilter = ({
   filter: { targetApiField, displayName, options },
-  onChange
+  onChange,
 }) => {
   const visibleFiltersCount = 5;
   const shouldCollapseOptions = options.length > visibleFiltersCount;

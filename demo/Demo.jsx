@@ -7,9 +7,31 @@ const filters = [
     displayName: "Category",
     options: [
       { value: "releases", label: "News Releases" },
-      { value: "stories", label: "Stories" },
+      { value: "Stories", label: "Stories" },
     ],
   },
+  //*******************************
+  //Add these back in if you need to test the weight and pet type interactions
+  // */
+  // {
+  //   targetApiField: "petType",
+  //   displayName: "Species",
+  //   options: [
+  //     { value: "dog", label: "Dog" },
+  //     { value: "cat", label: "Cat" },
+  //     { value: "other", label: "Other" },
+  //   ],
+  // },
+  // {
+  //   targetApiField: "weight",
+  //   displayName: "Size",
+  //   options: [
+  //     { value: "small", label: "Small" },
+  //     { value: "medium", label: "Medium" },
+  //     { value: "large", label: "Large" },
+  //   ],
+  // },
+
   {
     targetApiField: "recordsperpage",
     value: 10,

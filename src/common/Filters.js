@@ -85,6 +85,45 @@ const FormatDateString = (date) => {
   return formatDateValue;
 };
 
+const ShowHideSmallSizeCheckBox = (checkboxName) => {
+  var species = ["cat", "other"];
+  var checkboxes = document.querySelectorAll(
+      'input[name="' + checkboxName + '"]:checked'
+    ),
+    values = [];
+  Array.prototype.forEach.call(checkboxes, function (el) {
+    values.push(el.value.toUpperCase());
+  });
+
+  var arryLength = parseInt(values.length);
+  if (arryLength != 0 && arryLength <= 2) {
+    if (arryLength == 1) {
+      document.getElementById(
+        "weight-large"
+      ).parentNode.style.display = values.includes("CAT") ? "none" : "block";
+    } else {
+      if (containsAll(species, values)) {
+        document.getElementById("weight-large").parentNode.style.display =
+          "none";
+      } else {
+        document.getElementById("weight-medium").parentNode.style.display =
+          "block";
+        document.getElementById("weight-large").parentNode.style.display =
+          "block";
+      }
+    }
+  } else {
+    document.getElementById("weight-medium").parentNode.style.display = "block";
+    document.getElementById("weight-large").parentNode.style.display = "block";
+  }
+};
+const containsAll = (species, values) => {
+  for (var i = 0; i < species.length; i++) {
+    if (!values.includes(species[i].toUpperCase())) return false;
+  }
+  return true;
+};
+
 const InitilizeDateValues = () => {
   const current = new Date();
   const startDate = new Date(
@@ -191,4 +230,5 @@ export {
   UpdateQueryString,
   FormatDateString,
   InitilizeDateValues,
+  ShowHideSmallSizeCheckBox,
 };
