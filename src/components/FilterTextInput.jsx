@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import { TextInput } from "@baltimorecounty/dotgov-components";
 import { useDebouncedCallback } from "use-debounce";
 
-const FilterTextInput = ({ onChange = () => {},isClear, ...rest }) => {
+const FilterTextInput = ({ onChange = () => {}, isClear, ...rest }) => {
   const [inputValue, setInputValue] = useState("");
-  const [debouncedCallback] = useDebouncedCallback(value => {
+  const [debouncedCallback] = useDebouncedCallback((value) => {
     onChange(value);
   }, 300);
 
-  const handleChange = changeEvent => {
+  const handleChange = (changeEvent) => {
     const { value = "" } = changeEvent.target;
     setInputValue(value);
     debouncedCallback(value);
@@ -22,7 +22,7 @@ const FilterTextInput = ({ onChange = () => {},isClear, ...rest }) => {
         label=""
         placeholder=""
         onChange={handleChange}
-        value={!isClear ? inputValue : ''}
+        value={!isClear ? inputValue : ""}
         type="search"
         {...rest}
       />
