@@ -6,7 +6,7 @@ import {
   UpdateUrlQueryString,
   FormatDateString,
   InitilizeDateValues,
-  ShowHideSmallSizeCheckBox,
+  ShowHideSmallSizeCheckBox
 } from "../common/Filters";
 
 import ApiList from "./ApiList.jsx";
@@ -27,12 +27,12 @@ const FilterList = ({
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
   ),
-  renderListHeader = (count) => (
+  renderListHeader = count => (
     <div className="list-header">
       <RecordsMessage count={count} />
     </div>
   ),
-  renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
+  renderLoadMoreButton = props => <DefaultLoadMoreButton {...props} />,
   includeInputFilter = false,
   includeDateFilter = false,
   includeClearButton = false,
@@ -52,6 +52,7 @@ const FilterList = ({
   const [fromDate, setFromDate] = useState(
     !!startDatePart ? new Date(startDatePart) : null
   );
+  const [isClear, setIsClear] = useState(false);
 
   const [toDate, setToDate] = useState(
     !!endDatePart ? new Date(endDatePart) : null
@@ -88,7 +89,7 @@ const FilterList = ({
   );
 
   useEffect(() => {
-    setFilters((filters) => UpdateFilters(filters, location.search));
+    setFilters(filters => UpdateFilters(filters, location.search));
 
     if (location.search.indexOf("?") > -1) {
       setApiEndpoint(defaultApiEndpoint + location.search);
@@ -97,17 +98,17 @@ const FilterList = ({
     }
   }, [location.search]);
 
-  const updateQueryString = (filter) => {
+  const updateQueryString = filter => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter,
-      queryString: currentQueryString === undefined ? "" : currentQueryString,
+      queryString: currentQueryString === undefined ? "" : currentQueryString
     });
     setApiEndpoint(queryString);
     history.push(location.pathname + queryString);
   };
 
-  const handleFilterChange = (changeEvent) => {
+  const handleFilterChange = changeEvent => {
     const { name, value, checked } = changeEvent;
     if (name == "petType") {
       ShowHideSmallSizeCheckBox(name);
@@ -116,7 +117,7 @@ const FilterList = ({
     updateQueryString({ name, value, checked });
   };
 
-  const handleFilterTextInputChange = (query) => {
+  const handleFilterTextInputChange = query => {
     const updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
 
     // This disables any browser history updates
@@ -124,7 +125,7 @@ const FilterList = ({
     setApiEndpoint(updatedUrl);
   };
 
-  const handleFromDateChange = (date) => {
+  const handleFromDateChange = date => {
     setFromDate(date);
 
     var fromToDateFormattedValue = date
@@ -145,7 +146,7 @@ const FilterList = ({
     setApiEndpoint(updatedUrl);
   };
 
-  const handleToDateChange = (date) => {
+  const handleToDateChange = date => {
     setToDate(date);
 
     var fromToDateFormattedValue = date
@@ -166,31 +167,15 @@ const FilterList = ({
     setApiEndpoint(updatedUrl);
   };
   const clearFilter = () => {
+    setIsClear(true);
     const [base, currentQueryString] = apiEndpoint.split("?");
-    if (includeInputFilter) {
-      //TODO: how do you clear the text here
-    }
-    if (includeDateFilter) {
-      var fromToDateFormat = InitilizeDateValues();
-      let [fromDatePart, toDatePart] = fromToDateFormat.split(",");
-      setFromDate(new Date(new Date(fromDatePart)));
-      setToDate(new Date(toDatePart));
-      const updatedUrl = UpdateUrlQueryString(
-        apiEndpoint,
-        "filterdate",
-        fromToDateFormat
-      );
-
-      setApiEndpoint(base + "?filterdate=" + fromToDateFormat);
-    } else {
-      setApiEndpoint(base);
-    }
+    setApiEndpoint(base);
     history.push(location.pathname);
   };
 
   const buttonStyles = {
     paddingLeft: "100",
-    paddingRight: "0",
+    paddingRight: "0"
   };
 
   return (
@@ -209,7 +194,7 @@ const FilterList = ({
               <FilterDateSelector
                 name="startDate"
                 id="startDate"
-                selected={fromDate}
+                selected={!isClear ? fromDate : null}
                 onChange={handleFromDateChange}
                 maxDate={toDate}
                 autocomplete="off"
@@ -218,7 +203,7 @@ const FilterList = ({
               <FilterDateSelector
                 name="endDate"
                 id="endDate"
-                selected={toDate}
+                selected={!isClear ? toDate : null}
                 onChange={handleToDateChange}
                 minDate={fromDate}
                 maxDate={new Date()}
@@ -244,6 +229,7 @@ const FilterList = ({
             <FilterTextInput
               onChange={handleFilterTextInputChange}
               placeholder={inputFilterPlaceholder}
+              isClear={isClear}
             />
           )}
           <ApiList
@@ -287,7 +273,7 @@ FilterList.propTypes = {
   /** Placeholder text for the text input filter */
   inputFilterPlaceholder: PropTypes.string,
   /** className attribute for the list container */
-  listContainerClassName: PropTypes.string,
+  listContainerClassName: PropTypes.string
 };
 
 export default withRouter(FilterList);
