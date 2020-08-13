@@ -6,22 +6,11 @@ const filters = [
     targetApiField: "category.value",
     displayName: "Category",
     options: [
-      { value: "releases", label: "Cat" },
-      //  { value: "releases", label: "News Releases" },
-      { value: "stories", label: "Stories" },
-      { value: "others", label: "Others" }
+       { value: "releases", label: "News Releases" },
+      { value: "Stories", label: "Stories" },
     ]
   },
 
-  {
-    targetApiField: "category1.value",
-    displayName: "Category1",
-    options: [
-      { value: "stories1", label: "Small" },
-      { value: "releases1", label: "Medium" },
-      { value: "stories3", label: "Large" }
-    ]
-  },
   {
     targetApiField: "recordsperpage",
     value: 10

@@ -15,11 +15,7 @@ const DefaultFilter = ({
   if (shouldCollapseOptions) {
     moreOptions = [...options].splice(visibleFiltersCount);
   }
-  // const onChange1 = () => {
-  //   console.log(filter1);
-  //   onChange();
-  // };
-
+  
 
   return (
     <React.Fragment>

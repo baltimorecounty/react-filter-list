@@ -86,8 +86,7 @@ const FormatDateString = date => {
 };
 
 const ShowHideSmallSizeCheckBox = checkboxName => {
-  //var  species =['cat', 'other']
-  var species = ["releases", "others"];   // Remove this after testing
+  var species = ["cat", "other"];
   var checkboxes = document.querySelectorAll(
       'input[name="' + checkboxName + '"]:checked'
     ),
@@ -100,27 +99,28 @@ const ShowHideSmallSizeCheckBox = checkboxName => {
   if (arryLength != 0 && arryLength <= 2) {
     if (arryLength == 1) {
       document.getElementById(
-        "category1.value-stories1"  // Remove this after testing
-        //"weight-small"
-      ).parentNode.style.display = values.includes("RELEASES")   // Remove this after testing
-     // ).parentNode.style.display = values.includes("CAT")
-        ? "none"
-        : "block";
-    } else {
+        "weight-medium"
+      ).parentNode.style.display = values.includes("CAT") ? "none" : "block";
       document.getElementById(
-        "category1.value-stories1"    // Remove this after testing
-            //"weight-small"
-      ).parentNode.style.display = containsAll(species, values)
-        ? "none"
-        : "block";
+        "weight-large"
+      ).parentNode.style.display = values.includes("CAT") ? "none" : "block";
+    } else {
+      if (containsAll(species, values)) {
+        document.getElementById("weight-medium").parentNode.style.display =
+          "none";
+        document.getElementById("weight-large").parentNode.style.display =
+          "none";
+      } else {
+        document.getElementById("weight-medium").parentNode.style.display =
+          "block";
+        document.getElementById("weight-large").parentNode.style.display =
+          "block";
+      }
     }
   } else {
-    document.getElementById(
-      "category1.value-stories1"   // Remove this after testing
-          //"weight-small"
-    ).parentNode.style.display = "block";
+    document.getElementById("weight-medium").parentNode.style.display = "block";
+    document.getElementById("weight-large").parentNode.style.display = "block";
   }
-
 };
 const containsAll = (species, values) => {
   for (var i = 0; i < species.length; i++) {

@@ -109,8 +109,8 @@ const FilterList = ({
 
   const handleFilterChange = changeEvent => {
     const { name, value, checked } = changeEvent;
-    //if (name =="petType")
-    if (name == "category.value") {
+    if (name =="petType")
+     {
        ShowHideSmallSizeCheckBox(name);
     }
 
