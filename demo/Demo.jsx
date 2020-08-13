@@ -6,18 +6,39 @@ const filters = [
     targetApiField: "category.value",
     displayName: "Category",
     options: [
-       { value: "releases", label: "News Releases" },
+      { value: "releases", label: "News Releases" },
       { value: "Stories", label: "Stories" },
-    ]
+    ],
   },
+  //*******************************
+  //Add these back in if you need to test the weight and pet type interactions
+  // */
+  // {
+  //   targetApiField: "petType",
+  //   displayName: "Species",
+  //   options: [
+  //     { value: "dog", label: "Dog" },
+  //     { value: "cat", label: "Cat" },
+  //     { value: "other", label: "Other" },
+  //   ],
+  // },
+  // {
+  //   targetApiField: "weight",
+  //   displayName: "Size",
+  //   options: [
+  //     { value: "small", label: "Small" },
+  //     { value: "medium", label: "Medium" },
+  //     { value: "large", label: "Large" },
+  //   ],
+  // },
 
   {
     targetApiField: "recordsperpage",
-    value: 10
-  }
+    value: 10,
+  },
 ];
 
-const Demo = props => {
+const Demo = (props) => {
   return (
     <div className="demo">
       <FilterList
@@ -32,7 +53,7 @@ const Demo = props => {
             style={{
               border: "1px solid #e0e0e0",
               padding: "10px",
-              marginBottom: "10px"
+              marginBottom: "10px",
             }}
           >
             <h2>{title}</h2>

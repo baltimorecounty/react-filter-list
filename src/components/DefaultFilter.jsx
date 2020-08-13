@@ -6,7 +6,7 @@ import React from "react";
 const DefaultFilter = ({
   filter: { targetApiField, displayName, options },
   filter1,
-  onChange
+  onChange,
 }) => {
   const visibleFiltersCount = 5;
   const shouldCollapseOptions = options.length > visibleFiltersCount;
@@ -15,7 +15,6 @@ const DefaultFilter = ({
   if (shouldCollapseOptions) {
     moreOptions = [...options].splice(visibleFiltersCount);
   }
-  
 
   return (
     <React.Fragment>

@@ -1,9 +1,9 @@
 import { parse } from "query-string";
 import { subMonths } from "date-fns";
 /** Resets filter to default state. All options are unchecked */
-const resetFilter = filter => {
+const resetFilter = (filter) => {
   const { options = [] } = filter;
-  options.map(option => {
+  options.map((option) => {
     option.checked = false;
     return option;
   });
@@ -29,7 +29,7 @@ const updateFilters = (filters = [], queryStringFilters = {}) => {
   resetEmptyFilters(filters, queryStringFilters);
 
   // Update active filters based on querystring
-  Object.keys(queryStringFilters).forEach(key => {
+  Object.keys(queryStringFilters).forEach((key) => {
     const matchingFilter = filters.find(
       ({ targetApiField = "" }) =>
         targetApiField.toLowerCase() == key.toLowerCase()
@@ -39,7 +39,7 @@ const updateFilters = (filters = [], queryStringFilters = {}) => {
       const urlValues = queryStringFilters[key].toLowerCase().split(",");
       const { options = [] } = matchingFilter;
 
-      options.map(option => {
+      options.map((option) => {
         const { value = "" } = option;
         option.checked = urlValues.some(
           (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
@@ -74,7 +74,7 @@ const UpdateUrlQueryString = (url, name, value) => {
  *
  * @param {date} date for data value
  */
-const FormatDateString = date => {
+const FormatDateString = (date) => {
   var formatDateValue =
     `${date.getMonth() + 1}` +
     `/` +
@@ -85,13 +85,13 @@ const FormatDateString = date => {
   return formatDateValue;
 };
 
-const ShowHideSmallSizeCheckBox = checkboxName => {
+const ShowHideSmallSizeCheckBox = (checkboxName) => {
   var species = ["cat", "other"];
   var checkboxes = document.querySelectorAll(
       'input[name="' + checkboxName + '"]:checked'
     ),
     values = [];
-  Array.prototype.forEach.call(checkboxes, function(el) {
+  Array.prototype.forEach.call(checkboxes, function (el) {
     values.push(el.value.toUpperCase());
   });
 
@@ -99,15 +99,10 @@ const ShowHideSmallSizeCheckBox = checkboxName => {
   if (arryLength != 0 && arryLength <= 2) {
     if (arryLength == 1) {
       document.getElementById(
-        "weight-medium"
-      ).parentNode.style.display = values.includes("CAT") ? "none" : "block";
-      document.getElementById(
         "weight-large"
       ).parentNode.style.display = values.includes("CAT") ? "none" : "block";
     } else {
       if (containsAll(species, values)) {
-        document.getElementById("weight-medium").parentNode.style.display =
-          "none";
         document.getElementById("weight-large").parentNode.style.display =
           "none";
       } else {
@@ -192,7 +187,7 @@ const UpdateFilters = (filters = [], queryString = "") => {
  */
 const UpdateQueryString = ({
   filter: { checked, name, value },
-  queryString
+  queryString,
 }) => {
   const searchParams = new URLSearchParams(queryString || "");
   const existingValues = searchParams.has(name)
@@ -235,5 +230,5 @@ export {
   UpdateQueryString,
   FormatDateString,
   InitilizeDateValues,
-  ShowHideSmallSizeCheckBox
+  ShowHideSmallSizeCheckBox,
 };
