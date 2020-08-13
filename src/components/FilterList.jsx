@@ -58,7 +58,6 @@ const FilterList = ({
     !!endDatePart ? new Date(endDatePart) : null
   );
 
-  const [isCleared, setIsCleared] = useState(false);
 
   const staticFilterQueryString = filtersFromProps
     .filter(({ value }) => value)
