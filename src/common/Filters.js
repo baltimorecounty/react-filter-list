@@ -226,15 +226,17 @@ const UpdateQueryString = ({
 const FilterSearchTags = (searchTags = [], textQuery = "") => {
   const matchingFilter = Object.entries(searchTags).forEach(([key, value]) => {
     const tagCategory = value.split(",");
-    Object.values(tagCategory).forEach((item) => {
-      if (item.toLowerCase().trim() === textQuery.toLowerCase().trim()) {
-        return key;
+
+    tagCategory.find((tag) => {
+      if (tag.toLowerCase().trim() === textQuery.toLowerCase().trim()) {
+        console.log("did we make it");
+        return key.toLowerCase().trim();
       } else {
         return null;
       }
     });
   });
-  console.log(matchingFilter);
+  //console.log(matchingFilter);
 
   return matchingFilter ? matchingFilter : textQuery;
 };
