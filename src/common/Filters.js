@@ -228,7 +228,7 @@ const FilterSearchTags = (searchTags = [], textQuery = "") => {
     const tagCategory = value.split(",");
     Object.values(tagCategory).forEach((item) => {
       if (item.toLowerCase().trim() === textQuery.toLowerCase().trim()) {
-        return item;
+        return key;
       } else {
         return null;
       }
