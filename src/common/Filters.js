@@ -27,7 +27,6 @@ const resetEmptyFilters = (filters = [], queryStringFilters = {}) => {
 const updateFilters = (filters = [], queryStringFilters = {}) => {
   // Reset any filters that do not exist in the current querystring
   resetEmptyFilters(filters, queryStringFilters);
-
   // Update active filters based on querystring
   Object.keys(queryStringFilters).forEach((key) => {
     const matchingFilter = filters.find(
@@ -224,6 +223,28 @@ const UpdateQueryString = ({
   return [...searchParams].length > 0 ? `?${searchParams.toString()}` : "";
 };
 
+const FilterSearchTags = (searchTags = [], textQuery = "") => {
+  // const newQuery = searchTags.map((item) => {
+  //   const tagCategory = item.value.split(",");
+
+  //   const isValid = tagCategory.find((tag) => {
+  //     //console.log(`${tag.toLowerCase()} == ${textQuery.toLowerCase()}`);
+  //     return tag.toLowerCase() == textQuery.toLowerCase();
+  //   });
+
+  //   return isValid ? isValid : textQuery;
+  // });
+
+  Object.values(searchTags).forEach((key) => {
+    const tagCategory = ["two-alarm", "two alarm", "alarm"]; //key.split(",");
+
+    const matchingFilter = tagCategory.find((value) => {
+      return value.toString().toLowerCase() === textQuery.toLowerCase();
+    });
+    console.log(matchingFilter);
+  });
+};
+
 export {
   UpdateUrlQueryString,
   UpdateFilters,
@@ -231,4 +252,5 @@ export {
   FormatDateString,
   InitilizeDateValues,
   ShowHideSmallSizeCheckBox,
+  FilterSearchTags,
 };

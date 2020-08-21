@@ -1,6 +1,24 @@
 import { FilterList } from "../src/index";
 import React from "react";
 
+// const searchTags = [
+//   {
+//     label: "fire",
+//     value: "two-alarm, two alarm, alarm",
+//   },
+//   { label: "engine", value: "fire truck, truck, hook and ladder" },
+//   {
+//     label: "fireman",
+//     value: "fire man, fire woman, fire person, fire fighter, fighter",
+//   },
+// ];
+
+const searchTags = {
+  fire: "two-alarm, two alarm, alarm",
+  engine: "fire truck, truck, hook and ladder",
+  fireman: "fire man, fire woman, fire person, fire fighter, fighter",
+};
+
 const filters = [
   {
     targetApiField: "category.value",
@@ -48,6 +66,7 @@ const Demo = (props) => {
         includeDateFilter={true}
         includeInputFilter={true}
         includeClearButton={true}
+        searchTags={searchTags}
         renderItem={({ title, articleSummary }) => (
           <div
             style={{

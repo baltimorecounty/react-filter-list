@@ -7,6 +7,7 @@ import {
   FormatDateString,
   InitilizeDateValues,
   ShowHideSmallSizeCheckBox,
+  FilterSearchTags,
 } from "../common/Filters";
 
 import ApiList from "./ApiList.jsx";
@@ -41,6 +42,7 @@ const FilterList = ({
   apiEndpoint: defaultApiEndpoint,
   history,
   staticContext,
+  searchTags,
   ...props
 }) => {
   let filterDateValue = InitilizeDateValues();
@@ -118,6 +120,7 @@ const FilterList = ({
   };
 
   const handleFilterTextInputChange = (query) => {
+    FilterSearchTags(searchTags, query);
     const updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
 
     // This disables any browser history updates
