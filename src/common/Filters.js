@@ -224,26 +224,51 @@ const UpdateQueryString = ({
 };
 
 const FilterSearchTags = (searchTags = [], textQuery = "") => {
-  // const newQuery = searchTags.map((item) => {
-  //   const tagCategory = item.value.split(",");
-
-  //   const isValid = tagCategory.find((tag) => {
-  //     //console.log(`${tag.toLowerCase()} == ${textQuery.toLowerCase()}`);
-  //     return tag.toLowerCase() == textQuery.toLowerCase();
-  //   });
-
-  //   return isValid ? isValid : textQuery;
-  // });
-
-  Object.values(searchTags).forEach((key) => {
-    const tagCategory = ["two-alarm", "two alarm", "alarm"]; //key.split(",");
-
-    const matchingFilter = tagCategory.find((value) => {
-      return value.toString().toLowerCase() === textQuery.toLowerCase();
+  const matchingFilter = Object.entries(searchTags).forEach(([key, value]) => {
+    const tagCategory = value.split(",");
+    Object.values(tagCategory).forEach((item) => {
+      if (item.toLowerCase().trim() === textQuery.toLowerCase().trim()) {
+        return item;
+      } else {
+        return null;
+      }
     });
-    console.log(matchingFilter);
   });
+  console.log(matchingFilter);
+
+  return matchingFilter ? matchingFilter : textQuery;
 };
+// const matchingFilter = searchTags.map((item) => {
+//   const tagCategory = item.value.split(",");
+
+//   tagCategory.find((tag) => {
+//     if (tag.toLowerCase().trim() === textQuery.toLowerCase().trim()) {
+//       console.log("did we make it");
+//       return item.label.toLowerCase().trim();
+//     } else {
+//       return null;
+//     }
+//   });
+// });
+
+// const matchingFilter = Object.keys(searchTags).forEach((key) => {
+//   //console.log(searchTags);
+//   const searchValues = Object.values(searchTags).forEach((x) => {
+//     console.log(x);
+//     x.value === key;
+//   });
+
+//   const tagCategory = searchValues.split(",");
+//   tagCategory.find((value) => {
+//     if (value.toLowerCase().trim() === textQuery.toLowerCase().trim()) {
+//       return item.toLowerCase().trim();
+//     } else {
+//       return null;
+//     }
+//   });
+// });
+//console.log(matchingFilter);
+//return matchingFilter ? matchingFilter : textQuery;
 
 export {
   UpdateUrlQueryString,

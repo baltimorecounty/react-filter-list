@@ -14,7 +14,7 @@ import React from "react";
 // ];
 
 const searchTags = {
-  fire: "two-alarm, two alarm, alarm",
+  fire: "two-alarm, two alarm, ALARM",
   engine: "fire truck, truck, hook and ladder",
   fireman: "fire man, fire woman, fire person, fire fighter, fighter",
 };
