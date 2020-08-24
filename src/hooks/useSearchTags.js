@@ -1,0 +1,54 @@
+import { useEffect, useState } from "react";
+import { GetSearchTags } from "../services/ApiService";
+import { Config } from "@baltimorecounty/javascript-utilities";
+import FireNewsSearchData from "../data/SearchTags";
+
+const { setConfig, getValue } = Config;
+
+const localApiRoot = "local";
+const testApiRoot =
+  "https://beta.baltimorecountymd.gov/sebin/u/d/search tags.json";
+const prodApiRoot = "https://baltimorecountymd.gov/sebin/u/d/search tags.json";
+
+const configValues = {
+  local: {
+    apiRoot: localApiRoot,
+  },
+  development: {
+    apiRoot: testApiRoot,
+  },
+  staging: {
+    apiRoot: testApiRoot,
+  },
+  production: {
+    apiRoot: prodApiRoot,
+  },
+};
+
+setConfig(configValues);
+
+const useSearchTags = () => {
+  const [hasError, setHasError] = useState(false);
+  const [searchTags, setSearchTags] = useState([]);
+
+  useEffect(() => {
+    getValue("apiRoot") === "local"
+      ? setSearchTags(tagData)
+      : GetSearchTags(tagFileName)
+          .then((response) => {
+            setSearchTags(response[tagFileName]);
+          })
+          .catch(() => {
+            setHasError(true);
+          });
+  }, []);
+
+  return [
+    {
+      searchTags,
+      hasError,
+    },
+  ];
+};
+
+export default useSearchTags;

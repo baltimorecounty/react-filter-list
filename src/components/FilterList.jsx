@@ -9,7 +9,7 @@ import {
   ShowHideSmallSizeCheckBox,
   FilterSearchTags,
 } from "../common/Filters";
-
+import useSearchTags from "../hooks/useSearchTags";
 import ApiList from "./ApiList.jsx";
 import DefaultFilter from "./DefaultFilter.jsx";
 import DefaultLoadMoreButton from "./DefaultLoadMoreButton";
@@ -41,11 +41,13 @@ const FilterList = ({
   filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
   history,
+  tagFileName = "FireNews",
   staticContext,
-  searchTags,
   ...props
 }) => {
   let filterDateValue = InitilizeDateValues();
+
+  const [{ searchTags = [] }] = useSearchTags();
 
   let [startDatePart, endDatePart] = !!filterDateValue
     ? filterDateValue.split(",")
@@ -120,7 +122,7 @@ const FilterList = ({
   };
 
   const handleFilterTextInputChange = (query) => {
-    FilterSearchTags(searchTags, query);
+    query = FilterSearchTags(searchTags, query, tagFileName);
     const updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
 
     // This disables any browser history updates

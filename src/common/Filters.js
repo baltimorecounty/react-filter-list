@@ -223,54 +223,32 @@ const UpdateQueryString = ({
   return [...searchParams].length > 0 ? `?${searchParams.toString()}` : "";
 };
 
-const FilterSearchTags = (searchTags = [], textQuery = "") => {
-  const matchingFilter = Object.entries(searchTags).forEach(([key, value]) => {
-    const tagCategory = value.split(",");
+const FilterSearchTags = (searchTags = [], textQuery = "", tagFileName) => {
+  let newQuery = "";
 
-    tagCategory.find((tag) => {
+  console.log(searchTags[tagFileName]);
+
+  searchTags[tagFileName].map((item) => {
+    const tagCategory = item.value.split(",");
+    tagCategory.map((tag) => {
       if (tag.toLowerCase().trim() === textQuery.toLowerCase().trim()) {
-        console.log("did we make it");
-        return key.toLowerCase().trim();
-      } else {
-        return null;
+        newQuery = item.label;
       }
     });
   });
-  //console.log(matchingFilter);
 
-  return matchingFilter ? matchingFilter : textQuery;
+  return newQuery ? newQuery : textQuery;
 };
-// const matchingFilter = searchTags.map((item) => {
-//   const tagCategory = item.value.split(",");
 
-//   tagCategory.find((tag) => {
-//     if (tag.toLowerCase().trim() === textQuery.toLowerCase().trim()) {
-//       console.log("did we make it");
-//       return item.label.toLowerCase().trim();
-//     } else {
-//       return null;
-//     }
-//   });
-// });
+// const FetchJasonSearchTags = (url) => {
+//   const data = await fetch(url, {
+//     mode: "no-cors", // 'cors' by default
+//   }).then((response) => response.json());
 
-// const matchingFilter = Object.keys(searchTags).forEach((key) => {
-//   //console.log(searchTags);
-//   const searchValues = Object.values(searchTags).forEach((x) => {
-//     console.log(x);
-//     x.value === key;
-//   });
-
-//   const tagCategory = searchValues.split(",");
-//   tagCategory.find((value) => {
-//     if (value.toLowerCase().trim() === textQuery.toLowerCase().trim()) {
-//       return item.toLowerCase().trim();
-//     } else {
-//       return null;
-//     }
-//   });
-// });
-//console.log(matchingFilter);
-//return matchingFilter ? matchingFilter : textQuery;
+//   console.log("Test");
+//   console.log(data);
+//   return data;
+// };
 
 export {
   UpdateUrlQueryString,
