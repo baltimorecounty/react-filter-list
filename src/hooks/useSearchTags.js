@@ -6,9 +6,8 @@ import tagData from "../data/SearchTags";
 const { setConfig, getValue } = Config;
 
 const localApiRoot = "local";
-const testApiRoot =
-  "https://beta.baltimorecountymd.gov/sebin/u/d/search tags.json";
-const prodApiRoot = "https://baltimorecountymd.gov/sebin/u/d/search tags.json";
+const testApiRoot = "//beta.baltimorecountymd.gov/sebin/u/d/search tags.json";
+const prodApiRoot = "//baltimorecountymd.gov/sebin/u/d/search tags.json";
 
 const configValues = {
   local: {
