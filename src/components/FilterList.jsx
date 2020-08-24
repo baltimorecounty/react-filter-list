@@ -195,7 +195,9 @@ const FilterList = ({
             />
           </div>
           {includeDateFilter ? (
+           
             <Collapse id="date-collapse" header="Date">
+            <div onBlur={handleBlur}>
               <FilterDateSelector
                 name="startDate"
                 id="startDate"
@@ -205,6 +207,7 @@ const FilterList = ({
                 autocomplete="off"
                 label="Start Date"
               />
+              </div>
               <div onBlur={handleBlur}>
                 <FilterDateSelector
                   name="endDate"
