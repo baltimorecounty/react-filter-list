@@ -238,16 +238,6 @@ const FilterSearchTags = (searchTags = [], textQuery = "", tagFileName) => {
   return newQuery ? newQuery : textQuery;
 };
 
-// const FetchJasonSearchTags = (url) => {
-//   const data = await fetch(url, {
-//     mode: "no-cors", // 'cors' by default
-//   }).then((response) => response.json());
-
-//   console.log("Test");
-//   console.log(data);
-//   return data;
-// };
-
 export {
   UpdateUrlQueryString,
   UpdateFilters,

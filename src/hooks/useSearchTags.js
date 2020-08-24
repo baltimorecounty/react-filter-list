@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { GetSearchTags } from "../services/ApiService";
 import { Config } from "@baltimorecounty/javascript-utilities";
-import FireNewsSearchData from "../data/SearchTags";
+import tagData from "../data/SearchTags";
 
 const { setConfig, getValue } = Config;
 
@@ -34,9 +34,9 @@ const useSearchTags = () => {
   useEffect(() => {
     getValue("apiRoot") === "local"
       ? setSearchTags(tagData)
-      : GetSearchTags(tagFileName)
+      : GetSearchTags()
           .then((response) => {
-            setSearchTags(response[tagFileName]);
+            setSearchTags(response);
           })
           .catch(() => {
             setHasError(true);

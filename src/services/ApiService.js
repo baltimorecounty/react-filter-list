@@ -3,7 +3,6 @@ import axios from "axios";
 
 const { getValue } = Config;
 
-
 const GetSearchTags = () =>
   axios
     .get(`${getValue("apiRoot")}`)

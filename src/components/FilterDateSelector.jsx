@@ -56,6 +56,7 @@ const FilterDateSelector = (props) => {
           minDate={minDate}
           maxDate={maxDate}
           onClickOutside={handleClose}
+          onBlur={handleClose}
           open={state.datePickerIsOpen}
           onSelect={handleClose}
           {...otherProps}
