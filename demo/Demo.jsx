@@ -48,7 +48,7 @@ const Demo = (props) => {
         includeDateFilter={true}
         includeInputFilter={true}
         includeClearButton={true}
-        tagFileName="FireNews"
+        searchCategory="FireNews"
         renderItem={({ title, articleSummary }) => (
           <div
             style={{

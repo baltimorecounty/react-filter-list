@@ -223,10 +223,10 @@ const UpdateQueryString = ({
   return [...searchParams].length > 0 ? `?${searchParams.toString()}` : "";
 };
 
-const FilterSearchTags = (searchTags = [], textQuery = "", tagFileName) => {
+const FilterSearchTags = (searchTags = [], textQuery = "", searchCategory) => {
   let newQuery = "";
 
-  searchTags[tagFileName].map((item) => {
+  searchTags[searchCategory].map((item) => {
     const tagCategory = item.value.split(",");
     tagCategory.map((tag) => {
       if (tag.toLowerCase().trim() === textQuery.toLowerCase().trim()) {

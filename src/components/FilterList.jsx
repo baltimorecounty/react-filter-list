@@ -41,7 +41,7 @@ const FilterList = ({
   filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
   history,
-  tagFileName = "FireNews",
+  searchCategory = "",
   staticContext,
   ...props
 }) => {
@@ -122,7 +122,11 @@ const FilterList = ({
   };
 
   const handleFilterTextInputChange = (query) => {
-    query = FilterSearchTags(searchTags, query, tagFileName);
+
+    query = searchCategory
+      ? FilterSearchTags(searchTags, query, searchCategory)
+      : query;
+
     const updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
 
     // This disables any browser history updates
