@@ -196,16 +196,16 @@ const FilterList = ({
           </div>
           {includeDateFilter ? (
             <Collapse id="date-collapse" header="Date">
-              <FilterDateSelector
-                name="startDate"
-                id="startDate"
-                selected={!isClear ? fromDate : null}
-                onChange={handleFromDateChange}
-                maxDate={toDate}
-                autocomplete="off"
-                label="Start Date"
-              />
               <div onBlur={handleBlur}>
+                <FilterDateSelector
+                  name="startDate"
+                  id="startDate"
+                  selected={!isClear ? fromDate : null}
+                  onChange={handleFromDateChange}
+                  maxDate={toDate}
+                  autocomplete="off"
+                  label="Start Date"
+                />
                 <FilterDateSelector
                   name="endDate"
                   id="endDate"
