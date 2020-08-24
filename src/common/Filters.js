@@ -226,8 +226,6 @@ const UpdateQueryString = ({
 const FilterSearchTags = (searchTags = [], textQuery = "", tagFileName) => {
   let newQuery = "";
 
-  console.log(searchTags[tagFileName]);
-
   searchTags[tagFileName].map((item) => {
     const tagCategory = item.value.split(",");
     tagCategory.map((tag) => {
