@@ -42,6 +42,7 @@ const FilterDateSelector = (props) => {
     onClickOutside(!state.datePickerIsClosed);
   };
 
+
   return (
     <div className="dg_date-container">
       <div className="dg_form-field">
@@ -56,7 +57,6 @@ const FilterDateSelector = (props) => {
           minDate={minDate}
           maxDate={maxDate}
           onClickOutside={handleClose}
-          onBlur={handleClose}
           open={state.datePickerIsOpen}
           onSelect={handleClose}
           {...otherProps}
