@@ -195,6 +195,7 @@ const FilterList = ({
             />
           </div>
           {includeDateFilter ? (
+           
             <Collapse id="date-collapse" header="Date">
               <div onBlur={handleBlur}>
                 <FilterDateSelector
