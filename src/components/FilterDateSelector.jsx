@@ -22,7 +22,7 @@ const FilterDateSelector = props => {
   } = props;
 
   const datePickerIsClosed = true;
-  const calendarRef = React.createRef();
+  const calendarRef = useRef();
   const [state, setState] = useState({
     datePickerIsOpen,
     datePickerIsClosed
