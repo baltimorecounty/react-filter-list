@@ -48,6 +48,7 @@ const Demo = (props) => {
         includeDateFilter={true}
         includeInputFilter={true}
         includeClearButton={true}
+        searchCategory="FireNews"
         renderItem={({ title, articleSummary }) => (
           <div
             style={{

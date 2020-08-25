@@ -6,9 +6,10 @@ import {
   UpdateUrlQueryString,
   FormatDateString,
   InitilizeDateValues,
-  ShowHideSmallSizeCheckBox
+  ShowHideSmallSizeCheckBox,
+  FilterSearchTags,
 } from "../common/Filters";
-
+import useSearchTags from "../hooks/useSearchTags";
 import ApiList from "./ApiList.jsx";
 import DefaultFilter from "./DefaultFilter.jsx";
 import DefaultLoadMoreButton from "./DefaultLoadMoreButton";
@@ -40,10 +41,13 @@ const FilterList = ({
   filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
   history,
+  searchCategory = "",
   staticContext,
   ...props
 }) => {
   let filterDateValue = InitilizeDateValues();
+
+  const [{ searchTags = [], hasError }] = useSearchTags();
 
   let [startDatePart, endDatePart] = !!filterDateValue
     ? filterDateValue.split(",")
@@ -117,7 +121,12 @@ const FilterList = ({
     updateQueryString({ name, value, checked });
   };
 
-  const handleFilterTextInputChange = query => {
+  const handleFilterTextInputChange = (query) => {
+    query =
+      !searchCategory || hasError
+        ? query
+        : FilterSearchTags(searchTags, query, searchCategory);
+
     const updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
 
     // This disables any browser history updates
