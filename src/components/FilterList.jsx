@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { subMonths } from "date-fns";
 import {
   UpdateFilters,
@@ -6,7 +6,7 @@ import {
   UpdateUrlQueryString,
   FormatDateString,
   InitilizeDateValues,
-  ShowHideSmallSizeCheckBox,
+  ShowHideSmallSizeCheckBox
 } from "../common/Filters";
 
 import ApiList from "./ApiList.jsx";
@@ -27,12 +27,12 @@ const FilterList = ({
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
   ),
-  renderListHeader = (count) => (
+  renderListHeader = count => (
     <div className="list-header">
       <RecordsMessage count={count} />
     </div>
   ),
-  renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
+  renderLoadMoreButton = props => <DefaultLoadMoreButton {...props} />,
   includeInputFilter = false,
   includeDateFilter = false,
   includeClearButton = false,
@@ -89,7 +89,7 @@ const FilterList = ({
   );
 
   useEffect(() => {
-    setFilters((filters) => UpdateFilters(filters, location.search));
+    setFilters(filters => UpdateFilters(filters, location.search));
 
     if (location.search.indexOf("?") > -1) {
       setApiEndpoint(defaultApiEndpoint + location.search);
@@ -98,17 +98,17 @@ const FilterList = ({
     }
   }, [location.search]);
 
-  const updateQueryString = (filter) => {
+  const updateQueryString = filter => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter,
-      queryString: currentQueryString === undefined ? "" : currentQueryString,
+      queryString: currentQueryString === undefined ? "" : currentQueryString
     });
     setApiEndpoint(queryString);
     history.push(location.pathname + queryString);
   };
 
-  const handleFilterChange = (changeEvent) => {
+  const handleFilterChange = changeEvent => {
     const { name, value, checked } = changeEvent;
     if (name == "petType") {
       ShowHideSmallSizeCheckBox(name);
@@ -117,7 +117,7 @@ const FilterList = ({
     updateQueryString({ name, value, checked });
   };
 
-  const handleFilterTextInputChange = (query) => {
+  const handleFilterTextInputChange = query => {
     const updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
 
     // This disables any browser history updates
@@ -125,7 +125,7 @@ const FilterList = ({
     setApiEndpoint(updatedUrl);
   };
 
-  const handleFromDateChange = (date) => {
+  const handleFromDateChange = date => {
     setFromDate(date);
 
     var fromToDateFormattedValue = date
@@ -145,13 +145,8 @@ const FilterList = ({
     history.push(location.pathname + "?" + queryString);
     setApiEndpoint(updatedUrl);
   };
-  const handleBlur = () => {
-    document.querySelectorAll(".react-datepicker-popper").forEach(function (a) {
-      a.remove();
-    });
-  };
 
-  const handleToDateChange = (date) => {
+  const handleToDateChange = date => {
     setToDate(date);
 
     var fromToDateFormattedValue = date
@@ -177,12 +172,21 @@ const FilterList = ({
     setApiEndpoint(base);
     history.push(location.pathname);
   };
+  const onKeyDown = e => {
+    if (e.keyCode == 9) {
+      document
+        .querySelectorAll(".react-datepicker-popper")
+        .forEach(function(a) {
+          a.remove();
+        });
+    }
+  };
 
   const buttonStyles = {
     paddingLeft: "100",
-    paddingRight: "0",
+    paddingRight: "0"
   };
-
+  const startRef = useRef(null);
   return (
     <div {...props}>
       <div className="row">
@@ -195,9 +199,8 @@ const FilterList = ({
             />
           </div>
           {includeDateFilter ? (
-           
             <Collapse id="date-collapse" header="Date">
-              <div onBlur={handleBlur}>
+              <div ref={startRef}>
                 <FilterDateSelector
                   name="startDate"
                   id="startDate"
@@ -206,7 +209,9 @@ const FilterList = ({
                   maxDate={toDate}
                   autocomplete="off"
                   label="Start Date"
+                  onKeyDown={onKeyDown}
                 />
+
                 <FilterDateSelector
                   name="endDate"
                   id="endDate"
@@ -216,6 +221,7 @@ const FilterList = ({
                   maxDate={new Date()}
                   autocomplete="off"
                   label="End Date"
+                  onKeyDown={onKeyDown}
                 />
               </div>
             </Collapse>
@@ -281,7 +287,7 @@ FilterList.propTypes = {
   /** Placeholder text for the text input filter */
   inputFilterPlaceholder: PropTypes.string,
   /** className attribute for the list container */
-  listContainerClassName: PropTypes.string,
+  listContainerClassName: PropTypes.string
 };
 
 export default withRouter(FilterList);
