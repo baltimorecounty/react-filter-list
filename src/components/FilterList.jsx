@@ -47,7 +47,7 @@ const FilterList = ({
 }) => {
   let filterDateValue = InitilizeDateValues();
 
-  const [{ searchTags = [] }] = useSearchTags();
+  const [{ searchTags = [], hasError }] = useSearchTags();
 
   let [startDatePart, endDatePart] = !!filterDateValue
     ? filterDateValue.split(",")
@@ -122,10 +122,10 @@ const FilterList = ({
   };
 
   const handleFilterTextInputChange = (query) => {
-
-    query = searchCategory
-      ? FilterSearchTags(searchTags, query, searchCategory)
-      : query;
+    query =
+      !searchCategory || hasError
+        ? query
+        : FilterSearchTags(searchTags, query, searchCategory);
 
     const updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
 
