@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { GetSearchTags } from "../services/ApiService";
 import { Config } from "@baltimorecounty/javascript-utilities";
-import tagData from "../data/SearchTags";
 
 const { setConfig, getValue } = Config;
 
@@ -32,15 +31,14 @@ const useSearchTags = () => {
   const [searchTags, setSearchTags] = useState([]);
 
   useEffect(() => {
-    getValue("apiRoot") === "local"
-      ? setSearchTags(tagData)
-      : GetSearchTags()
-          .then((response) => {
-            setSearchTags(response);
-          })
-          .catch(() => {
-            setHasError(true);
-          });
+    getValue("apiRoot") === "local";
+    GetSearchTags()
+      .then((response) => {
+        setSearchTags(response);
+      })
+      .catch(() => {
+        setHasError(true);
+      });
   }, []);
 
   return [
