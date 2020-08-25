@@ -209,6 +209,7 @@ const FilterList = ({
                 autocomplete="off"
                 label="Start Date"
               />
+
               <FilterDateSelector
                 name="endDate"
                 id="endDate"
