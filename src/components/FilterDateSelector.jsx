@@ -42,6 +42,7 @@ const FilterDateSelector = (props) => {
     onClickOutside(!state.datePickerIsClosed);
   };
 
+
   return (
     <div className="dg_date-container">
       <div className="dg_form-field">
