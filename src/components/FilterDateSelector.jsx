@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 import DatePicker from "react-datepicker";
 
-const FilterDateSelector = (props) => {
+const FilterDateSelector = props => {
   const {
     onChange,
     selected,
@@ -22,24 +22,30 @@ const FilterDateSelector = (props) => {
   } = props;
 
   const datePickerIsClosed = true;
-
+  const calendarRef = React.createRef();
   const [state, setState] = useState({
     datePickerIsOpen,
-    datePickerIsClosed,
+    datePickerIsClosed
   });
 
   const openDatePicker = () => {
     setState({
-      datePickerIsOpen: !state.datePickerIsOpen,
+      datePickerIsOpen: !state.datePickerIsOpen
     });
     open(!state.datePickerIsOpen);
   };
 
   const handleClose = () => {
     setState({
-      datePickerIsClosed: !state.datePickerIsClosed,
+      datePickerIsClosed: !state.datePickerIsClosed
     });
     onClickOutside(!state.datePickerIsClosed);
+  };
+
+  const onKeyDown = e => {
+    if (e.keyCode == 9) {
+      calendarRef.current.state.open = false;
+    }
   };
 
   return (
@@ -48,6 +54,7 @@ const FilterDateSelector = (props) => {
         <label htmlFor="full-name" className="dg_label">
           <span className="dg_label-text">{label}</span>
         </label>
+
         <DatePicker
           selected={selected}
           onChange={onChange}
@@ -57,7 +64,9 @@ const FilterDateSelector = (props) => {
           maxDate={maxDate}
           onClickOutside={handleClose}
           open={state.datePickerIsOpen}
+          onKeyDown={onKeyDown}
           onSelect={handleClose}
+          ref={calendarRef}
           {...otherProps}
         />
       </div>

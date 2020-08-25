@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { subMonths } from "date-fns";
 import {
   UpdateFilters,
@@ -172,21 +172,12 @@ const FilterList = ({
     setApiEndpoint(base);
     history.push(location.pathname);
   };
-  const onKeyDown = e => {
-    if (e.keyCode == 9) {
-      document
-        .querySelectorAll(".react-datepicker-popper")
-        .forEach(function(a) {
-          a.remove();
-        });
-    }
-  };
 
   const buttonStyles = {
     paddingLeft: "100",
     paddingRight: "0"
   };
-  const startRef = useRef(null);
+
   return (
     <div {...props}>
       <div className="row">
@@ -200,30 +191,27 @@ const FilterList = ({
           </div>
           {includeDateFilter ? (
             <Collapse id="date-collapse" header="Date">
-              <div ref={startRef}>
-                <FilterDateSelector
-                  name="startDate"
-                  id="startDate"
-                  selected={!isClear ? fromDate : null}
-                  onChange={handleFromDateChange}
-                  maxDate={toDate}
-                  autocomplete="off"
-                  label="Start Date"
-                  onKeyDown={onKeyDown}
-                />
+              <FilterDateSelector
+                name="startDate"
+                id="startDate"
+                selected={!isClear ? fromDate : null}
+                onChange={handleFromDateChange}
+                maxDate={toDate}
+                autocomplete="off"
+                label="Start Date"
+              />
 
-                <FilterDateSelector
-                  name="endDate"
-                  id="endDate"
-                  selected={!isClear ? toDate : null}
-                  onChange={handleToDateChange}
-                  minDate={fromDate}
-                  maxDate={new Date()}
-                  autocomplete="off"
-                  label="End Date"
-                  onKeyDown={onKeyDown}
-                />
-              </div>
+              <FilterDateSelector
+                name="endDate"
+                id="endDate"
+                selected={!isClear ? toDate : null}
+                onChange={handleToDateChange}
+                minDate={fromDate}
+                maxDate={new Date()}
+                autocomplete="off"
+                label="End Date"
+              />
+
             </Collapse>
           ) : null}
           {includeClearButton ? (
