@@ -178,7 +178,12 @@ const FilterList = ({
   const clearFilter = () => {
     setIsClear(true);
     const [base, currentQueryString] = apiEndpoint.split("?");
-    setApiEndpoint(base);
+    var sliceValue = base.slice(base.lastIndexOf("/") + 1, base.length);
+
+    setApiEndpoint(
+      sliceValue.toLowerCase() == "pets" ? base + "?status=Adoptable" : base
+    );
+
     history.push(location.pathname);
   };
 
