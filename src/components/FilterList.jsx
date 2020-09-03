@@ -108,6 +108,7 @@ const FilterList = ({
       filter,
       queryString: currentQueryString === undefined ? "" : currentQueryString,
     });
+
     setApiEndpoint(queryString);
     history.push(location.pathname + queryString);
   };
@@ -179,12 +180,16 @@ const FilterList = ({
     setIsClear(true);
     const [base, currentQueryString] = apiEndpoint.split("?");
     var sliceValue = base.slice(base.lastIndexOf("/") + 1, base.length);
+    var defaultUrl = "?status=Adoptable&recordsPerPage=10";
 
     setApiEndpoint(
-      sliceValue.toLowerCase() == "pets" ? base + "?status=Adoptable" : base
+      sliceValue.toLowerCase() === "pets" ? base + defaultUrl : base
     );
-
-    history.push(location.pathname);
+    history.push(
+      sliceValue.toLowerCase() === "pets"
+        ? location.pathname + defaultUrl
+        : location.pathname
+    );
   };
 
   const buttonStyles = {
