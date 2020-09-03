@@ -7,7 +7,7 @@ import {
   FormatDateString,
   InitilizeDateValues,
   ShowHideSmallSizeCheckBox,
-  FilterSearchTags
+  FilterSearchTags,
 } from "../common/Filters";
 import useSearchTags from "../hooks/useSearchTags";
 import ApiList from "./ApiList.jsx";
@@ -21,7 +21,6 @@ import { withRouter } from "react-router-dom";
 import FilterDateSelector from "../components/FilterDateSelector";
 import { Button, Collapse } from "@baltimorecounty/dotgov-components";
 
-
 const FilterList = ({
   title = "",
   listContainerClassName = "list",
@@ -29,12 +28,12 @@ const FilterList = ({
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
   ),
-  renderListHeader = count => (
+  renderListHeader = (count) => (
     <div className="list-header">
       <RecordsMessage count={count} />
     </div>
   ),
-  renderLoadMoreButton = props => <DefaultLoadMoreButton {...props} />,
+  renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
   includeInputFilter = false,
   includeDateFilter = false,
   includeClearButton = false,
@@ -94,7 +93,7 @@ const FilterList = ({
   );
 
   useEffect(() => {
-    setFilters(filters => UpdateFilters(filters, location.search));
+    setFilters((filters) => UpdateFilters(filters, location.search));
 
     if (location.search.indexOf("?") > -1) {
       setApiEndpoint(defaultApiEndpoint + location.search);
@@ -103,18 +102,18 @@ const FilterList = ({
     }
   }, [location.search]);
 
-  const updateQueryString = filter => {
+  const updateQueryString = (filter) => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter,
-      queryString: currentQueryString === undefined ? "" : currentQueryString
+      queryString: currentQueryString === undefined ? "" : currentQueryString,
     });
 
     setApiEndpoint(queryString);
     history.push(location.pathname + queryString);
   };
 
-  const handleFilterChange = changeEvent => {
+  const handleFilterChange = (changeEvent) => {
     const { name, value, checked } = changeEvent;
     if (name == "petType") {
       ShowHideSmallSizeCheckBox(name);
@@ -123,7 +122,7 @@ const FilterList = ({
     updateQueryString({ name, value, checked });
   };
 
-  const handleFilterTextInputChange = query => {
+  const handleFilterTextInputChange = (query) => {
     query =
       !searchCategory || hasError
         ? query
@@ -136,7 +135,7 @@ const FilterList = ({
     setApiEndpoint(updatedUrl);
   };
 
-  const handleFromDateChange = date => {
+  const handleFromDateChange = (date) => {
     setFromDate(date);
 
     var fromToDateFormattedValue = date
@@ -157,7 +156,7 @@ const FilterList = ({
     setApiEndpoint(updatedUrl);
   };
 
-  const handleToDateChange = date => {
+  const handleToDateChange = (date) => {
     setToDate(date);
 
     var fromToDateFormattedValue = date
@@ -195,7 +194,7 @@ const FilterList = ({
 
   const buttonStyles = {
     paddingLeft: "100",
-    paddingRight: "0"
+    paddingRight: "0",
   };
 
   return (
@@ -294,7 +293,7 @@ FilterList.propTypes = {
   /** Placeholder text for the text input filter */
   inputFilterPlaceholder: PropTypes.string,
   /** className attribute for the list container */
-  listContainerClassName: PropTypes.string
+  listContainerClassName: PropTypes.string,
 };
 
 export default withRouter(FilterList);
