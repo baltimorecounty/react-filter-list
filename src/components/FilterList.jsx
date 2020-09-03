@@ -104,13 +104,23 @@ const FilterList = ({
 
   const updateQueryString = filter => {
     const [base, currentQueryString] = apiEndpoint.split("?");
+
+    var sliceValue = base.slice(base.lastIndexOf("/") + 1, base.length);
+    const insertValue =
+      sliceValue.toLowerCase() === "pets"
+        ? "status=Adoptable&recordsPerPage=10"
+        : "";
     const queryString = UpdateQueryString({
       filter,
-      queryString: currentQueryString === undefined ? "" : currentQueryString
+      queryString:
+        currentQueryString === undefined ? insertValue : currentQueryString
     });
+
     setApiEndpoint(queryString);
     history.push(location.pathname + queryString);
   };
+
+
 
   const handleFilterChange = changeEvent => {
     const { name, value, checked } = changeEvent;
@@ -181,7 +191,9 @@ const FilterList = ({
     var sliceValue = base.slice(base.lastIndexOf("/") + 1, base.length);
 
     setApiEndpoint(
-      sliceValue.toLowerCase() == "pets" ? base + "?status=Adoptable" : base
+      sliceValue.toLowerCase() === "pets"
+        ? base + "?status=Adoptable&recordsPerPage=10"
+        : base
     );
 
     history.push(location.pathname);
