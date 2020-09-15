@@ -73,18 +73,18 @@ const FilterList = ({
   const buildDefaultEndPoint = () => {
     const dateFilter = "filterdate=" + filterDateValue;
     const staticFilter = "?" + staticFilterQueryString;
+    const endPointRoot = defaultApiEndpoint.split("?")[0];
     let newEndPoint;
-
     if (location.search.indexOf("?") > -1) {
-      newEndPoint = defaultApiEndpoint + location.search;
+      newEndPoint = endPointRoot + location.search;
     } else if (staticFilterQueryString && includeDateFilter) {
-      newEndPoint = defaultApiEndpoint + staticFilter + "&" + dateFilter;
+      newEndPoint = endPointRoot + staticFilter + "&" + dateFilter;
     } else if (staticFilterQueryString && !includeDateFilter) {
-      newEndPoint = defaultApiEndpoint + staticFilter;
+      newEndPoint = endPointRoot + staticFilter;
     } else if (!staticFilterQueryString && includeDateFilter) {
-      newEndPoint = defaultApiEndpoint + "?" + dateFilter;
+      newEndPoint = endPointRoot + "?" + dateFilter;
     } else {
-      newEndPoint = defaultApiEndpoint;
+      newEndPoint = endPointRoot;
     }
     return newEndPoint;
   };
