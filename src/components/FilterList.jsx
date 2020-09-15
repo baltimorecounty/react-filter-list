@@ -75,7 +75,9 @@ const FilterList = ({
     const staticFilter = "?" + staticFilterQueryString;
     let newEndPoint;
 
-    if (staticFilterQueryString && includeDateFilter) {
+    if (location.search.indexOf("?") > -1) {
+      newEndPoint = defaultApiEndpoint + location.search;
+    } else if (staticFilterQueryString && includeDateFilter) {
       newEndPoint = defaultApiEndpoint + staticFilter + "&" + dateFilter;
     } else if (staticFilterQueryString && !includeDateFilter) {
       newEndPoint = defaultApiEndpoint + staticFilter;
@@ -84,7 +86,6 @@ const FilterList = ({
     } else {
       newEndPoint = defaultApiEndpoint;
     }
-
     return newEndPoint;
   };
 
@@ -94,12 +95,6 @@ const FilterList = ({
 
   useEffect(() => {
     setFilters((filters) => UpdateFilters(filters, location.search));
-
-    if (location.search.indexOf("?") > -1) {
-      setApiEndpoint(defaultApiEndpoint + location.search);
-    } else {
-      setApiEndpoint(includeDateFilter ? apiEndpoint : defaultApiEndpoint);
-    }
   }, [location.search]);
 
   const updateQueryString = (filter) => {
@@ -176,6 +171,7 @@ const FilterList = ({
     history.push(location.pathname + "?" + queryString);
     setApiEndpoint(updatedUrl);
   };
+
   const clearFilter = () => {
     setIsClear(true);
     const [base, currentQueryString] = apiEndpoint.split("?");
