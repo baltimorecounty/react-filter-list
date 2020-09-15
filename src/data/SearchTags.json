@@ -8,11 +8,10 @@
     }
   ],
   "PoliceNews": [
-    { "label": "fire", "value": "two-alarm, two alarm, alarm" },
-    { "label": "engine", "value": "fire truck, truck, hook and ladder" },
+    { "label": "police", "value": "police man, police woman, cop, officer" },
     {
-      "label": "fireman",
-      "value": "fire man, fire woman, fire person, fire fighter, fighter"
+      "label": "arrest",
+      "value": "arrested, incarcerate, incarcerated, busted"
     }
   ],
   "NewsRoom": [
