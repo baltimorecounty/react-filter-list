@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { TextInput } from "@baltimorecounty/dotgov-components";
 import { useDebouncedCallback } from "use-debounce";
@@ -8,6 +8,11 @@ const FilterTextInput = ({ onChange = () => {}, isClear, ...rest }) => {
   const [debouncedCallback] = useDebouncedCallback((value) => {
     onChange(value);
   }, 300);
+  useEffect(() => {
+    if (isClear) {
+      setInputValue("");
+    }
+  }, [isClear]);
 
   const handleChange = (changeEvent) => {
     const { value = "" } = changeEvent.target;

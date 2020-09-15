@@ -49,7 +49,7 @@ const Demo = (props) => {
         title="News"
         filters={filters}
         apiEndpoint="https://localhost:44387/api/Pets"
-        //includeDateFilter={true}
+        includeDateFilter={true}
         includeInputFilter={true}
         includeClearButton={true}
         searchCategory="Pets"

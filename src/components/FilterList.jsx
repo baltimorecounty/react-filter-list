@@ -119,6 +119,10 @@ const FilterList = ({
   };
 
   const handleFilterTextInputChange = (query) => {
+    if (isClear) {
+      setIsClear(false);
+    }
+
     query =
       !searchCategory || hasError
         ? query
@@ -133,6 +137,9 @@ const FilterList = ({
 
   const handleFromDateChange = (date) => {
     setFromDate(date);
+    if (isClear) {
+      setIsClear(false);
+    }
 
     var fromToDateFormattedValue = date
       ? FormatDateString(date) + "," + FormatDateString(toDate)
@@ -154,6 +161,9 @@ const FilterList = ({
 
   const handleToDateChange = (date) => {
     setToDate(date);
+    if (isClear) {
+      setIsClear(false);
+    }
 
     var fromToDateFormattedValue = date
       ? FormatDateString(fromDate) + "," + FormatDateString(date)
