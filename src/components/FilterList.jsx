@@ -95,6 +95,7 @@ const FilterList = ({
 
   useEffect(() => {
     setFilters((filters) => UpdateFilters(filters, location.search));
+    setApiEndpoint(buildDefaultEndPoint());
   }, [location.search]);
 
   const updateQueryString = (filter) => {
