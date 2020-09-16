@@ -57,6 +57,7 @@ const FilterList = ({
     !!startDatePart ? new Date(startDatePart) : null
   );
   const [isClear, setIsClear] = useState(false);
+  const [isDateClear, setIsDateClear] = useState(false);
 
   const [toDate, setToDate] = useState(
     !!endDatePart ? new Date(endDatePart) : null
@@ -137,8 +138,8 @@ const FilterList = ({
 
   const handleFromDateChange = (date) => {
     setFromDate(date);
-    if (isClear) {
-      setIsClear(false);
+    if (isDateClear) {
+      setIsDateClear(false);
     }
 
     var fromToDateFormattedValue = date
@@ -161,8 +162,8 @@ const FilterList = ({
 
   const handleToDateChange = (date) => {
     setToDate(date);
-    if (isClear) {
-      setIsClear(false);
+    if (isDateClear) {
+      setIsDateClear(false);
     }
 
     var fromToDateFormattedValue = date
@@ -185,6 +186,7 @@ const FilterList = ({
 
   const clearFilter = () => {
     setIsClear(true);
+    setIsDateClear(true);
     const [base, currentQueryString] = apiEndpoint.split("?");
     var sliceValue = base.slice(base.lastIndexOf("/") + 1, base.length);
     var defaultUrl = "?status=Adoptable&recordsPerPage=10";
@@ -220,7 +222,7 @@ const FilterList = ({
               <FilterDateSelector
                 name="startDate"
                 id="startDate"
-                selected={!isClear ? fromDate : null}
+                selected={!isDateClear ? fromDate : null}
                 onChange={handleFromDateChange}
                 maxDate={toDate}
                 autocomplete="off"
@@ -230,7 +232,7 @@ const FilterList = ({
               <FilterDateSelector
                 name="endDate"
                 id="endDate"
-                selected={!isClear ? toDate : null}
+                selected={!isDateClear ? toDate : null}
                 onChange={handleToDateChange}
                 minDate={fromDate}
                 maxDate={new Date()}
