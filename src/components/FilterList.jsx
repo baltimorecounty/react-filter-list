@@ -7,7 +7,7 @@ import {
   FormatDateString,
   InitilizeDateValues,
   ShowHideSmallSizeCheckBox,
-  FilterSearchTags,
+  FilterSearchTags
 } from "../common/Filters";
 import useSearchTags from "../hooks/useSearchTags";
 import ApiList from "./ApiList.jsx";
@@ -28,12 +28,12 @@ const FilterList = ({
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
   ),
-  renderListHeader = (count) => (
+  renderListHeader = count => (
     <div className="list-header">
       <RecordsMessage count={count} />
     </div>
   ),
-  renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
+  renderLoadMoreButton = props => <DefaultLoadMoreButton {...props} />,
   includeInputFilter = false,
   includeDateFilter = false,
   includeClearButton = false,
@@ -57,6 +57,7 @@ const FilterList = ({
     !!startDatePart ? new Date(startDatePart) : null
   );
   const [isClear, setIsClear] = useState(false);
+  const [isDateClear, setIsDateClear] = useState(false);
 
   const [toDate, setToDate] = useState(
     !!endDatePart ? new Date(endDatePart) : null
@@ -94,22 +95,22 @@ const FilterList = ({
   );
 
   useEffect(() => {
-    setFilters((filters) => UpdateFilters(filters, location.search));
+    setFilters(filters => UpdateFilters(filters, location.search));
     setApiEndpoint(buildDefaultEndPoint());
   }, [location.search]);
 
-  const updateQueryString = (filter) => {
+  const updateQueryString = filter => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter,
-      queryString: currentQueryString === undefined ? "" : currentQueryString,
+      queryString: currentQueryString === undefined ? "" : currentQueryString
     });
 
     setApiEndpoint(queryString);
     history.push(location.pathname + queryString);
   };
 
-  const handleFilterChange = (changeEvent) => {
+  const handleFilterChange = changeEvent => {
     const { name, value, checked } = changeEvent;
     if (name == "petType") {
       ShowHideSmallSizeCheckBox(name);
@@ -118,7 +119,7 @@ const FilterList = ({
     updateQueryString({ name, value, checked });
   };
 
-  const handleFilterTextInputChange = (query) => {
+  const handleFilterTextInputChange = query => {
     if (isClear) {
       setIsClear(false);
     }
@@ -135,10 +136,10 @@ const FilterList = ({
     setApiEndpoint(updatedUrl);
   };
 
-  const handleFromDateChange = (date) => {
+  const handleFromDateChange = date => {
     setFromDate(date);
-    if (isClear) {
-      setIsClear(false);
+    if (isDateClear) {
+      setIsDateClear(false);
     }
 
     var fromToDateFormattedValue = date
@@ -159,10 +160,10 @@ const FilterList = ({
     setApiEndpoint(updatedUrl);
   };
 
-  const handleToDateChange = (date) => {
+  const handleToDateChange = date => {
     setToDate(date);
-    if (isClear) {
-      setIsClear(false);
+    if (isDateClear) {
+      setIsDateClear(false);
     }
 
     var fromToDateFormattedValue = date
@@ -185,6 +186,7 @@ const FilterList = ({
 
   const clearFilter = () => {
     setIsClear(true);
+    setIsDateClear(true);
     const [base, currentQueryString] = apiEndpoint.split("?");
     var sliceValue = base.slice(base.lastIndexOf("/") + 1, base.length);
     var defaultUrl = "?status=Adoptable&recordsPerPage=10";
@@ -201,7 +203,7 @@ const FilterList = ({
 
   const buttonStyles = {
     paddingLeft: "100",
-    paddingRight: "0",
+    paddingRight: "0"
   };
 
   return (
@@ -220,7 +222,7 @@ const FilterList = ({
               <FilterDateSelector
                 name="startDate"
                 id="startDate"
-                selected={!isClear ? fromDate : null}
+                selected={!isDateClear ? fromDate : null}
                 onChange={handleFromDateChange}
                 maxDate={toDate}
                 autocomplete="off"
@@ -230,7 +232,7 @@ const FilterList = ({
               <FilterDateSelector
                 name="endDate"
                 id="endDate"
-                selected={!isClear ? toDate : null}
+                selected={!isDateClear ? toDate : null}
                 onChange={handleToDateChange}
                 minDate={fromDate}
                 maxDate={new Date()}
@@ -300,7 +302,7 @@ FilterList.propTypes = {
   /** Placeholder text for the text input filter */
   inputFilterPlaceholder: PropTypes.string,
   /** className attribute for the list container */
-  listContainerClassName: PropTypes.string,
+  listContainerClassName: PropTypes.string
 };
 
 export default withRouter(FilterList);
