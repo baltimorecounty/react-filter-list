@@ -13,8 +13,14 @@ import { useInfiniteQuery, setFocusHandler } from "react-query";
  * @param {string} optionalParams.endpoint endpoint passed to the list from props
  * @param {string} loadMoreEndpoint endpoint passed from api list when the load more button is selected
  */
-const fetchList = (key, { endpoint }, loadMoreEndpoint) =>
-  fetch(loadMoreEndpoint || endpoint).then((res) => res.json());
+const fetchList = (key, { endpoint }, loadMoreEndpoint) => {
+  if (loadMoreEndpoint) {
+    let t1 = loadMoreEndpoint.split("?");
+    endpoint = endpoint + "&" + t1[1];
+  } 
+  return fetch(endpoint).then(res => res.json());
+
+};
 
 // Default behavior of the FocusHandler is to re-render the component when the window
 // regains focus. This causes unnecessary extra API calls and introduces slowness.
@@ -30,7 +36,7 @@ const ApiList = ({
   endpoint,
   renderHeader = () => {},
   renderItem = () => {},
-  renderLoadMoreButton = () => {},
+  renderLoadMoreButton = () => {}
 }) => {
   const {
     data,
@@ -38,16 +44,16 @@ const ApiList = ({
     isFetchingMore,
     fetchMore,
     canFetchMore,
-    status,
+    status
   } = useInfiniteQuery(
     ["apiGET", { endpoint }],
     fetchList,
     {
-      getFetchMore: ({ metaData: { links = {} } = {} }, allGroups) =>
-        links.next,
+      getFetchMore: ({ metaData: { links = {} } = {} }, allGroups) => links.next
+  
     },
     {
-      refetchOnWindowFocus: false,
+      refetchOnWindowFocus: false
     }
   );
 
@@ -75,7 +81,7 @@ const ApiList = ({
       <div className={className}>
         {data.map((group, i) => (
           <React.Fragment key={i}>
-            {group.records.map((record) => (
+            {group.records.map(record => (
               <React.Fragment key={record.id}>
                 {renderItem(record)}
               </React.Fragment>
@@ -87,7 +93,7 @@ const ApiList = ({
         renderLoadMoreButton({
           isFetching,
           isFetchingMore,
-          onClick: handleLoadMoreClick,
+          onClick: handleLoadMoreClick
         })}
     </div>
   );
