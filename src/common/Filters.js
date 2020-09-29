@@ -162,8 +162,6 @@ const InitilizeDateValues = () => {
  * @param {string} queryString querystring to be parsed
  */
 const UpdateFilters = (filters = [], queryString = "") => {
-  console.log("filters:" + JSON.stringify(filters));
-  console.log("queryString:" + queryString);
   if (!queryString) {
     return filters.map(resetFilter);
   }

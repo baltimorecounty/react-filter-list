@@ -14,12 +14,12 @@ import { useInfiniteQuery, setFocusHandler } from "react-query";
  * @param {string} loadMoreEndpoint endpoint passed from api list when the load more button is selected
  */
 const fetchList = (key, { endpoint }, loadMoreEndpoint) => {
+  let appendChar = endpoint.indexOf("?") == -1 ? "?" : "&";
   if (loadMoreEndpoint) {
-    let t1 = loadMoreEndpoint.split("?");
-    endpoint = endpoint + "&" + t1[1];
-  } 
+    let splitString = loadMoreEndpoint.split("?");
+    endpoint = endpoint + appendChar + splitString[1];
+  }
   return fetch(endpoint).then(res => res.json());
-
 };
 
 // Default behavior of the FocusHandler is to re-render the component when the window
@@ -50,7 +50,6 @@ const ApiList = ({
     fetchList,
     {
       getFetchMore: ({ metaData: { links = {} } = {} }, allGroups) => links.next
-  
     },
     {
       refetchOnWindowFocus: false
