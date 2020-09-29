@@ -7,9 +7,9 @@ const filters = [
     displayName: "Category",
     options: [
       { value: "releases", label: "News Releases" },
-      { value: "Stories", label: "Stories" }
-    ]
-  }
+      { value: "Stories", label: "Stories" },
+    ],
+  },
   //*******************************
   //Add these back in if you need to test the weight and pet type interactions
   // */
@@ -42,7 +42,7 @@ const filters = [
   // },
 ];
 
-const Demo = props => {
+const Demo = (props) => {
   return (
     <div className="demo">
       <FilterList
@@ -58,7 +58,7 @@ const Demo = props => {
             style={{
               border: "1px solid #e0e0e0",
               padding: "10px",
-              marginBottom: "10px"
+              marginBottom: "10px",
             }}
           >
             <h2>{title}</h2>

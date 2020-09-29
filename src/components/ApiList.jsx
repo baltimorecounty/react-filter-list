@@ -19,7 +19,7 @@ const fetchList = (key, { endpoint }, loadMoreEndpoint) => {
     let splitString = loadMoreEndpoint.split("?");
     endpoint = endpoint + appendChar + splitString[1];
   }
-  return fetch(endpoint).then(res => res.json());
+  return fetch(endpoint).then((res) => res.json());
 };
 
 // Default behavior of the FocusHandler is to re-render the component when the window
@@ -36,7 +36,7 @@ const ApiList = ({
   endpoint,
   renderHeader = () => {},
   renderItem = () => {},
-  renderLoadMoreButton = () => {}
+  renderLoadMoreButton = () => {},
 }) => {
   const {
     data,
@@ -44,15 +44,16 @@ const ApiList = ({
     isFetchingMore,
     fetchMore,
     canFetchMore,
-    status
+    status,
   } = useInfiniteQuery(
     ["apiGET", { endpoint }],
     fetchList,
     {
-      getFetchMore: ({ metaData: { links = {} } = {} }, allGroups) => links.next
+      getFetchMore: ({ metaData: { links = {} } = {} }, allGroups) =>
+        links.next,
     },
     {
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
     }
   );
 
@@ -80,7 +81,7 @@ const ApiList = ({
       <div className={className}>
         {data.map((group, i) => (
           <React.Fragment key={i}>
-            {group.records.map(record => (
+            {group.records.map((record) => (
               <React.Fragment key={record.id}>
                 {renderItem(record)}
               </React.Fragment>
@@ -92,7 +93,7 @@ const ApiList = ({
         renderLoadMoreButton({
           isFetching,
           isFetchingMore,
-          onClick: handleLoadMoreClick
+          onClick: handleLoadMoreClick,
         })}
     </div>
   );
