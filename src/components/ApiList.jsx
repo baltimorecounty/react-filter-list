@@ -13,8 +13,14 @@ import { useInfiniteQuery, setFocusHandler } from "react-query";
  * @param {string} optionalParams.endpoint endpoint passed to the list from props
  * @param {string} loadMoreEndpoint endpoint passed from api list when the load more button is selected
  */
-const fetchList = (key, { endpoint }, loadMoreEndpoint) =>
-  fetch(loadMoreEndpoint || endpoint).then((res) => res.json());
+const fetchList = (key, { endpoint }, loadMoreEndpoint) => {
+  let appendChar = endpoint.indexOf("?") == -1 ? "?" : "&";
+  if (loadMoreEndpoint) {
+    let splitString = loadMoreEndpoint.split("?");
+    endpoint = endpoint + appendChar + splitString[1];
+  }
+  return fetch(endpoint).then((res) => res.json());
+};
 
 // Default behavior of the FocusHandler is to re-render the component when the window
 // regains focus. This causes unnecessary extra API calls and introduces slowness.
