@@ -244,12 +244,10 @@ const Demo = (props) => {
         title="News"
         filters={filters}
         apiEndpoint="https://localhost:44387/api/Pets?status=Adoptable"
-        //apiEndpoint="https://localhost:44393/api/News/Police" 
-       // apiEndpoint="https://localhost:44393/api/Parks"
         includeDateFilter={false}
         includeInputFilter={true}
         includeClearButton={true}
-        searchCategory="Pets" //"Parks" 
+        searchCategory="Pets" 
         renderItem={({ title, articleSummary }) => (
           <div
             style={{
