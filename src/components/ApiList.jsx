@@ -14,10 +14,15 @@ import { useInfiniteQuery, setFocusHandler } from "react-query";
  * @param {string} loadMoreEndpoint endpoint passed from api list when the load more button is selected
  */
 const fetchList = (key, { endpoint }, loadMoreEndpoint) => {
-  let appendChar = endpoint.indexOf("?") == -1 ? "?" : "&";
+
   if (loadMoreEndpoint) {
-    let splitString = loadMoreEndpoint.split("?");
-    endpoint = endpoint + appendChar + splitString[1];
+    if (endpoint.indexOf("?") > -1) {
+      let splitString = loadMoreEndpoint.split("?");
+      let pageSplit = splitString[1].split("&");
+      endpoint = endpoint + "&" + pageSplit[0];
+    } else {
+      endpoint = loadMoreEndpoint;
+    }
   }
   return fetch(endpoint).then((res) => res.json());
 };
