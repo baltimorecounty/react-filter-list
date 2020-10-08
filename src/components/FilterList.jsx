@@ -180,7 +180,7 @@ const FilterList = ({
     handleDateChange(fromDate, date);
   };
 
-  handleDateChange = (pFromDate, pToDate) => {
+  const handleDateChange = (pFromDate, pToDate) => {
     if (isDateClear) {
       setIsDateClear(false);
     }
