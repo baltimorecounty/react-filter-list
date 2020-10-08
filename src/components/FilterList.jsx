@@ -99,7 +99,7 @@ const FilterList = ({
   };
 
   // Updates the URL with the filter changes
-  updateUrlWithFilter = (filterName, filterValue) => {
+  const updateUrlWithFilter = (filterName, filterValue) => {
     const updatedUrl = UpdateUrlQueryString(
       apiEndpoint,
       filterName,
