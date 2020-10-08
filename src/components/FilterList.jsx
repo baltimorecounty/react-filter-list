@@ -118,7 +118,6 @@ const FilterList = ({
       queryString: currentQueryString === undefined ? "" : currentQueryString,
     });
     history.push(location.pathname + queryString);
-    setApiEndpoint(queryString);
   };
 
   /*************************/
