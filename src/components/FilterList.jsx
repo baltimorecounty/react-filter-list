@@ -124,16 +124,22 @@ const FilterList = ({
       setIsClear(false);
     }
 
-    query =
-      !searchCategory || hasError
-        ? query
-        : FilterSearchTags(searchTags, query, searchCategory);
-    let updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
+    let updatedUrl = "";
 
-    // This disables any browser history updates
-    // Since a user could possibly update a ton of entries
-    const [base, queryString] = updatedUrl.split("?");
-    history.push(location.pathname + "?" + queryString);
+    if (query.trim()) {
+      query =
+        !searchCategory || hasError
+          ? query
+          : FilterSearchTags(searchTags, query, searchCategory);
+      updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
+
+      // This disables any browser history updates
+      // Since a user could possibly update a ton of entries
+      const [base, queryString] = updatedUrl.split("?");
+      history.push(location.pathname + "?" + queryString);
+    } else {
+      updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", null);
+    }
     setApiEndpoint(updatedUrl);
   };
 

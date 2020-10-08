@@ -41,10 +41,10 @@ export default tagData = {
   ],
   Pets: [
     { label: "fire", value: "two-alarm, two alarm, alarm" },
-    { label: "engine", value: "fire truck, truck, hook and ladder" },
+    { label: "engine", value: "fire truck, truck, hook and ladder, " },
     {
-      label: "fireman",
-      value: "fire man, fire woman, fire person, fire fighter, fighter",
+      label: "pet",
+      value: "cat, dog, dogs, cats",
     },
   ],
 };

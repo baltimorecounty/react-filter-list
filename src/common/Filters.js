@@ -162,7 +162,6 @@ const InitilizeDateValues = () => {
  * @param {string} queryString querystring to be parsed
  */
 const UpdateFilters = (filters = [], queryString = "") => {
-
   if (!queryString) {
     return filters.map(resetFilter);
   }
@@ -224,17 +223,18 @@ const UpdateQueryString = ({
   return [...searchParams].length > 0 ? `?${searchParams.toString()}` : "";
 };
 
-const FilterSearchTags = (searchTags = [], textQuery = "", searchCategory) => {
+const FilterSearchTags = (searchTags = [], textQuery, searchCategory) => {
   let newQuery = "";
-
-  searchTags[searchCategory].map((item) => {
-    const tagCategory = item.value.split(",");
-    tagCategory.map((tag) => {
-      if (tag.toLowerCase().trim() === textQuery.toLowerCase().trim()) {
-        newQuery = item.label;
-      }
+  if (textQuery) {
+    searchTags[searchCategory].map((item) => {
+      const tagCategory = item.value.split(",");
+      tagCategory.map((tag) => {
+        if (tag.toLowerCase().trim() === textQuery.toLowerCase().trim()) {
+          newQuery = item.label;
+        }
+      });
     });
-  });
+  }
 
   return newQuery ? newQuery : textQuery;
 };

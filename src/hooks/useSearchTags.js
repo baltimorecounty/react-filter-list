@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { GetSearchTags } from "../services/ApiService";
+import tagData from "../data/SearchTags";
 import { Config } from "@baltimorecounty/javascript-utilities";
 
 const { setConfig, getValue } = Config;
 
-//const localApiRoot = "local"; //if testing locally in this project use this
-const localApiRoot = "//beta.baltimorecountymd.gov/sebin/y/l/SearchTags.json";
+const localApiRoot = "local";
 const testApiRoot = "//beta.baltimorecountymd.gov/sebin/y/l/SearchTags.json";
 const prodApiRoot = "//baltimorecountymd.gov/sebin/y/l/SearchTags.json";
 
@@ -29,16 +29,18 @@ setConfig(configValues);
 const useSearchTags = () => {
   const [hasError, setHasError] = useState(false);
   const [searchTags, setSearchTags] = useState([]);
-
   useEffect(() => {
-    getValue("apiRoot") === "local";
-    GetSearchTags()
-      .then((response) => {
-        setSearchTags(response);
-      })
-      .catch(() => {
-        setHasError(true);
-      });
+    if (getValue("apiRoot") === "local") {
+      setSearchTags(tagData);
+    } else {
+      GetSearchTags()
+        .then((response) => {
+          setSearchTags(response);
+        })
+        .catch(() => {
+          setHasError(true);
+        });
+    }
   }, []);
 
   return [
