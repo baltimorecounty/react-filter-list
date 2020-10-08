@@ -123,7 +123,7 @@ const FilterList = ({
     if (isClear) {
       setIsClear(false);
     }
-
+    console.log(query.toString(16).toUpperCase());
     query =
       !searchCategory || hasError
         ? query
