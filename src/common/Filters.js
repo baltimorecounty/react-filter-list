@@ -59,7 +59,6 @@ const updateFilters = (filters = [], queryStringFilters = {}) => {
 const UpdateUrlQueryString = (url, name, value) => {
   const [base, queryString] = url.split("?");
   const searchParams = new URLSearchParams(queryString || "");
-  console.log(value);
   if (!!value) {
     searchParams.set(name, value);
   } else {
@@ -226,7 +225,6 @@ const UpdateQueryString = ({
 
 const FilterSearchTags = (searchTags = [], textQuery, searchCategory) => {
   let newQuery = "";
-  console.log(textQuery);
   if (textQuery) {
     searchTags[searchCategory].map((item) => {
       const tagCategory = item.value.split(",");
