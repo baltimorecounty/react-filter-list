@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { subMonths } from "date-fns";
 import {
   UpdateFilters,
   UpdateQueryString,
@@ -22,6 +21,10 @@ import FilterDateSelector from "../components/FilterDateSelector";
 import { Button, Collapse } from "@baltimorecounty/dotgov-components";
 
 const FilterList = ({
+  /*************************/
+  /******* Parameters ******/
+  /*************************/
+
   title = "",
   listContainerClassName = "list",
   renderItem = () => <p>You must specify a renderItem function.</p>,
@@ -45,6 +48,10 @@ const FilterList = ({
   staticContext,
   ...props
 }) => {
+  /*************************/
+  /***** Initialization ****/
+  /*************************/
+
   let filterDateValue = InitilizeDateValues();
 
   const [{ searchTags = [], hasError }] = useSearchTags();
@@ -63,13 +70,14 @@ const FilterList = ({
     !!endDatePart ? new Date(endDatePart) : null
   );
 
+  /********************************/
+  /* URL/Querystring Manipulation */
+  /********************************/
+
   const staticFilterQueryString = filtersFromProps
     .filter(({ value }) => value)
     .map(({ targetApiField, value }) => `${targetApiField}=${value}`)
     .join("&");
-  const [filters, setFilters] = useState(() =>
-    UpdateFilters(filtersFromProps, location.search)
-  );
 
   const buildDefaultEndPoint = () => {
     const dateFilter = "filterdate=" + filterDateValue;
@@ -90,107 +98,103 @@ const FilterList = ({
     return newEndPoint;
   };
 
-  const [apiEndpoint, setApiEndpoint] = useState(
-    () => (defaultApiEndpoint = buildDefaultEndPoint())
-  );
+  // Updates the URL with the filter changes
+  updateUrlWithFilter = (filterName, filterValue) => {
+    const updatedUrl = UpdateUrlQueryString(
+      apiEndpoint,
+      filterName,
+      filterValue
+    );
+    const [base, queryString] = updatedUrl.split("?");
+    history.push(location.pathname + "?" + queryString);
+    setApiEndpoint(updatedUrl);
+  };
 
-  useEffect(() => {
-    setFilters((filters) => UpdateFilters(filters, location.search));
-    setApiEndpoint(buildDefaultEndPoint());
-  }, [location.search]);
-
-  const updateQueryString = (filter) => {
+  // Updates the URL with the checkbox filter changes
+  const updateUrlWithCheckboxFilter = (filter) => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter,
       queryString: currentQueryString === undefined ? "" : currentQueryString,
     });
-
-    setApiEndpoint(queryString);
     history.push(location.pathname + queryString);
+    setApiEndpoint(queryString);
   };
 
+  /*************************/
+  /******* Add Hooks *******/
+  /*************************/
+
+  const [apiEndpoint, setApiEndpoint] = useState(
+    () => (defaultApiEndpoint = buildDefaultEndPoint())
+  );
+
+  // This is a hook triggered when the querystring in the URL is changed.
+  useEffect(() => {
+    setFilters((filters) => UpdateFilters(filters, location.search));
+    setApiEndpoint(buildDefaultEndPoint());
+  }, [location.search]);
+
+  const [filters, setFilters] = useState(() =>
+    UpdateFilters(filtersFromProps, location.search)
+  );
+
+  /*************************/
+  /* Handle Filter Changes */
+  /*************************/
+
+  // Pet Type Checkbox Change
   const handleFilterChange = (changeEvent) => {
-    const { name, value, checked } = changeEvent;
+    const { name } = changeEvent;
     if (name == "petType") {
       ShowHideSmallSizeCheckBox(name);
     }
-
-    updateQueryString({ name, value, checked });
+    updateUrlWithCheckboxFilter(changeEvent);
   };
 
+  // Text Filter Change
   const handleFilterTextInputChange = (query) => {
     if (isClear) {
       setIsClear(false);
     }
-
-    let updatedUrl = "";
 
     if (query.trim()) {
       query =
         !searchCategory || hasError
           ? query
           : FilterSearchTags(searchTags, query, searchCategory);
-      updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", query);
-
-      // This disables any browser history updates
-      // Since a user could possibly update a ton of entries
-      const [base, queryString] = updatedUrl.split("?");
-      history.push(location.pathname + "?" + queryString);
+      updateUrlWithFilter("filter", query);
     } else {
-      updatedUrl = UpdateUrlQueryString(apiEndpoint, "filter", null);
+      updateUrlWithFilter("filter", null);
     }
-    setApiEndpoint(updatedUrl);
   };
 
+  // From Date Change
   const handleFromDateChange = (date) => {
     setFromDate(date);
-    if (isDateClear) {
-      setIsDateClear(false);
-    }
-
-    var fromToDateFormattedValue = date
-      ? FormatDateString(date) + "," + FormatDateString(toDate)
-      : null;
-
-    const updatedUrl = UpdateUrlQueryString(
-      apiEndpoint,
-      "filterdate",
-      fromToDateFormattedValue
-    );
-
-    // // This disables any browser history updates
-    // // Since a user could possibly update a ton of entries
-    // //TODO: if you uncomment this line , it will change the url ???
-    const [base, queryString] = updatedUrl.split("?");
-    history.push(location.pathname + "?" + queryString);
-    setApiEndpoint(updatedUrl);
+    handleDateChange(date, toDate);
   };
 
+  // To Date Change
   const handleToDateChange = (date) => {
     setToDate(date);
+    handleDateChange(fromDate, date);
+  };
+
+  handleDateChange = (pFromDate, pToDate) => {
     if (isDateClear) {
       setIsDateClear(false);
     }
 
-    var fromToDateFormattedValue = date
-      ? FormatDateString(fromDate) + "," + FormatDateString(date)
-      : null;
+    var fromToDateFormattedValue =
+      pFromDate && pToDate
+        ? FormatDateString(pFromDate) + "," + FormatDateString(pToDate)
+        : null;
 
-    const updatedUrl = UpdateUrlQueryString(
-      apiEndpoint,
-      "filterdate",
-      fromToDateFormattedValue
-    );
-
-    // This disables any browser history updates
-    // Since a user could possibly update a ton of entries
-    //TODO: if you uncomment this line , it will change the url ???
-    const [base, queryString] = updatedUrl.split("?");
-    history.push(location.pathname + "?" + queryString);
-    setApiEndpoint(updatedUrl);
+    updateUrlWithFilter("filterdate", fromToDateFormattedValue);
   };
 
+  // Clear Filter Change
   const clearFilter = () => {
     setIsClear(true);
     setIsDateClear(true);
@@ -207,6 +211,10 @@ const FilterList = ({
         : location.pathname
     );
   };
+
+  /*************************/
+  /******* Component *******/
+  /*************************/
 
   const buttonStyles = {
     paddingLeft: "100",
@@ -282,6 +290,10 @@ const FilterList = ({
     </div>
   );
 };
+
+/*************************/
+/******* Properties ******/
+/*************************/
 
 FilterList.propTypes = {
   /** Name of the collection of data, Ex. Baltimore County News */
