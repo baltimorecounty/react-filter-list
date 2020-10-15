@@ -1,6 +1,6 @@
 {
   "name": "@baltimorecounty/react-filter-list",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "description": "A react component that provides standard way to show and filter lists",
   "main": "dist/index.js",
   "module": "dist/index.em.js",
