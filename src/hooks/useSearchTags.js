@@ -7,7 +7,7 @@ const { setConfig, getValue } = Config;
 
 const localApiRoot = "local"; //Uncomment all the commented out fields to tst locally with the local json keyword file.
 const testApiRoot = "//beta.baltimorecountymd.gov/sebin/y/l/SearchTags.json";
-const prodApiRoot = "//baltimorecountymd.gov/sebin/y/m/SearchTags.json";
+const prodApiRoot = "//www.baltimorecountymd.gov/sebin/y/m/SearchTags.json";
 
 const configValues = {
   local: {
