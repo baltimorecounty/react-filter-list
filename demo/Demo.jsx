@@ -250,7 +250,7 @@ const Demo = props => {
       <FilterList
         title="News"
         filters={filters}
-        apiEndpoint="localhost:44389/api/Pets?status=Adoptable"
+        apiEndpoint="https://localhost:44393/api/Services"
         includeDateFilter={false}
         includeInputFilter={true}
         includeClearButton={true}
