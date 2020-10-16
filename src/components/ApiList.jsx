@@ -16,12 +16,12 @@ import { useInfiniteQuery, setFocusHandler } from "react-query";
 const fetchList = (key, { endpoint }, loadMoreEndpoint) => {
 
   if (loadMoreEndpoint) {
+    let splitString = loadMoreEndpoint.split("?");
     if (endpoint.indexOf("?") > -1) {
-      let splitString = loadMoreEndpoint.split("?");
       let pageSplit = splitString[1].split("&");
       endpoint = endpoint + "&" + pageSplit[0];
     } else {
-      endpoint = loadMoreEndpoint;
+      endpoint = endpoint + "?" + splitString[1];;
     }
   }
   return fetch(endpoint).then((res) => res.json());
