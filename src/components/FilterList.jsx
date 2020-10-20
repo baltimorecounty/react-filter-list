@@ -6,7 +6,7 @@ import {
   FormatDateString,
   InitilizeDateValues,
   ShowHideSmallSizeCheckBox,
-  FilterSearchTags,
+  FilterSearchTags
 } from "../common/Filters";
 import useSearchTags from "../hooks/useSearchTags";
 import ApiList from "./ApiList.jsx";
@@ -31,12 +31,12 @@ const FilterList = ({
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
   ),
-  renderListHeader = (count) => (
+  renderListHeader = count => (
     <div className="list-header">
       <RecordsMessage count={count} />
     </div>
   ),
-  renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
+  renderLoadMoreButton = props => <DefaultLoadMoreButton {...props} />,
   includeInputFilter = false,
   includeDateFilter = false,
   includeClearButton = false,
@@ -83,8 +83,10 @@ const FilterList = ({
     const dateFilter = "filterdate=" + filterDateValue;
     const staticFilter = "?" + staticFilterQueryString;
     const endPointRoot = defaultApiEndpoint.split("?")[0];
+
     let newEndPoint;
     if (location.search.indexOf("?") > -1) {
+      const [base, searchString] = location.search.split("?");
       newEndPoint = endPointRoot + location.search;
     } else if (staticFilterQueryString && includeDateFilter) {
       newEndPoint = endPointRoot + staticFilter + "&" + dateFilter;
@@ -105,17 +107,22 @@ const FilterList = ({
       filterName,
       filterValue
     );
-    const [base, queryString] = updatedUrl.split("?");
-    history.push(location.pathname + "?" + queryString);
+    if (updatedUrl.includes("?")) {
+      const [base, queryString] = updatedUrl.split("?");
+      history.push(location.pathname + "?" + queryString);
+    } else {
+      history.push(location.pathname);
+    }
+
     setApiEndpoint(updatedUrl);
   };
 
   // Updates the URL with the checkbox filter changes
-  const updateUrlWithCheckboxFilter = (filter) => {
+  const updateUrlWithCheckboxFilter = filter => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter,
-      queryString: currentQueryString === undefined ? "" : currentQueryString,
+      queryString: currentQueryString === undefined ? "" : currentQueryString
     });
     history.push(location.pathname + queryString);
   };
@@ -130,7 +137,7 @@ const FilterList = ({
 
   // This is a hook triggered when the querystring in the URL is changed.
   useEffect(() => {
-    setFilters((filters) => UpdateFilters(filters, location.search));
+    setFilters(filters => UpdateFilters(filters, location.search));
     setApiEndpoint(buildDefaultEndPoint());
   }, [location.search]);
 
@@ -143,7 +150,7 @@ const FilterList = ({
   /*************************/
 
   // Pet Type Checkbox Change
-  const handleFilterChange = (changeEvent) => {
+  const handleFilterChange = changeEvent => {
     const { name } = changeEvent;
     if (name == "petType") {
       ShowHideSmallSizeCheckBox(name);
@@ -152,7 +159,7 @@ const FilterList = ({
   };
 
   // Text Filter Change
-  const handleFilterTextInputChange = (query) => {
+  const handleFilterTextInputChange = query => {
     if (isClear) {
       setIsClear(false);
     }
@@ -169,13 +176,13 @@ const FilterList = ({
   };
 
   // From Date Change
-  const handleFromDateChange = (date) => {
+  const handleFromDateChange = date => {
     setFromDate(date);
     handleDateChange(date, toDate);
   };
 
   // To Date Change
-  const handleToDateChange = (date) => {
+  const handleToDateChange = date => {
     setToDate(date);
     handleDateChange(fromDate, date);
   };
@@ -201,6 +208,13 @@ const FilterList = ({
     var sliceValue = base.slice(base.lastIndexOf("/") + 1, base.length);
     var defaultUrl = "?status=Adoptable&recordsPerPage=10";
 
+    if (sliceValue.toLowerCase() === "pets") {
+      const [petType, petStatus] = currentQueryString.split("=");
+      if (petStatus.toLowerCase() === "lost") {
+        defaultUrl = "?status=Lost&recordsPerPage=10";
+      }
+    }
+
     setApiEndpoint(
       sliceValue.toLowerCase() === "pets" ? base + defaultUrl : base
     );
@@ -217,7 +231,7 @@ const FilterList = ({
 
   const buttonStyles = {
     paddingLeft: "100",
-    paddingRight: "0",
+    paddingRight: "0"
   };
 
   return (
@@ -320,7 +334,7 @@ FilterList.propTypes = {
   /** Placeholder text for the text input filter */
   inputFilterPlaceholder: PropTypes.string,
   /** className attribute for the list container */
-  listContainerClassName: PropTypes.string,
+  listContainerClassName: PropTypes.string
 };
 
 export default withRouter(FilterList);
