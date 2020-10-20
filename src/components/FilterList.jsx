@@ -209,8 +209,9 @@ const FilterList = ({
     var defaultUrl = "?status=Adoptable&recordsPerPage=10";
 
     if (sliceValue.toLowerCase() === "pets") {
-      const [petType, petStatus] = currentQueryString.split("=");
-      if (petStatus.toLowerCase() === "lost") {
+      const [petStatus, restOfString] = currentQueryString.split("&");
+      const [petType, petTypeValue] = petStatus.split("=");
+      if (petTypeValue.toLowerCase() === "lost") {
         defaultUrl = "?status=Lost&recordsPerPage=10";
       }
     }
