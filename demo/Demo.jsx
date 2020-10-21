@@ -208,33 +208,43 @@ const filters = [
 //*******************************
 //Add these back in if you need to test the weight and pet type interactions
 // */
-{
-  targetApiField: "status",
-  value: "Adoptable",
-},
+// {
+//   targetApiField: "status",
+//   value: "Adoptable",
+// },
+
+// {
+//   targetApiField: "recordsPerPage",
+//   value: 10,
+// },
+// {
+//   targetApiField: "petType",
+//   displayName: "Species",
+//   options: [
+//     { value: "dog", label: "Dog" },
+//     { value: "cat", label: "Cat" },
+//     { value: "other", label: "Other" },
+//   ],
+// },
+// {
+//   targetApiField: "weight",
+//   displayName: "Size",
+//   options: [
+//     { value: "small", label: "Small" },
+//     { value: "medium", label: "Medium" },
+//     { value: "large", label: "Large" },
+//   ],
+// },
+// ];
 
 {
-  targetApiField: "recordsPerPage",
-  value: 10,
-},
-{
-  targetApiField: "petType",
-  displayName: "Species",
-  options: [
-    { value: "dog", label: "Dog" },
-    { value: "cat", label: "Cat" },
-    { value: "other", label: "Other" },
-  ],
-},
-{
-  targetApiField: "weight",
-  displayName: "Size",
-  options: [
-    { value: "small", label: "Small" },
-    { value: "medium", label: "Medium" },
-    { value: "large", label: "Large" },
-  ],
-},
+targetApiField: "category.value",
+displayName: "Category",
+options: [
+  { value: "releases", label: "News Releases" },
+  { value: "stories", label: "Stories" }
+]
+}
 ];
 
 const Demo = (props) => {
@@ -243,8 +253,9 @@ const Demo = (props) => {
       <FilterList
         title="News"
         filters={filters}
-        apiEndpoint="https://localhost:44387/api/Pets?status=Adoptable"
-        includeDateFilter={false}
+        //apiEndpoint="https://localhost:44387/api/Pets?status=Adoptable"
+        apiEndpoint="https://localhost:44393/api/News"
+        includeDateFilter={true}
         includeInputFilter={true}
         includeClearButton={true}
         searchCategory="Pets" 
