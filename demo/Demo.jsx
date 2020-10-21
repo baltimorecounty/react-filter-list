@@ -208,34 +208,34 @@ const filters = [
   //*******************************
   //Add these back in if you need to test the weight and pet type interactions
   // */
-  {
-    targetApiField: "status",
-    value: "Adoptable"
-  },
+//   {
+//     targetApiField: "status",
+//     value: "Adoptable"
+//   },
 
-  {
-    targetApiField: "recordsPerPage",
-    value: 10
-  },
-  {
-    targetApiField: "petType",
-    displayName: "Species",
-    options: [
-      { value: "dog", label: "Dog" },
-      { value: "cat", label: "Cat" },
-      { value: "other", label: "Other" }
-    ]
-  },
-  {
-    targetApiField: "weight",
-    displayName: "Size",
-    options: [
-      { value: "small", label: "Small" },
-      { value: "medium", label: "Medium" },
-      { value: "large", label: "Large" }
-    ]
-  }
-];
+//   {
+//     targetApiField: "recordsPerPage",
+//     value: 10
+//   },
+//   {
+//     targetApiField: "petType",
+//     displayName: "Species",
+//     options: [
+//       { value: "dog", label: "Dog" },
+//       { value: "cat", label: "Cat" },
+//       { value: "other", label: "Other" }
+//     ]
+//   },
+//   {
+//     targetApiField: "weight",
+//     displayName: "Size",
+//     options: [
+//       { value: "small", label: "Small" },
+//       { value: "medium", label: "Medium" },
+//       { value: "large", label: "Large" }
+//     ]
+//   }
+// ];
 
 // {
 // targetApiField: "isPopularService",
@@ -243,13 +243,26 @@ const filters = [
 // options: [{ label: "Show popular services", value: "true" }],
 // },
 // ];
+
+{
+  targetApiField: "category.value",
+  displayName: "Category",
+  options: [
+    { value: "releases", label: "News Releases" },
+    { value: "stories", label: "Stories" }
+  ]
+  }
+  ];
+  
+
 const Demo = props => {
   return (
     <div className="demo">
       <FilterList
         title="News"
         filters={filters}
-        apiEndpoint="https://localhost:44387/api/Pets?status=Adoptable"
+       // apiEndpoint="https://localhost:44387/api/Pets?status=Adoptable"
+        apiEndpoint="https://localhost:44393/api/News"
         includeDateFilter={false}
         includeInputFilter={true}
         includeClearButton={true}
