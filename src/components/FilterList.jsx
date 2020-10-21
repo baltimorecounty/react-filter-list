@@ -98,8 +98,10 @@ const FilterList = ({
     const dateFilter = "filterdate=" + filterDateValue;
     const staticFilter = "?" + staticFilterQueryString;
     const endPointRoot = defaultApiEndpoint.split("?")[0];
+
     let newEndPoint;
     if (location.search.indexOf("?") > -1) {
+      const [base, searchString] = location.search.split("?");
       newEndPoint = endPointRoot + location.search;
     } else if (staticFilterQueryString && includeDateFilter) {
       newEndPoint = endPointRoot + staticFilter + "&" + dateFilter;
@@ -120,8 +122,13 @@ const FilterList = ({
       filterName,
       filterValue
     );
-    const [base, queryString] = updatedUrl.split("?");
-    history.push(location.pathname + "?" + queryString);
+    if (updatedUrl.includes("?")) {
+      const [base, queryString] = updatedUrl.split("?");
+      history.push(location.pathname + "?" + queryString);
+    } else {
+      history.push(location.pathname);
+    }
+
     setApiEndpoint(updatedUrl);
   };
 
@@ -215,6 +222,14 @@ const FilterList = ({
     const [base, currentQueryString] = apiEndpoint.split("?");
     var sliceValue = base.slice(base.lastIndexOf("/") + 1, base.length);
     var defaultUrl = "?status=Adoptable&recordsPerPage=10";
+
+    if (sliceValue.toLowerCase() === "pets") {
+      const [petStatus, restOfString] = currentQueryString.split("&");
+      const [petType, petTypeValue] = petStatus.split("=");
+      if (petTypeValue.toLowerCase() === "lost") {
+        defaultUrl = "?status=Lost&recordsPerPage=10";
+      }
+    }
 
     setApiEndpoint(
       sliceValue.toLowerCase() === "pets" ? base + defaultUrl : base
