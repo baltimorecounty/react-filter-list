@@ -4,7 +4,7 @@ import {
   UpdateQueryString,
   UpdateUrlQueryString,
   FormatDateString,
-  InitilizeDateValues,
+  InitializeDateValues,
   ShowHideSmallSizeCheckBox,
   FilterSearchTags
 } from "../common/Filters";
@@ -26,6 +26,7 @@ const FilterList = ({
   /*************************/
 
   title = "",
+  filterText = "",
   listContainerClassName = "list",
   renderItem = () => <p>You must specify a renderItem function.</p>,
   renderFilter = (filter, onChange) => (
@@ -52,7 +53,28 @@ const FilterList = ({
   /***** Initialization ****/
   /*************************/
 
-  let filterDateValue = InitilizeDateValues();
+  const getDateFromUrl = url => {
+    var query = url.substr(1);
+    var result = InitializeDateValues();
+
+    query.split("&").forEach(part => {
+      var item = part.split("=");
+      if (item[0].toLowerCase() === "filterdate") {
+        result = decodeURIComponent(item[1]);
+      } else if (item[0].toLowerCase() === "filter") {
+        filterText = decodeURIComponent(item[1]);
+      }
+    });
+
+    return result;
+  };
+
+  const filterDateValue =
+    location.search.indexOf("?") <= -1
+      ? InitializeDateValues()
+      : getDateFromUrl(location.search);
+
+
 
   const [{ searchTags = [], hasError }] = useSearchTags();
 
@@ -288,6 +310,7 @@ const FilterList = ({
               onChange={handleFilterTextInputChange}
               placeholder={inputFilterPlaceholder}
               isClear={isClear}
+              filterText={filterText}
             />
           )}
           <ApiList

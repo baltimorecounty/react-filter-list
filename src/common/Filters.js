@@ -122,7 +122,7 @@ const containsAll = (species, values) => {
   return true;
 };
 
-const InitilizeDateValues = () => {
+const InitializeDateValues = () => {
   const current = new Date();
   const startDate = new Date(
     new Date().getFullYear() - 1,
@@ -243,7 +243,7 @@ export {
   UpdateFilters,
   UpdateQueryString,
   FormatDateString,
-  InitilizeDateValues,
+  InitializeDateValues,
   ShowHideSmallSizeCheckBox,
   FilterSearchTags
 };
