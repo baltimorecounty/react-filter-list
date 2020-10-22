@@ -4,7 +4,7 @@ import {
   UpdateQueryString,
   UpdateUrlQueryString,
   FormatDateString,
-  InitilizeDateValues,
+  InitializeDateValues,
   ShowHideSmallSizeCheckBox,
   FilterSearchTags
 } from "../common/Filters";
@@ -52,10 +52,26 @@ const FilterList = ({
   /***** Initialization ****/
   /*************************/
 
-  let filterDateValue =
+  const getDateFromUrl = (url)=> {
+    var query = url.substr(1);
+    var result = InitializeDateValues();
+    query.split("&").forEach((part)=> {
+      var item = part.split("=");
+      if (item[0].toLowerCase() === "filterdate") {
+        return (result = decodeURIComponent(item[1]));
+      }
+    });
+    return result;
+  }
+
+  const filterDateValue =
     location.search.indexOf("?") <= -1
-      ? InitilizeDateValues()
+      ? InitializeDateValues()
       : getDateFromUrl(location.search);
+
+  const test = getDateFromUrl(location.search);
+
+  console.log(test);
 
   const [{ searchTags = [], hasError }] = useSearchTags();
 
@@ -73,17 +89,6 @@ const FilterList = ({
     !!endDatePart ? new Date(endDatePart) : null
   );
 
-  function getDateFromUrl(url) {
-    var query = url.substr(1);
-    var result = InitilizeDateValues();
-    query.split("&").forEach(function(part) {
-      var item = part.split("=");
-      if (item[0].toLowerCase() === "filterdate") {
-        return (result = decodeURIComponent(item[1]));
-      }
-    });
-    return result;
-  }
 
   /********************************/
   /* URL/Querystring Manipulation */
