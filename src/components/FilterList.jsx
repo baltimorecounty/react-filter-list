@@ -238,8 +238,8 @@ const FilterList = ({
             const [key, value] = parameter.split("=");
             if (key.toLowerCase() === "status" && value.toLowerCase() === "lost") {
                 newQueryString = "?status=Lost&recordsPerPage=10";
-            } else if (key.toLowerCase() === "workingcat" && value.toLowerCase() == "true") {
-                newQueryString = "?status=Adoptable&workingCat=true&recordsPerPage=10";
+            } else if (key.toLowerCase() === "workingcat") {
+                newQueryString = "?status=Adoptable&workingCat=" + value + "&recordsPerPage=10";
             }
         });
     }
