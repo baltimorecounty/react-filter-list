@@ -226,26 +226,26 @@ const FilterList = ({
   const clearFilter = () => {
     setIsClear(true);
     setIsDateClear(true);
-    const [base, currentQueryString] = apiEndpoint.split("?");
-    var sliceValue = base.slice(base.lastIndexOf("/") + 1, base.length);
-    var defaultUrl = "?status=Adoptable&recordsPerPage=10";
 
-    if (sliceValue.toLowerCase() === "pets") {
-      const [petStatus, restOfString] = currentQueryString.split("&");
-      const [petType, petTypeValue] = petStatus.split("=");
-      if (petTypeValue.toLowerCase() === "lost") {
-        defaultUrl = "?status=Lost&recordsPerPage=10";
-      }
+    const [base, currentQueryString] = apiEndpoint.split("?");
+    var apiName = base.slice(base.lastIndexOf("/") + 1, base.length);
+    var newQueryString = "";
+
+    if (apiName.toLowerCase() === "pets") {
+        const parameters = currentQueryString.split("&");
+        var newQueryString = "?status=Adoptable&recordsPerPage=10";
+        parameters.forEach(parameter => {
+            const [key, value] = parameter.split("=");
+            if (key.toLowerCase() === "status" && value.toLowerCase() === "lost") {
+                newQueryString = "?status=Lost&recordsPerPage=10";
+            } else if (key.toLowerCase() === "workingcat" && value.toLowerCase() == "true") {
+                newQueryString = "?status=Adoptable&workingCat=true&recordsPerPage=10";
+            }
+        });
     }
 
-    setApiEndpoint(
-      sliceValue.toLowerCase() === "pets" ? base + defaultUrl : base
-    );
-    history.push(
-      sliceValue.toLowerCase() === "pets"
-        ? location.pathname + defaultUrl
-        : location.pathname
-    );
+    setApiEndpoint(base + newQueryString);
+    history.push(location.pathname + newQueryString);
   };
 
   /*************************/
