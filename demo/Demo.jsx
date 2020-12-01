@@ -1,57 +1,46 @@
 import { FilterList } from "../src/index";
 import React from "react";
 
-const filters =[
+const filters = [
     {
-        targetApiField: "status",
-        value:
-          window.pets.petStatus ||
-          console.error("You must provide a pets.petStatus."),
-      },
-      {
-        targetApiField: "workingcat",
-        value:
-          window.pets.workingCats,
-      },
-      {
-        targetApiField: "recordsPerPage",
-        value: 10,
-      },
-      {
-        targetApiField: "gender",
-        displayName: "Gender",
-        options: [
-          { value: "male", label: "Male" },
-          { value: "female", label: "Female" },
-          { value: "unknown", label: "Unknown" },
-        ],
-      },
-];
+      targetApiField: "category.value",
+      displayName: "Category",
+      options: [
+        { value: "releases", label: "News Releases" },
+        { value: "stories", label: "Stories" },
+      ],
+    },
+    {
+      targetApiField: "recordsperpage",
+      value: 10,
+    },
+  ];
 
 const Demo = props => {
   return (
     <div className="demo">
-      <FilterList
-        title="Pets"
+        <FilterList
+        title="Baltimore County Police Newsroom"
         filters={filters}
-        apiEndpoint="https://localhost:44387/api/Pets?status=Adoptable"
-        includeDateFilter={false}
+        apiEndpoint="https://localhost:44393/api/News/Police"
         includeInputFilter={true}
+        includeDateFilter={true}
         includeClearButton={true}
-        searchCategory="Pets"
-        renderItem={({ animalName, aboutMe }) => (
-          <div
-            style={{
-              border: "1px solid #e0e0e0",
-              padding: "10px",
-              marginBottom: "10px"
-            }}
-          >
-            <h2>{animalName}</h2>
-            <p>{aboutMe}</p>
-          </div>
-        )}
-      />
+        searchCategory="PoliceNews"
+        inputFilterPlaceholder="Begin typing to filter by title or summary..."
+        renderItem={({ title, articleSummary }) => (
+            <div
+              style={{
+                border: "1px solid #e0e0e0",
+                padding: "10px",
+                marginBottom: "10px"
+              }}
+            >
+              <h2>{title}</h2>
+              <p>{articleSummary}</p>
+            </div>
+          )}
+        />
     </div>
   );
 };
