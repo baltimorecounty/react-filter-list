@@ -41,7 +41,6 @@ const Demo = props => {
             </div>
           )}
         />
-        />
     </div>
   );
 };
