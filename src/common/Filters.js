@@ -73,9 +73,8 @@ const UpdateUrlQueryString = (url, name, value) => {
  * @param {date} date for data value
  */
 const FormatDateString = (date) => {
-  var nextMonth = date.setMonth(date.getMonth() + 1);
   var dateFormat = require("dateformat");
-  var formattedDate = dateFormat(nextMonth, "mm/dd/yyyy");
+  var formattedDate = dateFormat(date, "mm/dd/yyyy");
   return formattedDate;
 };
 
