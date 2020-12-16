@@ -74,8 +74,6 @@ const FilterList = ({
       ? InitializeDateValues()
       : getDateFromUrl(location.search);
 
-
-
   const [{ searchTags = [], hasError }] = useSearchTags();
 
   let [startDatePart, endDatePart] = !!filterDateValue
@@ -101,7 +99,7 @@ const FilterList = ({
     .map(({ targetApiField, value }) => `${targetApiField}=${value}`)
     .join("&");
 
-  const buildDefaultEndPoint = () => {
+  const buildDefaultEndPoint = (includeDateFilter = true) => {
     const dateFilter = "filterdate=" + filterDateValue;
     const staticFilter = "?" + staticFilterQueryString;
     const endPointRoot = defaultApiEndpoint.split("?")[0];
@@ -119,6 +117,7 @@ const FilterList = ({
     } else {
       newEndPoint = endPointRoot;
     }
+
     return newEndPoint;
   };
 
@@ -146,6 +145,7 @@ const FilterList = ({
       filter,
       queryString: currentQueryString === undefined ? "" : currentQueryString
     });
+
     history.push(location.pathname + queryString);
   };
 
@@ -160,7 +160,7 @@ const FilterList = ({
   // This is a hook triggered when the querystring in the URL is changed.
   useEffect(() => {
     setFilters(filters => UpdateFilters(filters, location.search));
-    setApiEndpoint(buildDefaultEndPoint());
+    setApiEndpoint(buildDefaultEndPoint(isDateClear ? false : true));
   }, [location.search]);
 
   const [filters, setFilters] = useState(() =>
@@ -232,16 +232,17 @@ const FilterList = ({
     var newQueryString = "";
 
     if (apiName.toLowerCase() === "pets") {
-        const parameters = currentQueryString.split("&");
-        var newQueryString = "?status=Adoptable&recordsPerPage=10";
-        parameters.forEach(parameter => {
-            const [key, value] = parameter.split("=");
-            if (key.toLowerCase() === "status" && value.toLowerCase() === "lost") {
-                newQueryString = "?status=Lost&recordsPerPage=10";
-            } else if (key.toLowerCase() === "workingcat") {
-                newQueryString = "?status=Adoptable&workingCat=" + value + "&recordsPerPage=10";
-            }
-        });
+      const parameters = currentQueryString.split("&");
+      var newQueryString = "?status=Adoptable&recordsPerPage=10";
+      parameters.forEach(parameter => {
+        const [key, value] = parameter.split("=");
+        if (key.toLowerCase() === "status" && value.toLowerCase() === "lost") {
+          newQueryString = "?status=Lost&recordsPerPage=10";
+        } else if (key.toLowerCase() === "workingcat") {
+          newQueryString =
+            "?status=Adoptable&workingCat=" + value + "&recordsPerPage=10";
+        }
+      });
     }
 
     setApiEndpoint(base + newQueryString);
