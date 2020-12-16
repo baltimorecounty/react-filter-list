@@ -6,7 +6,7 @@ import {
   FormatDateString,
   InitializeDateValues,
   ShowHideSmallSizeCheckBox,
-  FilterSearchTags
+  FilterSearchTags,
 } from "../common/Filters";
 import useSearchTags from "../hooks/useSearchTags";
 import ApiList from "./ApiList.jsx";
@@ -32,12 +32,12 @@ const FilterList = ({
   renderFilter = (filter, onChange) => (
     <DefaultFilter filter={filter} onChange={onChange} />
   ),
-  renderListHeader = count => (
+  renderListHeader = (count) => (
     <div className="list-header">
       <RecordsMessage count={count} />
     </div>
   ),
-  renderLoadMoreButton = props => <DefaultLoadMoreButton {...props} />,
+  renderLoadMoreButton = (props) => <DefaultLoadMoreButton {...props} />,
   includeInputFilter = false,
   includeDateFilter = false,
   includeClearButton = false,
@@ -53,11 +53,11 @@ const FilterList = ({
   /***** Initialization ****/
   /*************************/
 
-  const getDateFromUrl = url => {
+  const getDateFromUrl = (url) => {
     var query = url.substr(1);
     var result = InitializeDateValues();
 
-    query.split("&").forEach(part => {
+    query.split("&").forEach((part) => {
       var item = part.split("=");
       if (item[0].toLowerCase() === "filterdate") {
         result = decodeURIComponent(item[1]);
@@ -139,11 +139,11 @@ const FilterList = ({
   };
 
   // Updates the URL with the checkbox filter changes
-  const updateUrlWithCheckboxFilter = filter => {
+  const updateUrlWithCheckboxFilter = (filter) => {
     const [base, currentQueryString] = apiEndpoint.split("?");
     const queryString = UpdateQueryString({
       filter,
-      queryString: currentQueryString === undefined ? "" : currentQueryString
+      queryString: currentQueryString === undefined ? "" : currentQueryString,
     });
 
     history.push(location.pathname + queryString);
@@ -159,7 +159,7 @@ const FilterList = ({
 
   // This is a hook triggered when the querystring in the URL is changed.
   useEffect(() => {
-    setFilters(filters => UpdateFilters(filters, location.search));
+    setFilters((filters) => UpdateFilters(filters, location.search));
     setApiEndpoint(buildDefaultEndPoint(isDateClear ? false : true));
   }, [location.search]);
 
@@ -172,7 +172,7 @@ const FilterList = ({
   /*************************/
 
   // Pet Type Checkbox Change
-  const handleFilterChange = changeEvent => {
+  const handleFilterChange = (changeEvent) => {
     const { name } = changeEvent;
     if (name == "petType") {
       ShowHideSmallSizeCheckBox(name);
@@ -181,7 +181,7 @@ const FilterList = ({
   };
 
   // Text Filter Change
-  const handleFilterTextInputChange = query => {
+  const handleFilterTextInputChange = (query) => {
     if (isClear) {
       setIsClear(false);
     }
@@ -198,13 +198,13 @@ const FilterList = ({
   };
 
   // From Date Change
-  const handleFromDateChange = date => {
+  const handleFromDateChange = (date) => {
     setFromDate(date);
     handleDateChange(date, toDate);
   };
 
   // To Date Change
-  const handleToDateChange = date => {
+  const handleToDateChange = (date) => {
     setToDate(date);
     handleDateChange(fromDate, date);
   };
@@ -234,7 +234,7 @@ const FilterList = ({
     if (apiName.toLowerCase() === "pets") {
       const parameters = currentQueryString.split("&");
       var newQueryString = "?status=Adoptable&recordsPerPage=10";
-      parameters.forEach(parameter => {
+      parameters.forEach((parameter) => {
         const [key, value] = parameter.split("=");
         if (key.toLowerCase() === "status" && value.toLowerCase() === "lost") {
           newQueryString = "?status=Lost&recordsPerPage=10";
@@ -255,7 +255,7 @@ const FilterList = ({
 
   const buttonStyles = {
     paddingLeft: "100",
-    paddingRight: "0"
+    paddingRight: "0",
   };
 
   return (
@@ -359,7 +359,7 @@ FilterList.propTypes = {
   /** Placeholder text for the text input filter */
   inputFilterPlaceholder: PropTypes.string,
   /** className attribute for the list container */
-  listContainerClassName: PropTypes.string
+  listContainerClassName: PropTypes.string,
 };
 
 export default withRouter(FilterList);

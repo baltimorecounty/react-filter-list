@@ -1,9 +1,9 @@
 import { parse } from "query-string";
 import { subMonths } from "date-fns";
 /** Resets filter to default state. All options are unchecked */
-const resetFilter = filter => {
+const resetFilter = (filter) => {
   const { options = [] } = filter;
-  options.map(option => {
+  options.map((option) => {
     option.checked = false;
     return option;
   });
@@ -28,7 +28,7 @@ const updateFilters = (filters = [], queryStringFilters = {}) => {
   // Reset any filters that do not exist in the current querystring
   resetEmptyFilters(filters, queryStringFilters);
   // Update active filters based on querystring
-  Object.keys(queryStringFilters).forEach(key => {
+  Object.keys(queryStringFilters).forEach((key) => {
     const matchingFilter = filters.find(
       ({ targetApiField = "" }) =>
         targetApiField.toLowerCase() == key.toLowerCase()
@@ -38,7 +38,7 @@ const updateFilters = (filters = [], queryStringFilters = {}) => {
       const urlValues = queryStringFilters[key].toLowerCase().split(",");
       const { options = [] } = matchingFilter;
 
-      options.map(option => {
+      options.map((option) => {
         const { value = "" } = option;
         option.checked = urlValues.some(
           (urlValue = "") => value.toLowerCase() === urlValue.toLowerCase()
@@ -72,19 +72,19 @@ const UpdateUrlQueryString = (url, name, value) => {
  *
  * @param {date} date for data value
  */
-const FormatDateString = date => {
+const FormatDateString = (date) => {
   var dateFormat = require("dateformat");
   var formattedDate = dateFormat(date, "mm/dd/yyyy");
   return formattedDate;
 };
 
-const ShowHideSmallSizeCheckBox = checkboxName => {
+const ShowHideSmallSizeCheckBox = (checkboxName) => {
   var species = ["cat", "other"];
   var checkboxes = document.querySelectorAll(
       'input[name="' + checkboxName + '"]:checked'
     ),
     values = [];
-  Array.prototype.forEach.call(checkboxes, function(el) {
+  Array.prototype.forEach.call(checkboxes, function (el) {
     values.push(el.value.toUpperCase());
   });
 
@@ -161,7 +161,7 @@ const UpdateFilters = (filters = [], queryString = "") => {
  */
 const UpdateQueryString = ({
   filter: { checked, name, value },
-  queryString
+  queryString,
 }) => {
   const searchParams = new URLSearchParams(queryString || "");
   const existingValues = searchParams.has(name)
@@ -199,14 +199,15 @@ const UpdateQueryString = ({
 };
 
 const FilterSearchTags = (searchTags = [], textQuery, searchCategory) => {
-
   let newQuery = "";
   if (textQuery) {
-    console.log("searchTags[searchCategory]:" + JSON.stringify(searchTags[searchCategory]));
-    searchTags[searchCategory].map(item => {
+    console.log(
+      "searchTags[searchCategory]:" + JSON.stringify(searchTags[searchCategory])
+    );
+    searchTags[searchCategory].map((item) => {
       const tagCategory = item.value.split(",");
       console.log("tagCategory:" + tagCategory);
-      tagCategory.map(tag => {
+      tagCategory.map((tag) => {
         if (tag.toLowerCase().trim() === textQuery.toLowerCase().trim()) {
           newQuery = item.label;
         }
@@ -224,5 +225,5 @@ export {
   FormatDateString,
   InitializeDateValues,
   ShowHideSmallSizeCheckBox,
-  FilterSearchTags
+  FilterSearchTags,
 };
