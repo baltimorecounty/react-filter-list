@@ -199,15 +199,13 @@ const UpdateQueryString = ({
 };
 
 const FilterSearchTags = (searchTags = [], textQuery, searchCategory) => {
-  console.log("=======================================");
-  console.log("searchTags:" + JSON.stringify(searchTags));
-  console.log("textQuery:" + textQuery);
-  console.log("searchCategory:" + searchCategory);
-  console.log("===================+++++++++++====================");
+
   let newQuery = "";
   if (textQuery) {
+    console.log("searchTags[searchCategory]:" + JSON.stringify(searchTags[searchCategory]));
     searchTags[searchCategory].map(item => {
       const tagCategory = item.value.split(",");
+      console.log("tagCategory:" + tagCategory);
       tagCategory.map(tag => {
         if (tag.toLowerCase().trim() === textQuery.toLowerCase().trim()) {
           newQuery = item.label;
