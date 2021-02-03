@@ -11,7 +11,7 @@ const FilterTextInput = ({
   ...rest
 }) => {
   const [inputValue, setInputValue] = useState(filterText);
-  const [debouncedCallback] = useDebouncedCallback(value => {
+  const [debouncedCallback] = useDebouncedCallback((value) => {
     onChange(value);
   }, 300);
   useEffect(() => {
@@ -20,7 +20,7 @@ const FilterTextInput = ({
     }
   }, [isClear]);
 
-  const handleChange = changeEvent => {
+  const handleChange = (changeEvent) => {
     const { value = "" } = changeEvent.target;
     setInputValue(value);
     debouncedCallback(value);
@@ -37,6 +37,7 @@ const FilterTextInput = ({
         type="search"
         {...rest}
       />
+     
     </div>
   );
 };
