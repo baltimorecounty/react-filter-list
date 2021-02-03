@@ -154,13 +154,17 @@ const FilterList = ({
   /*************************/
 
   const [apiEndpoint, setApiEndpoint] = useState(
-    () => (defaultApiEndpoint = buildDefaultEndPoint())
+    () => (defaultApiEndpoint = buildDefaultEndPoint(includeDateFilter))
   );
 
   // This is a hook triggered when the querystring in the URL is changed.
   useEffect(() => {
     setFilters((filters) => UpdateFilters(filters, location.search));
-    setApiEndpoint(buildDefaultEndPoint(isDateClear ? false : true));
+    setApiEndpoint(
+      includeDateFilter
+        ? buildDefaultEndPoint(isDateClear ? false : true)
+        : buildDefaultEndPoint(includeDateFilter)
+    );
   }, [location.search]);
 
   const [filters, setFilters] = useState(() =>
@@ -313,10 +317,10 @@ const FilterList = ({
                 placeholder={inputFilterPlaceholder}
                 isClear={isClear}
                 filterText={filterText}
-                class="dg_search-input"
+                className="dg_search-input"
               />
-              <button class="dg_search-btn">
-                <i class="fas fa-search" aria-hidden="true"></i>
+              <button className="dg_search-btn">
+                <i className="fas fa-search" aria-hidden="true"></i>
               </button>
             </div>
           )}
