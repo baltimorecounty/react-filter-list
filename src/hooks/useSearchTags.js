@@ -6,22 +6,22 @@ import { Config } from "@baltimorecounty/javascript-utilities";
 const { setConfig, getValue } = Config;
 
 const localApiRoot = "local"; //Uncomment all the commented out fields to tst locally with the local json keyword file.
-const testApiRoot = "//beta.baltimorecountymd.gov/sebin/y/l/SearchTags.json";
+const testApiRoot = "//dev.baltimorecountymd.gov/sebin/y/m/SearchTags.json";
 const prodApiRoot = "//www.baltimorecountymd.gov/sebin/y/m/SearchTags.json";
 
 const configValues = {
   local: {
-    apiRoot: localApiRoot
+    apiRoot: localApiRoot,
   },
   development: {
-    apiRoot: testApiRoot
+    apiRoot: testApiRoot,
   },
   staging: {
-    apiRoot: testApiRoot
+    apiRoot: testApiRoot,
   },
   production: {
-    apiRoot: prodApiRoot
-  }
+    apiRoot: prodApiRoot,
+  },
 };
 
 setConfig(configValues);
@@ -31,23 +31,23 @@ const useSearchTags = () => {
   const [searchTags, setSearchTags] = useState([]);
   useEffect(() => {
     //if (getValue("apiRoot") === "local") {
-      //setSearchTags(tagData);
+    //setSearchTags(tagData);
     //} else {
-      GetSearchTags()
-        .then(response => {
-          setSearchTags(response);
-        })
-        .catch(() => {
-          setHasError(true);
-        });
+    GetSearchTags()
+      .then((response) => {
+        setSearchTags(response);
+      })
+      .catch(() => {
+        setHasError(true);
+      });
     //}
   }, []);
 
   return [
     {
       searchTags,
-      hasError
-    }
+      hasError,
+    },
   ];
 };
 
