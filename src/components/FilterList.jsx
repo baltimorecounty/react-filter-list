@@ -304,15 +304,21 @@ const FilterList = ({
             </div>
           ) : null}
         </div>
-        <div></div>
+
         <div className="col-md-9 col-xs-12">
           {includeInputFilter && (
-            <FilterTextInput
-              onChange={handleFilterTextInputChange}
-              placeholder={inputFilterPlaceholder}
-              isClear={isClear}
-              filterText={filterText}
-            />
+            <div className="dg_search-container">
+              <FilterTextInput
+                onChange={handleFilterTextInputChange}
+                placeholder={inputFilterPlaceholder}
+                isClear={isClear}
+                filterText={filterText}
+                class="dg_search-input"
+              />
+              <button class="dg_search-btn">
+                <i class="fas fa-search" aria-hidden="true"></i>
+              </button>
+            </div>
           )}
           <ApiList
             className={listContainerClassName}
