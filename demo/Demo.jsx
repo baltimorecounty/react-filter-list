@@ -26,7 +26,7 @@ const Demo = (props) => {
         filters={filters}
         apiEndpoint="https://localhost:44393/api/News/Police"
         includeInputFilter={true}
-        includeDateFilter={true}
+        includeDateFilter={false}
         includeClearButton={true}
         searchCategory="PoliceNews"
         inputFilterPlaceholder="Begin typing to filter by title or summary..."
