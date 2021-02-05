@@ -5,10 +5,18 @@ const filters = [
   {
     targetApiField: "category.value",
     displayName: "Category",
-
     options: [
       { value: "releases", label: "News Releases" },
       { value: "stories", label: "Stories" },
+    ],
+  },
+  {
+    targetApiField: "orderby",
+    displayName: "Sort",
+    useRadioButtons: true,
+    options: [
+      { label: "A-Z", value: "A" },
+      { label: "Z-A", value: "D" },
     ],
   },
   {
