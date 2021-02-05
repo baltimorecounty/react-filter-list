@@ -1,8 +1,14 @@
-import { Button, Checkbox } from "@baltimorecounty/dotgov-components";
+import {
+  Button,
+  Checkbox,
+  CheckedInputGroup,
+  RadioButton,
+} from "@baltimorecounty/dotgov-components";
 import React, { useState } from "react";
 
 const OptionsCollapse = ({
   options = [],
+  useRadioButton,
   targetApiField = "",
   onChange = () => {},
 }) => {
@@ -32,7 +38,17 @@ const OptionsCollapse = ({
         <>
           {options.map(({ label, value, checked }) => {
             const id = `${targetApiField}-${value.split(" ").join("-")}`;
-            return (
+            return useRadioButton ? (
+              <RadioButton
+                key={`${id}-${checked}`}
+                id={id}
+                name={targetApiField}
+                onChange={onChange}
+                label={label}
+                value={value}
+                checked={checked}
+              />
+            ) : (
               <Checkbox
                 key={`${id}-${checked}`}
                 id={id}
@@ -44,6 +60,7 @@ const OptionsCollapse = ({
               />
             );
           })}
+
           <Button
             className="dg_button-link minus-text-icon"
             onClick={handleToggleClick}

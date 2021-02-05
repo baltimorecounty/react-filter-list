@@ -11,6 +11,15 @@ const filters = [
     ],
   },
   {
+    targetApiField: "orderby",
+    displayName: "Sort",
+    useRadioButton: true,
+    options: [
+      { label: "A-Z", value: "A" },
+      { label: "Z-A", value: "D" },
+    ],
+  },
+  {
     targetApiField: "recordsperpage",
     value: 10,
   },
@@ -26,7 +35,7 @@ const Demo = (props) => {
         filters={filters}
         apiEndpoint="https://localhost:44393/api/News/Police"
         includeInputFilter={true}
-        includeDateFilter={false}
+        includeDateFilter={true}
         includeClearButton={true}
         searchCategory="PoliceNews"
         inputFilterPlaceholder="Begin typing to filter by title or summary..."

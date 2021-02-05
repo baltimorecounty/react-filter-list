@@ -178,7 +178,10 @@ const UpdateQueryString = ({
 
       if (!doesValueExist) {
         existingValues.push(value);
-        searchParams.set(name, existingValues);
+        searchParams.set(
+          name,
+          name.toLowerCase() === "orderby" ? value : existingValues
+        );
       }
     } else {
       searchParams.set(name, value);
