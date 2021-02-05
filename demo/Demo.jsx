@@ -13,7 +13,7 @@ const filters = [
   {
     targetApiField: "orderby",
     displayName: "Sort",
-    useRadioButtons: true,
+    useRadioButton: true,
     options: [
       { label: "A-Z", value: "A" },
       { label: "Z-A", value: "D" },
