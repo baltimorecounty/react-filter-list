@@ -5,6 +5,7 @@ const filters = [
   {
     targetApiField: "category.value",
     displayName: "Category",
+
     options: [
       { value: "releases", label: "News Releases" },
       { value: "stories", label: "Stories" },
