@@ -37,7 +37,6 @@ const FilterTextInput = ({
         type="search"
         {...rest}
       />
-     
     </div>
   );
 };
