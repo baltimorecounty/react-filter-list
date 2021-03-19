@@ -247,6 +247,14 @@ const FilterList = ({
             "?status=Adoptable&workingCat=" + value + "&recordsPerPage=10";
         }
       });
+    } else if (apiName.toLowerCase() === "events") {
+      const parameters = currentQueryString.split("&");
+      parameters.forEach((parameter) => {
+        const [key, value] = parameter.split("=");
+        if (key.toLowerCase() === "type") {
+          newQueryString = "?type=" + value + "&recordsPerPage=10";
+        }
+      });
     }
 
     setApiEndpoint(base + newQueryString);
