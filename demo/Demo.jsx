@@ -35,6 +35,9 @@ const Demo = (props) => {
         filters={filters}
         apiEndpoint="https://localhost:44393/api/News/Police"
         includeInputFilter={true}
+        canSearchInFuture={false}
+        customStartDate="04/02/2021"
+        customEndDate="10/02/2021"
         includeDateFilter={true}
         includeClearButton={true}
         searchCategory="PoliceNews"

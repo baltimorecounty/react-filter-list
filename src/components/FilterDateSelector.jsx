@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 
 import DatePicker from "react-datepicker";
 
-const FilterDateSelector = props => {
+const FilterDateSelector = (props) => {
   const {
     onChange,
     selected,
@@ -16,6 +16,7 @@ const FilterDateSelector = props => {
     datePickerIsOpen,
     minDate,
     maxDate,
+    canSearchInFuture,
     open = () => {},
     btnOnClick,
     ...otherProps
@@ -25,24 +26,24 @@ const FilterDateSelector = props => {
   const calendarRef = useRef();
   const [state, setState] = useState({
     datePickerIsOpen,
-    datePickerIsClosed
+    datePickerIsClosed,
   });
 
   const openDatePicker = () => {
     setState({
-      datePickerIsOpen: !state.datePickerIsOpen
+      datePickerIsOpen: !state.datePickerIsOpen,
     });
     open(!state.datePickerIsOpen);
   };
 
   const handleClose = () => {
     setState({
-      datePickerIsClosed: !state.datePickerIsClosed
+      datePickerIsClosed: !state.datePickerIsClosed,
     });
     onClickOutside(!state.datePickerIsClosed);
   };
 
-  const onKeyDown = e => {
+  const onKeyDown = (e) => {
     if (e.keyCode == 9) {
       calendarRef.current.state.open = false;
     }
@@ -61,7 +62,7 @@ const FilterDateSelector = props => {
           name={name}
           id={dateId}
           minDate={minDate}
-          maxDate={maxDate}
+          maxDate={canSearchInFuture ? null : maxDate}
           onClickOutside={handleClose}
           open={state.datePickerIsOpen}
           onKeyDown={onKeyDown}
