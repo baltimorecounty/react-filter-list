@@ -41,6 +41,9 @@ const FilterList = ({
   includeInputFilter = false,
   includeDateFilter = false,
   includeClearButton = false,
+  customStartDate = "",
+  customEndDate = "",
+  canSearchInFuture = false,
   inputFilterPlaceholder = "Begin typing to filter...",
   filters: filtersFromProps = [],
   apiEndpoint: defaultApiEndpoint,
@@ -81,14 +84,22 @@ const FilterList = ({
     : null;
 
   const [fromDate, setFromDate] = useState(
-    !!startDatePart ? new Date(startDatePart) : null
+    customStartDate
+      ? new Date(customStartDate)
+      : !!startDatePart
+      ? new Date(startDatePart)
+      : null
   );
+  console.log(fromDate);
+
   const [isClear, setIsClear] = useState(false);
   const [isDateClear, setIsDateClear] = useState(false);
 
   const [toDate, setToDate] = useState(
-    !!endDatePart ? new Date(endDatePart) : null
+    customEndDate ? new Date(customEndDate) : !!endDatePart ? new Date(endDatePart) : null
   );
+
+  console.log(toDate);
 
   /********************************/
   /* URL/Querystring Manipulation */
@@ -296,6 +307,7 @@ const FilterList = ({
               <FilterDateSelector
                 name="endDate"
                 id="endDate"
+                canSearchInFuture={canSearchInFuture}
                 selected={!isDateClear ? toDate : null}
                 onChange={handleToDateChange}
                 minDate={fromDate}
