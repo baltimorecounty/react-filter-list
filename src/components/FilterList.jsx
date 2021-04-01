@@ -58,7 +58,7 @@ const FilterList = ({
 
   const getDateFromUrl = (url) => {
     var query = url.substr(1);
-    var result = InitializeDateValues();
+    var result = InitializeDateValues(customStartDate, customEndDate);
 
     query.split("&").forEach((part) => {
       var item = part.split("=");
@@ -74,7 +74,7 @@ const FilterList = ({
 
   const filterDateValue =
     location.search.indexOf("?") <= -1
-      ? InitializeDateValues()
+      ? InitializeDateValues(customStartDate, customEndDate)
       : getDateFromUrl(location.search);
 
   const [{ searchTags = [], hasError }] = useSearchTags();
@@ -90,16 +90,17 @@ const FilterList = ({
       ? new Date(startDatePart)
       : null
   );
-  console.log(fromDate);
 
   const [isClear, setIsClear] = useState(false);
   const [isDateClear, setIsDateClear] = useState(false);
 
   const [toDate, setToDate] = useState(
-    customEndDate ? new Date(customEndDate) : !!endDatePart ? new Date(endDatePart) : null
+    customEndDate
+      ? new Date(customEndDate)
+      : !!endDatePart
+      ? new Date(endDatePart)
+      : null
   );
-
-  console.log(toDate);
 
   /********************************/
   /* URL/Querystring Manipulation */

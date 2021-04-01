@@ -23,6 +23,10 @@ const filters = [
     targetApiField: "recordsperpage",
     value: 10,
   },
+  {
+    targetApiField: "type",
+    value: "Public Notice",
+  },
 ];
 console.log(
   "***In order for text filtering to work you must go to hooks => useSearchTags.js and comment in all the green lines***"
@@ -33,10 +37,10 @@ const Demo = (props) => {
       <FilterList
         title="Baltimore County Police Newsroom"
         filters={filters}
-        apiEndpoint="https://localhost:44393/api/News/Police"
+        apiEndpoint="https://localhost:44393/api/Events"
         includeInputFilter={true}
-        canSearchInFuture={false}
-        customStartDate="04/02/2021"
+        canSearchInFuture={true}
+        customStartDate="04/02/2020"
         customEndDate="10/02/2021"
         includeDateFilter={true}
         includeClearButton={true}
