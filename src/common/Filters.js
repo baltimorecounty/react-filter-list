@@ -132,7 +132,6 @@ const InitializeDateValues = (customStartDate, customEndDate) => {
 
   var fromToDateFormat = startDateFormat + "," + endDateFormat;
 
-  console.log(fromToDateFormat);
   return fromToDateFormat;
 };
 
