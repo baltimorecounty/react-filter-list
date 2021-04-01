@@ -117,17 +117,22 @@ const containsAll = (species, values) => {
   return true;
 };
 
-const InitializeDateValues = () => {
+const InitializeDateValues = (customStartDate, customEndDate) => {
   var dateFormat = require("dateformat");
 
-  const startDate = new Date().setFullYear(new Date().getFullYear() - 1);
-  const endDate = new Date().setMonth(new Date().getMonth());
+  const startDate = customStartDate
+    ? new Date(customStartDate)
+    : new Date().setFullYear(new Date().getFullYear() - 1);
+  const endDate = customEndDate
+    ? new Date(customEndDate)
+    : new Date().setMonth(new Date().getMonth());
 
   const startDateFormat = dateFormat(startDate, "mm/dd/yyyy");
   const endDateFormat = dateFormat(endDate, "mm/dd/yyyy");
 
   var fromToDateFormat = startDateFormat + "," + endDateFormat;
 
+  console.log(fromToDateFormat);
   return fromToDateFormat;
 };
 
