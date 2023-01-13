@@ -117,7 +117,7 @@ const FilterList = ({
     const staticFilter =
       "?" +
       staticFilterQueryString +
-      (includedFilters !== "" ? includedFilters : null);
+      (includedFilters !== "" ? includedFilters : "");
     const endPointRoot = defaultApiEndpoint.split("?")[0];
 
     let newEndPoint;
