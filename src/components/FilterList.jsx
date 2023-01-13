@@ -41,6 +41,7 @@ const FilterList = ({
   includeInputFilter = false,
   includeDateFilter = false,
   includeClearButton = false,
+  includedFilters = "",
   customStartDate = "",
   customEndDate = "",
   canSearchInFuture = false,
@@ -113,7 +114,10 @@ const FilterList = ({
 
   const buildDefaultEndPoint = (includeDateFilter = true) => {
     const dateFilter = "filterdate=" + filterDateValue;
-    const staticFilter = "?" + staticFilterQueryString;
+    const staticFilter =
+      "?" +
+      staticFilterQueryString +
+      (includedFilters !== "" ? includedFilters : null);
     const endPointRoot = defaultApiEndpoint.split("?")[0];
 
     let newEndPoint;
